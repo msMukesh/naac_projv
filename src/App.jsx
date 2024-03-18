@@ -35,7 +35,6 @@
 // export default App
 import Auth from "./components/auth";
 import Dashboard from "./components/dashboard";
-import MyHomePage from "./components/MyHomePage";
 import { useUserContext } from "./context/userContext";
 
 function App() {
