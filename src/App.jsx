@@ -1,4 +1,4 @@
-
+import 'bootstrap/dist/css/bootstrap.min.css'
 import Auth from "./components/auth";
 import Dashboard from "./components/dashboard";
 import Home from "./components/Home";
