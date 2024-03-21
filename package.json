@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
+    "express": "^5.0.0-beta.2",
     "firebase": "^10.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
