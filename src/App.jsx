@@ -34,6 +34,7 @@ function App() {
 >>> d88793ffecb7e6fe2bf735ff20d520e390feebe4
   );
 }
+
 /*  {error && <p className="error">{error}</p>}
      {loading ? <h2>Loading...</h2> : <> {user ? <Dashboard /> : <Auth />} </>}  */ 
 export default App;
