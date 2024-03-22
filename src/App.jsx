@@ -1,5 +1,3 @@
-
-
 import Auth from "./components/auth";
 import Dashboard from "./components/dashboard";
 import Home from "./components/Home";
@@ -10,8 +8,11 @@ function App() {
   const { user, loading, error } = useUserContext();
 
   return (
-
-    <BrowserRouter>
+    <>
+      <Home/>
+      
+    </>
+  /*  <BrowserRouter>
       <Routes>
         <Route
           path="/"
@@ -30,8 +31,7 @@ function App() {
         />
         <Route path="/criterion3" element={<Criterion3 />} />
       </Routes>
-    </BrowserRouter>
->>> d88793ffecb7e6fe2bf735ff20d520e390feebe4
+    </BrowserRouter>*/
   );
 }
 /*  {error && <p className="error">{error}</p>}
