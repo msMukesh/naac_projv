@@ -34,6 +34,7 @@ function App() {
     </BrowserRouter>*/
   );
 }
+
 /*  {error && <p className="error">{error}</p>}
      {loading ? <h2>Loading...</h2> : <> {user ? <Dashboard /> : <Auth />} </>}  */ 
 export default App;
