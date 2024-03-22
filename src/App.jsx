@@ -12,7 +12,8 @@ import Criterion3 from './components/criterion3';
 function App() {
   const { user, loading, error } = useUserContext();
 
-  return (
+  return(
+    <h1>hii</h1>
     <h1>Hello</h1>
     /*<BrowserRouter>
     <BrowserRouter>
