@@ -13,7 +13,9 @@ function App() {
   const { user, loading, error } = useUserContext();
 
   return (
+    /*<BrowserRouter>
     <BrowserRouter>
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Auth />} />
@@ -34,6 +36,7 @@ function App() {
         />
       </Routes>
     </BrowserRouter>
+>>> d88793ffecb7e6fe2bf735ff20d520e390feebe4*/
   );
 }
 
