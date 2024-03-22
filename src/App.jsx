@@ -1,19 +1,22 @@
-import Auth from "./components/auth";
-import Dashboard from "./components/dashboard";
-import Home from "./components/Home";
-import MyHomePage from "./components/MyHomePage";
-import { useUserContext } from "./context/userContext";
-import Criterion3 from "./components/criterion3";
+// App.js
+
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Auth from './components/auth';
+import Dashboard from './components/dashboard';
+import Home from './components/Home';
+import MyHomePage from './components/MyHomePage';
+import { useUserContext } from './context/userContext';
+import Criterion3 from './components/criterion3';
+
 function App() {
   const { user, loading, error } = useUserContext();
 
   return (
-    <>
-      <Home/>
-      
-    </>
-  /*  <BrowserRouter>
+    <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Auth />} />
         <Route
           path="/"
           element={
@@ -23,18 +26,15 @@ function App() {
                 <h2>Loading...</h2>
               ) : (
                 <>
-                  {user ? <Dashboard /> : <Auth />}
+                  {user ? <Dashboard /> : null}
                 </>
               )}
             </>
           }
         />
-        <Route path="/criterion3" element={<Criterion3 />} />
       </Routes>
-    </BrowserRouter>*/
+    </BrowserRouter>
   );
 }
 
-/*  {error && <p className="error">{error}</p>}
-     {loading ? <h2>Loading...</h2> : <> {user ? <Dashboard /> : <Auth />} </>}  */ 
 export default App;
