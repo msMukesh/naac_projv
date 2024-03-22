@@ -13,30 +13,7 @@ function App() {
   const { user, loading, error } = useUserContext();
 
   return (
-    /*<BrowserRouter>
-    <BrowserRouter>
-
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Auth />} />
-        <Route
-          path="/"
-          element={
-            <>
-              {error && <p className="error">{error}</p>}
-              {loading ? (
-                <h2>Loading...</h2>
-              ) : (
-                <>
-                  {user ? <Dashboard /> : null}
-                </>
-              )}
-            </>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
->>> d88793ffecb7e6fe2bf735ff20d520e390feebe4*/
+    <h1>hii</h1>
   );
 }
 
