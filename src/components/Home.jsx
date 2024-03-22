@@ -1,15 +1,20 @@
-import React from 'react'
-import UniversityHeader from './UniversityHeader'
-import HomePageDesc from './HomePageDesc'
+// Home.js
+
+import React from 'react';
+import { Link } from 'react-router-dom';
+import UniversityHeader from './UniversityHeader';
+import HomePageDesc from './HomePageDesc';
 
 function Home() {
   return (
     <>
-        <UniversityHeader/>
-        <HomePageDesc/>
-        <button>Login</button>
+      <UniversityHeader />
+      <HomePageDesc />
+      <button>
+        <Link to="/login">Login</Link>
+      </button>
     </>
-  )
+  );
 }
 
-export default Home
+export default Home;
