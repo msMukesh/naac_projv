@@ -13,9 +13,6 @@ function App() {
   const { user, loading, error } = useUserContext();
 
   return(
-    <h1>hii</h1>
-    <h1>Hello</h1>
-    /*<BrowserRouter>
     <BrowserRouter>
 
       <Routes>
@@ -38,7 +35,7 @@ function App() {
         />
       </Routes>
     </BrowserRouter>
->>> d88793ffecb7e6fe2bf735ff20d520e390feebe4*/
+>>> d88793ffecb7e6fe2bf735ff20d520e390feebe4
   );
 }
 
