@@ -11,7 +11,7 @@ function App() {
 
   return (
 
-    <BrowserRouter>
+    /*<BrowserRouter>
       <Routes>
         <Route
           path="/"
@@ -31,7 +31,7 @@ function App() {
         <Route path="/criterion3" element={<Criterion3 />} />
       </Routes>
     </BrowserRouter>
->>> d88793ffecb7e6fe2bf735ff20d520e390feebe4
+>>> d88793ffecb7e6fe2bf735ff20d520e390feebe4*/
   );
 }
 
