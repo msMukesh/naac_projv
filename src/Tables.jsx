@@ -4,10 +4,12 @@ function Tables() {
   return (
     <>
         <table>
+
   <tr>
     <th>Company</th>
     <th>Contact</th>
     <th>Country</th>
+    <th>faculty name</th>
   </tr>
   <tr>
     <td>Alfreds Futterkiste</td>
