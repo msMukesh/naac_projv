@@ -13,6 +13,7 @@ function App() {
   const { user, loading, error } = useUserContext();
 
   return (
+    <h1>Hello</h1>
     /*<BrowserRouter>
     <BrowserRouter>
 
