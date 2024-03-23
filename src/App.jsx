@@ -35,7 +35,6 @@ function App() {
         />
       </Routes>
     </BrowserRouter>
->>> d88793ffecb7e6fe2bf735ff20d520e390feebe4
   );
 }
 
