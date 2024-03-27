@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Criterion3 from "./Criterion3";
+// import Criterion3 from "./Criterion3";
 const NavBar = ({ logoutUser }) => {
   return (
     <nav className="navbar">
@@ -20,5 +20,4 @@ const NavBar = ({ logoutUser }) => {
     </nav>
   );
 };
-
 export default NavBar;

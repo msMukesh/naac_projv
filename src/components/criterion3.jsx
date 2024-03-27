@@ -61,8 +61,9 @@ const Criterion3 = () => {
 
   return (
     <>
+            <NavBar logoutUser={() => {}} /> {/* Passing a placeholder logoutUser function */}
+
       <div className="criterion3-container">
-        <NavBar logoutUser={() => {}} /> {/* Passing a placeholder logoutUser function */}
         <div className="content">
           {/* Render HTML code for Criterion3 */}
           <div dangerouslySetInnerHTML={{ __html: htmlCode }} />
