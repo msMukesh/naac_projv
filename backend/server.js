@@ -1,14 +1,15 @@
 import express from "express";
-import formidable from "formidable";
 import mongoose from "mongoose";
+import multer from "multer"; // Import multer
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { dirname, join } from 'path';
+
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const port = process.env.PORT || 5000; // Change the port to 5001
+const port = process.env.PORT || 5000;
 
 // Middleware for parsing JSON bodies
 app.use(express.json());
@@ -38,41 +39,40 @@ app.use((req, res, next) => {
   next();
 });
 
+// Set up multer storage configuration
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, join(__dirname, 'uploads')); // Set the destination folder
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname); // Use the original file name
+  }
+});
+
+// Initialize multer upload middleware
+const upload = multer({ storage });
+
 // Endpoint for file upload
-app.post('/upload', (req, res) => {
-  const form = new formidable.IncomingForm();
-  form.uploadDir = path.join(__dirname, 'uploads'); // <-- Here's the issue
-  form.keepExtensions = true;
+app.post('/upload', upload.single('file'), async (req, res) => {
+  const { userName } = req.body;
+  const { path: filePath } = req.file;
 
-  form.parse(req, async (err, fields, files) => {
-    if (err) {
-      console.error('Error parsing form:', err);
-      return res.status(500).json({ error: 'Error parsing form. Please try again.' });
-    }
-
-    console.log('Fields:', fields);
-    console.log('Files:', files);
-
-    const { userName } = fields;
-    const { path: filePath } = files.file;
-
-    const newDocument = new Criterion3Model({
-      userName,
-      filePath,
-    });
-
-    try {
-      await newDocument.save();
-      return res.status(200).json({ message: 'File uploaded successfully' });
-    } catch (error) {
-      console.error('Error saving document:', error);
-      return res.status(500).json({ error: 'Error uploading file. Please try again.' });
-    }
+  const newDocument = new Criterion3Model({
+    userName,
+    filePath,
   });
+
+  try {
+    await newDocument.save();
+    return res.status(200).json({ message: 'File uploaded successfully' });
+  } catch (error) {
+    console.error('Error saving document:', error);
+    return res.status(500).json({ error: 'Error uploading file. Please try again.' });
+  }
 });
 
 // Serve uploaded files statically
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(join(__dirname, 'uploads')));
 
 // Handle other routes
 app.use((req, res) => {
