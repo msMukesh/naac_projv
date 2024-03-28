@@ -34,7 +34,6 @@ export const UserContextProvider = ({ children }) => {
       setUser(user); // Set the user in the state
       setLoading(false); // Update loading state
       setError(""); // Clear any previous errors
-
     });
     return () => unsubscribe(); // Cleanup function
   }, []);

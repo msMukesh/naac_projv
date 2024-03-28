@@ -14,9 +14,9 @@ const Dashboard = () => {
   }, [user]);
 
   return (
-    <>
+    <>        <NavBar logoutUser={logoutUser} /> {/* Use NavBar component */}
+
       <div className="dashboard-container">
-        <NavBar logoutUser={logoutUser} /> {/* Use NavBar component */}
         <div className="content">
           <h1>Dashboard</h1>
           <h2>Name: {Cookies.get("userName")}</h2>
