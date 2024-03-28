@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import NavBar from "./Navbar";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const Criterion3 = () => {
   const [file, setFile] = useState(null);
@@ -17,19 +18,23 @@ const Criterion3 = () => {
       setError("Please select a file.");
       return;
     }
-
+  
     setUploading(true);
-
+  
     try {
       const formData = new FormData();
       formData.append("file", file);
-
-      const response = await axios.post("http://localhost:5001/upload", formData, {
+      
+      // Get user name from cookie
+      const userName = Cookies.get("userName");
+      formData.append("userName", userName);
+  
+      const response = await axios.post("http://localhost:5000/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-
+  
       console.log(response.data);
       alert("File uploaded successfully.");
       setUploaded(true);
@@ -40,6 +45,7 @@ const Criterion3 = () => {
       setUploading(false);
     }
   };
+  
 
   return (
     <>
@@ -54,6 +60,8 @@ const Criterion3 = () => {
             which is uploaded on the institutional website and implemented.
           </p>
           <p>Upload relevant supporting document:</p>
+          <h2>Name: {Cookies.get("userName")}</h2>
+
           <input type="file" onChange={handleFileChange} />
           <button onClick={handleUpload} disabled={uploading || uploaded}>
             {uploading ? "Uploading..." : uploaded ? "Uploaded" : "Upload"}
