@@ -1,44 +1,39 @@
 // App.js
-
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Auth from './components/auth';
 import Dashboard from './components/dashboard';
 import Home from './components/Home';
-import MyHomePage from './components/MyHomePage';
 import { useUserContext } from './context/userContext';
-import Criterion3 from './components/criterion3';
+import LoadingSpinner from './components/LoadingSpinner'; // Import the loading spinner component
+import Criterion3 from './components/Criterion3'; // Import Criterion3 component
 
 function App() {
   const { user, loading, error } = useUserContext();
 
-  return(
-    <h1>hii</h1>
-    <h1>Hello</h1>
-    /*<BrowserRouter>
+  return (
     <BrowserRouter>
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Auth />} />
         <Route
-          path="/"
+          path="/dashboard"
           element={
             <>
+              {loading && <LoadingSpinner />} {/* Render the loading spinner while loading */}
               {error && <p className="error">{error}</p>}
-              {loading ? (
-                <h2>Loading...</h2>
-              ) : (
+              {!loading && !error && ( // Render the dashboard only when not loading and no error
                 <>
-                  {user ? <Dashboard /> : null}
+                  {user ? <Dashboard /> : <Auth />} {/* Render dashboard if user is authenticated, otherwise render Auth */}
                 </>
               )}
             </>
           }
         />
+                <Route path="/criterion3" element={<Criterion3 />} /> {/* Add Criterion3 route */}
+
       </Routes>
     </BrowserRouter>
->>> d88793ffecb7e6fe2bf735ff20d520e390feebe4*/
   );
 }
 

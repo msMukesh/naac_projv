@@ -1,31 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useUserContext } from "../context/userContext";
-import "../components/dashboard.css";
-import "./criterion3";
+import NavBar from "./Navbar"; // Import the NavBar component
+import "./dashboard.css";
+import Cookies from "js-cookie";
 
 const Dashboard = () => {
   const { user, logoutUser } = useUserContext();
 
-  return (
-    <div className="dashboard-container">
-      <nav className="navbar">
-        <div className="navbar-brand">NAAC DB</div>
-        <ul className="navbar-nav">
-          <li className="nav-item">
-            <a href="../components/criterion3" className="nav-link">Criterion 3</a>
-          </li>
-          <li className="nav-item">
-            <button className="logout-btn" onClick={logoutUser}>Log out</button>
-          </li>
-        </ul>
-      </nav>
-      <div className="content">
-        <h1>Dashboard</h1>
-        <h2>Name: {user.displayName}</h2>
-        <h2>Email: {user.email}</h2>
-      </div>
+  useEffect(() => {
+    if (user) {
+      Cookies.set("userName", user.displayName);
+    }
+  }, [user]);
 
-    </div>
+  return (
+    <>        <NavBar logoutUser={logoutUser} /> {/* Use NavBar component */}
+
+      <div className="dashboard-container">
+        <div className="content">
+          <h1>Dashboard</h1>
+          <h2>Name: {Cookies.get("userName")}</h2>
+          <h2>Email: {user.email}</h2>
+        </div>
+      </div>
+    </>
   );
 };
 

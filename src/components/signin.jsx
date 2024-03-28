@@ -1,11 +1,14 @@
-import React, { useRef } from "react";
-import { useUserContext } from "../context/userContext";
-// import Dashboard from "./dashboard"; // Corrected the import path
+// Signin.js
 
-const Signin = ({ onSignInSuccess }) => {
+import React, { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../context/userContext";
+
+const Signin = () => {
   const emailRef = useRef();
   const psdRef = useRef();
-  const { signInUser } = useUserContext(); // Ensuring that signInUser is properly obtained from context
+  const navigate = useNavigate();
+  const { signInUser } = useUserContext();
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -13,9 +16,8 @@ const Signin = ({ onSignInSuccess }) => {
     const password = psdRef.current.value;
     if (email && password) {
       try {
-        await signInUser(email, password); // Calling signInUser from context
-        // Call the callback function passed from the parent component
-        onSignInSuccess();
+        await signInUser(email, password);
+        navigate("/dashboard");
       } catch (error) {
         console.error("Error signing in:", error.message);
       }
