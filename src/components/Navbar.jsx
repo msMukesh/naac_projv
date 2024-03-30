@@ -1,14 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import Criterion3 from "./Criterion3";
+import Cookies from "js-cookie"; // Import Cookies from js-cookie
 import "./dashboard.css";
 
 const NavBar = ({ logoutUser }) => {
+
+  const handleLogout = () => {
+    // Delete the cookie "userName"
+    Cookies.remove("userName");
+    // Call the logoutUser function if provided
+    if (logoutUser) {
+      logoutUser();
+    }
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-brand">NAAC DB</div>
       <ul className="navbar-nav">
-      <li className="nav-item">
+        <li className="nav-item">
           <Link to="/Criterion1" className="nav-link">
             Criterion 1
           </Link>
@@ -24,7 +34,7 @@ const NavBar = ({ logoutUser }) => {
           </Link>
         </li>
         <li className="nav-item">
-          <button className="logout-btn" onClick={logoutUser}>
+          <button className="logout-btn" onClick={handleLogout}>
             Log out
           </button>
         </li>
@@ -32,4 +42,5 @@ const NavBar = ({ logoutUser }) => {
     </nav>
   );
 };
+
 export default NavBar;
