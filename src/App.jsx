@@ -30,7 +30,7 @@ function App() {
             </>
           }
         />
-                <Route path="/criterion3" element={<Criterion3 />} /> {/* Add Criterion3 route */}
+        <Route path="/criterion3" element={<Criterion3 />} /> {/* Add Criterion3 route */}
 
       </Routes>
     </BrowserRouter>

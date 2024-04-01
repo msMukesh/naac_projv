@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import multer from "multer"; // Import multer
+import multer from "multer";
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
@@ -16,9 +16,9 @@ app.use(express.json());
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/Naac', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  // useCreateIndex: true,
+  // useNewUrlParser: true,
+  // useUnifiedTopology: true,
+  // useCreateIndex: true, // Corrected option name
 });
 
 const db = mongoose.connection;
@@ -29,13 +29,13 @@ db.once('open', () => {
 
 // Define the schema for Criterion3 collection
 const Criterion3Schema = new mongoose.Schema({
-  _id: String, // Change _id to String type
+  _id: String,
   userName: String,
   filePath: String,
 });
 
 // Define the model for Criterion3 collection
-const Criterion3Model = mongoose.model('Criterion311', Criterion3Schema);
+const Criterion3Model = mongoose.model('Criterion3', Criterion3Schema);
 
 // Set up CORS headers to allow requests from any origin
 app.use((req, res, next) => {
@@ -56,16 +56,20 @@ const storage = multer.diskStorage({
 });
 
 // Initialize multer upload middleware
-const upload = multer({ storage });
+const upload = multer({ 
+  storage,
+  // Ensure the field name matches the one in the form data
+  fileField: 'file'
+});
 
 // Endpoint for file upload for 311
 app.post('/311upload', upload.single('file'), async (req, res) => {
   const { userName } = req.body;
   const { path: filePath } = req.file;
-  const _id = `311${userName}`; // Generating custom _id
+  const _id = `311${userName}`;
 
   const newDocument = new Criterion3Model({
-    _id, // Assigning custom _id
+    _id,
     userName,
     filePath,
   });
@@ -96,7 +100,7 @@ const Criterion312Model = mongoose.model('Criterion312', Criterion312Schema);
 app.post('/312upload', upload.single('file'), async (req, res) => {
   const { teacherName, amount, year, additionalInfo } = req.body;
   const { path: filePath } = req.file;
-  const _id = `312${teacherName}`; // Generating custom _id
+  const _id = `312${teacherName}`;
 
   const newDocument = new Criterion312Model({
     _id,
@@ -115,68 +119,82 @@ app.post('/312upload', upload.single('file'), async (req, res) => {
     return res.status(500).json({ error: 'Error uploading file. Please try again.' });
   }
 });
-const Criterion313Schema = new mongoose.Schema({
-  _id: String, // Specify _id as a string
 
-  year: {
-    type: Number,
-    required: true
-  },
-  teacherName: {
-    type: String,
-    required: true
-  },
+// Define the schema for Criterion313 collection
+const Criterion313Schema = new mongoose.Schema({
+  _id: String,
+  year: { type: Number, required: true },
+  teacherName: { type: String, required: true },
   designation: String,
-  fellowshipType: {
-    type: String,
-    enum: ['International', 'National', 'State'], // Assuming these are the possible values
-    required: true
-  },
-  fellowshipName: {
-    type: String,
-    required: true
-  },
-  sponsoringAgency: {
-    type: String,
-    required: true
-  },
-  filePath: {
-    type: String,
-    required: true
-  }
+  fellowshipType: { type: String, enum: ['International', 'National', 'State'], required: true },
+  fellowshipName: { type: String, required: true },
+  sponsoringAgency: { type: String, required: true },
+  filePath: { type: String, required: true }
 });
+
+
+
 
 const Criterion313Model = mongoose.model('Criterion313', Criterion313Schema);
 
-// Endpoint for file upload for 313
-app.post('/313upload', upload.single('file'), async (req, res) => {
+// Endpoint for data submission for 314
+app.post('/314upload', async (req, res) => {
   try {
-    const { year, teacherName, designation, fellowshipType, fellowshipName, sponsoringAgency } = req.body;
-    const { path: filePath } = req.file;
+    const { fellowName, yearOfEnrollment, duration, fellowshipType, grantingAgency } = req.body;
 
-    // Validate required fields
-    // if (!year || !teacherName || !fellowshipType || !fellowshipName || !sponsoringAgency || !filePath) {
-    //   return res.status(400).json({ error: 'All fields are required' });
-    // }
-
-    // Generate custom _id
-    const _id = `313${teacherName}`;
-
-    // Save the document
-    const newDocument = new Criterion313Model({
-      _id,
-      year,
-      teacherName,
-      designation,
+    const newDocument = new Criterion314Model({
+      fellowName,
+      yearOfEnrollment: parseInt(yearOfEnrollment), // Convert to number
+      duration: parseInt(duration), // Convert to number
       fellowshipType,
-      fellowshipName,
-      sponsoringAgency,
-      filePath
+      grantingAgency,
+      filePath: '' // You can assign an empty string or null to filePath if not needed
     });
 
     await newDocument.save();
 
-    return res.status(200).json({ message: 'File uploaded successfully' });
+    return res.status(200).json({ message: 'Data submitted successfully' });
+  } catch (error) {
+    console.error('Error submitting data:', error);
+    return res.status(500).json({ error: 'Error submitting data. Please try again.' });
+  }
+});
+
+
+
+const Criterion314Schema = new mongoose.Schema({
+  fellowName: { type: String, required: true },
+  yearOfEnrollment: { type: Number, required: true },
+  duration: { type: Number, required: true },
+  fellowshipType: { type: String, required: true },
+  grantingAgency: { type: String, required: true },
+  filePath: { type: String, required: true }
+});
+
+const Criterion314Model = mongoose.model('Criterion314', Criterion314Schema);
+// Endpoint for file upload for 314
+app.post('/314upload', upload.single('file314'), async (req, res) => {
+  try {
+    const { fellowName, yearOfEnrollment, duration, fellowshipType, grantingAgency } = req.body;
+    const file = req.file;
+
+    // Ensure all required fields are present
+    if (!fellowName || !yearOfEnrollment || !duration || !fellowshipType || !grantingAgency || !file) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    // Save data to the database
+    const newDocument = new Criterion314Model({
+      fellowName,
+      yearOfEnrollment: parseInt(yearOfEnrollment),
+      duration: parseInt(duration),
+      fellowshipType,
+      grantingAgency,
+      filePath: file.path
+    });
+    await newDocument.save();
+
+    return res.status(200).json({ message: 'Data submitted successfully' });
   } catch (error) {
     console.error('Error uploading file:', error);
     return res.status(500).json({ error: 'Error uploading file. Please try again.' });
@@ -184,6 +202,54 @@ app.post('/313upload', upload.single('file'), async (req, res) => {
 });
 
 
+
+
+
+
+// Define the schema for Criterion316 collection
+const Criterion316Schema = new mongoose.Schema({
+  schemeName: String,
+  principalInvestigator: String,
+  fundingAgency: String,
+  type: String,
+  department: String,
+  yearOfAward: Number,
+  fundLayoutAmount: Number,
+  duration: Number,
+  fileUrls: [String]
+});
+
+const Criterion316Model = mongoose.model('Criterion316', Criterion316Schema);
+
+// Endpoint for file upload for 316
+app.post('/316upload', multer().array('files'), async (req, res) => {
+  try {
+    const { userName } = req.headers; // Fetch the userName from the request headers
+
+    const { schemeName, principalInvestigator, fundingAgency, type, department, yearOfAward, fundLayoutAmount, duration } = req.body;
+    const files = req.files;
+    const fileUrls = files.map(file => file.path);
+
+    // Save data to the database
+    const newDocument = new Criterion316Model({
+      schemeName,
+      principalInvestigator,
+      fundingAgency,
+      type,
+      department,
+      yearOfAward,
+      fundLayoutAmount,
+      duration,
+      fileUrls
+    });
+    await newDocument.save();
+
+    return res.status(200).json({ message: 'Data submitted successfully' });
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    return res.status(500).json({ error: 'Error uploading file. Please try again.' });
+  }
+});
 // Serve uploaded files statically
 app.use('/uploads', express.static(join(__dirname, 'uploads')));
 
