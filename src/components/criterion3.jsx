@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import NavBar from "./Navbar";
-
+import "./Criterion3.css";
 const Criterion3 = () => {
   // State for Criterion 3.1.1
   const [file311, setFile311] = useState(null);
@@ -120,6 +120,7 @@ const Criterion3 = () => {
     formDataToSend.append("year", formData312.year);
     formDataToSend.append("additionalInfo", formData312.additionalInfo);
     formDataToSend.append("file", formData312.file312);
+    console.log(formDataToSend)
  const handleToggleForm312 = () => {
     setToggleForm312(!toggleForm312);
   };
@@ -163,7 +164,7 @@ const Criterion3 = () => {
     formDataToSend.append("fellowshipName", formData313.fellowshipName);
     formDataToSend.append("sponsoringAgency", formData313.sponsoringAgency);
     formDataToSend.append("file", formData313.file313);
-
+console.log(formDataToSend);
     try {
       const response = await axios.post(
         "http://localhost:5000/313upload",
@@ -222,7 +223,7 @@ const Criterion3 = () => {
     formData.append('fellowshipType', formData314.fellowshipType);
     formData.append('grantingAgency', formData314.grantingAgency);
     formData.append('file314', formData314.file314);
-  
+  console.log(formData);
     try {
       const response = await axios.post("http://localhost:5000/314upload", formData, {
         headers: {
@@ -529,8 +530,10 @@ const handleFileChange316 = (e) => {
       <label htmlFor="file314">Document to Attach:</label>
       <input type="file" id="file314" name="file314" onChange={handleFileChange314} />
     </div>
-    <button type="submit">Submit</button>
-    {error314 && <div className="error">{error314}</div>}
+    <button type="submit" disabled={uploading314 || uploaded313}>
+                {uploading314 ? "Submitting..." : uploaded314 ? "Submitted" : "Submit"}
+              </button>
+              {error314 && <div className="error">{error314}</div>}
   </form>
 </div>
 
@@ -631,14 +634,13 @@ const handleFileChange316 = (e) => {
           onChange={handleFileChange316}
         />
       </div>
-      <button type="submit">Submit</button>
-      {error316 && <div className="error">{error316}</div>}
+      <button type="submit" disabled={uploading316 || uploaded316}>
+                {uploading316 ? "Submitting..." : uploaded316? "Submitted" : "Submit"}
+              </button>
+              {error316 && <div className="error">{error316}</div>}
     </form>
+   
   </div>
-
-
-
-
         </div>
       </div>
     </>

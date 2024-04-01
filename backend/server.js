@@ -120,49 +120,79 @@ app.post('/312upload', upload.single('file'), async (req, res) => {
   }
 });
 
-// Define the schema for Criterion313 collection
 const Criterion313Schema = new mongoose.Schema({
-  _id: String,
-  year: { type: Number, required: true },
-  teacherName: { type: String, required: true },
+  _id: String, // Specify _id as a string
+
+  year: {
+    type: Number,
+    required: true
+  },
+  teacherName: {
+    type: String,
+    required: true
+  },
   designation: String,
-  fellowshipType: { type: String, enum: ['International', 'National', 'State'], required: true },
-  fellowshipName: { type: String, required: true },
-  sponsoringAgency: { type: String, required: true },
-  filePath: { type: String, required: true }
+  fellowshipType: {
+    type: String,
+    enum: ['International', 'National', 'State'], // Assuming these are the possible values
+    required: true
+  },
+  fellowshipName: {
+    type: String,
+    required: true
+  },
+  sponsoringAgency: {
+    type: String,
+    required: true
+  },
+  filePath: {
+    type: String,
+    required: true
+  }
 });
-
-
-
 
 const Criterion313Model = mongoose.model('Criterion313', Criterion313Schema);
 
-// Endpoint for data submission for 314
-app.post('/314upload', async (req, res) => {
+// Endpoint for file upload for 313
+app.post('/313upload', upload.single('file'), async (req, res) => {
   try {
-    const { fellowName, yearOfEnrollment, duration, fellowshipType, grantingAgency } = req.body;
+    const { year, teacherName, designation, fellowshipType, fellowshipName, sponsoringAgency } = req.body;
+    const { path: filePath } = req.file;
 
-    const newDocument = new Criterion314Model({
-      fellowName,
-      yearOfEnrollment: parseInt(yearOfEnrollment), // Convert to number
-      duration: parseInt(duration), // Convert to number
+    // Validate required fields
+    // if (!year || !teacherName || !fellowshipType || !fellowshipName || !sponsoringAgency || !filePath) {
+    //   return res.status(400).json({ error: 'All fields are required' });
+    // }
+
+    // Generate custom _id
+    const _id = `313${teacherName}`;
+
+    // Save the document
+    const newDocument = new Criterion313Model({
+      _id,
+      year,
+      teacherName,
+      designation,
       fellowshipType,
-      grantingAgency,
-      filePath: '' // You can assign an empty string or null to filePath if not needed
+      fellowshipName,
+      sponsoringAgency,
+      filePath
     });
 
     await newDocument.save();
 
-    return res.status(200).json({ message: 'Data submitted successfully' });
+    return res.status(200).json({ message: 'File uploaded successfully' });
   } catch (error) {
-    console.error('Error submitting data:', error);
-    return res.status(500).json({ error: 'Error submitting data. Please try again.' });
+    console.error('Error uploading file:', error);
+    return res.status(500).json({ error: 'Error uploading file. Please try again.' });
   }
 });
 
 
 
+// Define the schema for Criterion314 collection
 const Criterion314Schema = new mongoose.Schema({
+  _id: String,
   fellowName: { type: String, required: true },
   yearOfEnrollment: { type: Number, required: true },
   duration: { type: Number, required: true },
@@ -172,11 +202,13 @@ const Criterion314Schema = new mongoose.Schema({
 });
 
 const Criterion314Model = mongoose.model('Criterion314', Criterion314Schema);
+
 // Endpoint for file upload for 314
 app.post('/314upload', upload.single('file314'), async (req, res) => {
   try {
     const { fellowName, yearOfEnrollment, duration, fellowshipType, grantingAgency } = req.body;
     const file = req.file;
+    const _id = `314${fellowName}`;
 
     // Ensure all required fields are present
     if (!fellowName || !yearOfEnrollment || !duration || !fellowshipType || !grantingAgency || !file) {
@@ -185,6 +217,7 @@ app.post('/314upload', upload.single('file314'), async (req, res) => {
 
     // Save data to the database
     const newDocument = new Criterion314Model({
+      _id,
       fellowName,
       yearOfEnrollment: parseInt(yearOfEnrollment),
       duration: parseInt(duration),
@@ -202,12 +235,9 @@ app.post('/314upload', upload.single('file314'), async (req, res) => {
 });
 
 
-
-
-
-
 // Define the schema for Criterion316 collection
 const Criterion316Schema = new mongoose.Schema({
+  _id: String,
   schemeName: String,
   principalInvestigator: String,
   fundingAgency: String,
@@ -229,9 +259,11 @@ app.post('/316upload', multer().array('files'), async (req, res) => {
     const { schemeName, principalInvestigator, fundingAgency, type, department, yearOfAward, fundLayoutAmount, duration } = req.body;
     const files = req.files;
     const fileUrls = files.map(file => file.path);
+    const _id = `316${userName}`;
 
     // Save data to the database
     const newDocument = new Criterion316Model({
+      _id,
       schemeName,
       principalInvestigator,
       fundingAgency,
@@ -250,6 +282,7 @@ app.post('/316upload', multer().array('files'), async (req, res) => {
     return res.status(500).json({ error: 'Error uploading file. Please try again.' });
   }
 });
+
 // Serve uploaded files statically
 app.use('/uploads', express.static(join(__dirname, 'uploads')));
 
