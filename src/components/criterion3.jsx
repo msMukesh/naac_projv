@@ -269,41 +269,40 @@ const handleInputChange316 = (e) => {
 const handleFileChange316 = (e) => {
   setFormData316({ ...formData316, files: e.target.files });
 };
+const handleSubmit316 = async (e) => {
+  e.preventDefault();
+  setUploading316(true);
 
-  // Function to handle form submission for Criterion 3.1.6
-  const handleSubmit316 = async (e) => {
-    e.preventDefault();
-    setUploading316(true);
-
-    const dataToSend = new FormData();
-    for (const key in formData316) {
-      if (key === "files") {
-        for (let i = 0; i < formData316[key].length; i++) {
-          dataToSend.append(`files[${i}]`, formData316[key][i]);
-        }
-      } else {
-        dataToSend.append(key, formData316[key]);
+  const dataToSend = new FormData();
+  for (const key in formData316) {
+    if (key === "files") {
+      for (let i = 0; i < formData316[key].length; i++) {
+        dataToSend.append(`files316`, formData316[key][i]); // Change field name to match the server endpoint
       }
+    } else {
+      dataToSend.append(key, formData316[key]);
     }
-    const userName = Cookies.get('userName');
+  }
+  const userName = Cookies.get('userName');
 
-    try {
-      const response = await axios.post("http://localhost:5000/316upload", dataToSend, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          // "Username": userName
+  try {
+    const response = await axios.post("http://localhost:5000/316upload", dataToSend, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        // "Username": userName
+      },
+    });
+    console.log(response.data);
+    setUploaded316(true);
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    setError316("Error uploading file. Please try again.");
+  } finally {
+    setUploading316(false);
+  }
+};
 
-        },
-      });
-      console.log(response.data);
-      setUploaded316(true);
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      setError316("Error uploading file. Please try again.");
-    } finally {
-      setUploading316(false);
-    }
-  };
+
   return (
     <>
       <NavBar />
@@ -639,7 +638,6 @@ const handleFileChange316 = (e) => {
               </button>
               {error316 && <div className="error">{error316}</div>}
     </form>
-   
   </div>
         </div>
       </div>
