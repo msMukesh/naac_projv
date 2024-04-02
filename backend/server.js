@@ -207,7 +207,7 @@ const Criterion314Model = mongoose.model('Criterion314', Criterion314Schema);
 app.post('/314upload', upload.single('file314'), async (req, res) => {
   try {
     const { fellowName, yearOfEnrollment, duration, fellowshipType, grantingAgency } = req.body;
-    const file = req.file;
+    const {path: file} = req.file;
     const _id = `314${fellowName}`;
 
     // Ensure all required fields are present
@@ -246,22 +246,28 @@ const Criterion316Schema = new mongoose.Schema({
   yearOfAward: Number,
   fundLayoutAmount: Number,
   duration: Number,
-  fileUrls: [String]
-});
+  filePath: {
+    type: String,
+    required: true
+  }});
 
 const Criterion316Model = mongoose.model('Criterion316', Criterion316Schema);
 
-// Endpoint for file upload for 316
-app.post('/316upload', multer().array('files'), async (req, res) => {
+app.post('/316upload', upload.single('files316'), async (req, res) => {
   try {
-    const { userName } = req.headers; // Fetch the userName from the request headers
-
+    // Extracting data from request
     const { schemeName, principalInvestigator, fundingAgency, type, department, yearOfAward, fundLayoutAmount, duration } = req.body;
-    const files = req.files;
-    const fileUrls = files.map(file => file.path);
-    const _id = `316${userName}`;
+    
+    // Check if file is uploaded
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
 
-    // Save data to the database
+    // const { userName } = req.headers; // Uncomment this line or replace with appropriate variable
+    const { path: file } = req.file;
+    const _id = `316${userName || 'defaultUserName'}`; // Use defaultUserName or uncomment the line above to extract userName
+
+    // Saving data to the database
     const newDocument = new Criterion316Model({
       _id,
       schemeName,
@@ -272,7 +278,7 @@ app.post('/316upload', multer().array('files'), async (req, res) => {
       yearOfAward,
       fundLayoutAmount,
       duration,
-      fileUrls
+      filePath: file.path
     });
     await newDocument.save();
 
@@ -282,6 +288,7 @@ app.post('/316upload', multer().array('files'), async (req, res) => {
     return res.status(500).json({ error: 'Error uploading file. Please try again.' });
   }
 });
+
 
 // Serve uploaded files statically
 app.use('/uploads', express.static(join(__dirname, 'uploads')));
