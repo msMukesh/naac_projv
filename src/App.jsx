@@ -13,6 +13,7 @@ import Criterion2 from './components/criterion2';
 function App() {
   const { user, loading, error } = useUserContext();
 
+
   return (
     <BrowserRouter>
       <Routes>

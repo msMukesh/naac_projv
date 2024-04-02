@@ -12,6 +12,8 @@
   "dependencies": {
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "express": "^5.0.0-beta.2",
     "firebase": "^10.8.1",
     "js-cookie": "^3.0.5",
