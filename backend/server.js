@@ -204,16 +204,16 @@ const Criterion314Schema = new mongoose.Schema({
 const Criterion314Model = mongoose.model('Criterion314', Criterion314Schema);
 
 // Endpoint for file upload for 314
-app.post('/314upload', upload.single('file314'), async (req, res) => {
+app.post('/314upload', upload.single('file'), async (req, res) => {
   try {
     const { fellowName, yearOfEnrollment, duration, fellowshipType, grantingAgency } = req.body;
-    const {path: file} = req.file;
+    const {path: filePath} = req.file;
     const _id = `314${fellowName}`;
 
     // Ensure all required fields are present
-    if (!fellowName || !yearOfEnrollment || !duration || !fellowshipType || !grantingAgency || !file) {
-      return res.status(400).json({ error: 'All fields are required' });
-    }
+    // if (!fellowName || !yearOfEnrollment || !duration || !fellowshipType || !grantingAgency || !file) {
+    //   return res.status(400).json({ error: 'All fields are required' });
+    // }
 
     // Save data to the database
     const newDocument = new Criterion314Model({
@@ -223,7 +223,7 @@ app.post('/314upload', upload.single('file314'), async (req, res) => {
       duration: parseInt(duration),
       fellowshipType,
       grantingAgency,
-      filePath: file.path
+      filePath
     });
     await newDocument.save();
 
@@ -253,7 +253,8 @@ const Criterion316Schema = new mongoose.Schema({
 
 const Criterion316Model = mongoose.model('Criterion316', Criterion316Schema);
 
-app.post('/316upload', upload.single('files316'), async (req, res) => {
+app.post('/316upload', upload.single('files316'), async (req, res) => 
+{
   try {
     // Extracting data from request
     const { schemeName, principalInvestigator, fundingAgency, type, department, yearOfAward, fundLayoutAmount, duration } = req.body;
@@ -283,7 +284,8 @@ app.post('/316upload', upload.single('files316'), async (req, res) => {
     await newDocument.save();
 
     return res.status(200).json({ message: 'Data submitted successfully' });
-  } catch (error) {
+  } 
+  catch (error) {
     console.error('Error uploading file:', error);
     return res.status(500).json({ error: 'Error uploading file. Please try again.' });
   }
