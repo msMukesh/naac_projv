@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import NavBar from "./Navbar";
-import "./Criterion3.css";
-const Criterion3 = () => {
+
+const Criterion2 = () => {
   // State for Criterion 3.1.1
   const [file311, setFile311] = useState(null);
   const [uploading311, setUploading311] = useState(false);
@@ -120,7 +120,6 @@ const Criterion3 = () => {
     formDataToSend.append("year", formData312.year);
     formDataToSend.append("additionalInfo", formData312.additionalInfo);
     formDataToSend.append("file", formData312.file312);
-    console.log(formDataToSend)
  const handleToggleForm312 = () => {
     setToggleForm312(!toggleForm312);
   };
@@ -164,7 +163,7 @@ const Criterion3 = () => {
     formDataToSend.append("fellowshipName", formData313.fellowshipName);
     formDataToSend.append("sponsoringAgency", formData313.sponsoringAgency);
     formDataToSend.append("file", formData313.file313);
-console.log(formDataToSend);
+
     try {
       const response = await axios.post(
         "http://localhost:5000/313upload",
@@ -187,133 +186,18 @@ console.log(formDataToSend);
     }
   };
 
-  const [formData314, setFormData314] = useState({
-    fellowName: "",
-    yearOfEnrollment: "",
-    duration: "",
-    fellowshipType: "",
-    grantingAgency: "",
-    file314: null,
-  });
-  const [uploading314, setUploading314] = useState(false);
-  const [uploaded314, setUploaded314] = useState(false);
-  const [error314, setError314] = useState(null);
-  
-  // Function to handle form input change for Criterion 3.1.4
-  const handleInputChange314 = (e) => {
-    const { name, value } = e.target;
-    setFormData314({ ...formData314, [name]: value });
-  };
-  
-  // Function to handle file change for Criterion 3.1.4
-  const handleFileChange314 = (e) => {
-    setFormData314({ ...formData314, file314: e.target.files[0] });
-  };
-  
-
-  // Function to handle form submission for Criterion 3.1.4
-  const handleSubmit314 = async (e) => {
-    e.preventDefault();
-    setUploading314(true);
-  
-    const formData = new FormData();
-    formData.append('fellowName', formData314.fellowName);
-    formData.append('yearOfEnrollment', formData314.yearOfEnrollment);
-    formData.append('duration', formData314.duration);
-    formData.append('fellowshipType', formData314.fellowshipType);
-    formData.append('grantingAgency', formData314.grantingAgency);
-    formData.append('file314', formData314.file314);
-  console.log(formData);
-    try {
-      const response = await axios.post("http://localhost:5000/314upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      console.log(response.data);
-      alert("Data submitted successfully.");
-      setUploaded314(true);
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      setError314("Error uploading file. Please try again.");
-    } finally {
-      setUploading314(false);
-    }
-  };
-  
-  
- // State for Criterion 3.1.6
- const [formData316, setFormData316] = useState({
-  schemeName: "",
-  principalInvestigator: "",
-  fundingAgency: "",
-  type: "",
-  department: "",
-  yearOfAward: "",
-  fundLayoutAmount: "",
-  duration: "",
-  files: null,
-});
-
-const [uploading316, setUploading316] = useState(false);
-const [uploaded316, setUploaded316] = useState(false);
-const [error316, setError316] = useState(null);
-
-// Function to handle form input change for Criterion 3.1.6
-const handleInputChange316 = (e) => {
-  const { name, value } = e.target;
-  setFormData316({ ...formData316, [name]: value });
-};
-
-// Function to handle file change for Criterion 3.1.6
-const handleFileChange316 = (e) => {
-  setFormData316({ ...formData316, files: e.target.files });
-};
-const handleSubmit316 = async (e) => {
-  e.preventDefault();
-  setUploading316(true);
-
-  const dataToSend = new FormData();
-  for (const key in formData316) {
-    if (key === "files") {
-      for (let i = 0; i < formData316[key].length; i++) {
-        dataToSend.append(`files316`, formData316[key][i]); // Change field name to match the server endpoint
-      }
-    } else {
-      dataToSend.append(key, formData316[key]);
-    }
-  }
-  const userName = Cookies.get('userName');
-
-  try {
-    const response = await axios.post("http://localhost:5000/316upload", dataToSend, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        // "Username": userName
-      },
-    });
-    console.log(response.data);
-    setUploaded316(true);
-  } catch (error) {
-    console.error("Error uploading file:", error);
-    setError316("Error uploading file. Please try again.");
-  } finally {
-    setUploading316(false);
-  }
-};
-
-
   return (
     <>
       <NavBar />
       <div className="criterion-container">
         <div className="content">
-          <h1>Criterion III - Research, Innovations and Extension</h1>
+          <h1>Criterion II - Learning and Evaluation(200 Points)</h1>
 
           {/* Criterion 3.1.1 Form */}
           <div>
-            <h2>Criterion 3.1.1 - Upload relevant supporting document:</h2>
-
+            <h2>Key Indicator - 2.1: Student Enrollment & Profile</h2>
+            <h2>2.1.1 Demand Ratio</h2>
+            <p>Seats Availble per year</p>
             <input type="file" onChange={handleFile311Change} />
             <button onClick={handleUpload311} disabled={uploading311 || uploaded311}>
               {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
@@ -469,180 +353,12 @@ const handleSubmit316 = async (e) => {
               </button>
               {error313 && <div className="error">{error313}</div>}
             </form>
-            )}
+)}
           </div>
-{/* Criterion 3.1.4 Form */}
-<div>
-  <h2>Criterion 3.1.4 - JRFs, SRFs, Post-Doctoral Fellows, Research Associates, and other research fellows enrolled in the institution during the year</h2>
-  <form onSubmit={handleSubmit314}>
-    <div>
-      <label htmlFor="fellowName">Name of Research Fellow / Enrollment No.:</label>
-      <input
-        type="text"
-        id="fellowName"
-        name="fellowName"
-        value={formData314.fellowName}
-        onChange={handleInputChange314}
-      />
-    </div>
-    <div>
-      <label htmlFor="yearOfEnrollment">Year of Enrolment:</label>
-      <input
-        type="text"
-        id="yearOfEnrollment"
-        name="yearOfEnrollment"
-        value={formData314.yearOfEnrollment}
-        onChange={handleInputChange314}
-      />
-    </div>
-    <div>
-      <label htmlFor="duration">Duration of Fellowship:</label>
-      <input
-        type="text"
-        id="duration"
-        name="duration"
-        value={formData314.duration}
-        onChange={handleInputChange314}
-      />
-    </div>
-    <div>
-      <label htmlFor="fellowshipType">Type of the Fellowship:</label>
-      <input
-        type="text"
-        id="fellowshipType"
-        name="fellowshipType"
-        value={formData314.fellowshipType}
-        onChange={handleInputChange314}
-      />
-    </div>
-    <div>
-      <label htmlFor="grantingAgency">Granting Agency:</label>
-      <input
-        type="text"
-        id="grantingAgency"
-        name="grantingAgency"
-        value={formData314.grantingAgency}
-        onChange={handleInputChange314}
-      />
-    </div>
-    <div>
-      <label htmlFor="file314">Document to Attach:</label>
-      <input type="file" id="file314" name="file314" onChange={handleFileChange314} />
-    </div>
-    <button type="submit" disabled={uploading314 || uploaded313}>
-                {uploading314 ? "Submitting..." : uploaded314 ? "Submitted" : "Submit"}
-              </button>
-              {error314 && <div className="error">{error314}</div>}
-  </form>
-</div>
-
-  {/* Criterion 3.1.5 Form */}
-  {/* Add Criterion 3.1.5 form JSX here */}
-
-  {/* Criterion 3.1.6 Form */}
-  <div>
-    <h2>Criterion 3.1.6 - Departments with UGC-SAP, CAS, DST-FIST, DBT, ICSSR, and other recognitions by national and international agencies during the year</h2>
-    <form onSubmit={handleSubmit316}>
-      <div>
-        <label htmlFor="schemeName">Name of the Scheme:</label>
-        <input
-          type="text"
-          id="schemeName"
-          name="schemeName"
-          value={formData316.schemeName}
-          onChange={handleInputChange316}
-        />
-      </div>
-      <div>
-        <label htmlFor="principalInvestigator">Principal Investigator / Co-principal investigator:</label>
-        <input
-          type="text"
-          id="principalInvestigator"
-          name="principalInvestigator"
-          value={formData316.principalInvestigator}
-          onChange={handleInputChange316}
-        />
-      </div>
-      <div>
-        <label htmlFor="fundingAgency">Name of the Funding Agency:</label>
-        <input
-          type="text"
-          id="fundingAgency"
-          name="fundingAgency"
-          value={formData316.fundingAgency}
-          onChange={handleInputChange316}
-        />
-      </div>
-      <div>
-        <label htmlFor="type">Type Govt. / Non Govt.:</label>
-        <input
-          type="text"
-          id="type"
-          name="type"
-          value={formData316.type}
-          onChange={handleInputChange316}
-        />
-      </div>
-      <div>
-        <label htmlFor="department">Dept.:</label>
-        <input
-          type="text"
-          id="department"
-          name="department"
-          value={formData316.department}
-          onChange={handleInputChange316}
-        />
-      </div>
-      <div>
-        <label htmlFor="yearOfAward">Year of Award:</label>
-        <input
-          type="text"
-          id="yearOfAward"
-          name="yearOfAward"
-          value={formData316.yearOfAward}
-          onChange={handleInputChange316}
-        />
-      </div>
-      <div>
-        <label htmlFor="fundLayoutAmount">Fund Layout amount Provided:</label>
-        <input
-          type="text"
-          id="fundLayoutAmount"
-          name="fundLayoutAmount"
-          value={formData316.fundLayoutAmount}
-          onChange={handleInputChange316}
-        />
-      </div>
-      <div>
-        <label htmlFor="duration">Duration:</label>
-        <input
-          type="text"
-          id="duration"
-          name="duration"
-          value={formData316.duration}
-          onChange={handleInputChange316}
-        />
-      </div>
-      <div>
-        <label htmlFor="files">Document to Attach:</label>
-        <input
-          type="file"
-          id="files"
-          name="files"
-          multiple
-          onChange={handleFileChange316}
-        />
-      </div>
-      <button type="submit" disabled={uploading316 || uploaded316}>
-                {uploading316 ? "Submitting..." : uploaded316? "Submitted" : "Submit"}
-              </button>
-              {error316 && <div className="error">{error316}</div>}
-    </form>
-  </div>
         </div>
       </div>
     </>
   );
 };
 
-export default Criterion3;
+export default Criterion2;

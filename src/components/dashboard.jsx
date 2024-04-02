@@ -1,31 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useUserContext } from "../context/userContext";
-import "../components/dashboard.css";
-import "./criterion3";
+import NavBar from "./Navbar";
+import "./dashboard.css";
+import Cookies from "js-cookie";
 
 const Dashboard = () => {
   const { user, logoutUser } = useUserContext();
+  const [userName, setUserName] = useState(""); // State to hold user name
+
+  useEffect(() => {
+    if (user) {
+      Cookies.set("userName", user.displayName);
+      setUserName(user.displayName); // Update userName when user data is available
+    }
+  }, [user]);
 
   return (
-    <div className="dashboard-container">
-      <nav className="navbar">
-        <div className="navbar-brand">NAAC DB</div>
-        <ul className="navbar-nav">
-          <li className="nav-item">
-            <a href="../components/criterion3" className="nav-link">Criterion 3</a>
-          </li>
-          <li className="nav-item">
-            <button className="logout-btn" onClick={logoutUser}>Log out</button>
-          </li>
-        </ul>
-      </nav>
-      <div className="content">
-        <h1>Dashboard</h1>
-        <h2>Name: {user.displayName}</h2>
-        <h2>Email: {user.email}</h2>
+    <>
+      <NavBar logoutUser={logoutUser} />
+      <div className="dashboard-container">
+        <div className="content">
+          <h1>Dashboard</h1>
+          <h2>Name: {userName}</h2> {/* Display userName state */}
+          <h2>Email: {user.email}</h2>
+        </div>
       </div>
-
-    </div>
+    </>
   );
 };
 

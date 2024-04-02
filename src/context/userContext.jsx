@@ -11,6 +11,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase";
 
+
 // Create the user context
 export const UserContext = createContext({});
 
@@ -31,8 +32,8 @@ export const UserContextProvider = ({ children }) => {
     setLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user); // Set the user in the state
-      setError(""); // Clear any previous errors
       setLoading(false); // Update loading state
+      setError(""); // Clear any previous errors
     });
     return () => unsubscribe(); // Cleanup function
   }, []);
@@ -42,10 +43,12 @@ export const UserContextProvider = ({ children }) => {
     setLoading(true); // Set loading to true while processing
     try {
       // Create user with email and password
+      console.log(auth+email+password);
       await createUserWithEmailAndPassword(auth, email, password);
       // Update user profile with the provided name
       await updateProfile(auth.currentUser, { displayName: name });
       console.log("User registered successfully");
+
     } catch (error) {
       setError(error.message); // Set error message
     } finally {
@@ -110,10 +113,10 @@ export const UserContextProvider = ({ children }) => {
     signInWithGoogle,
   };
 
-  // Provide the context value to children components
-  return (
-    <UserContext.Provider value={contextValue}>
-      {children}
-    </UserContext.Provider>
-  );
+ // Inside UserContextProvider component
+ return (
+  <UserContext.Provider value={contextValue}>
+    {children}
+  </UserContext.Provider>
+);
 };

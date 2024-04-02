@@ -11,7 +11,7 @@ function Home() {
       <UniversityHeader />
       <HomePageDesc />
       <button>
-        <Link to="/login">Login</Link>
+        <Link to="/Login">Login</Link>
       </button>
     </>
   );
