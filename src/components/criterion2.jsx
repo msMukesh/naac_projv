@@ -186,28 +186,113 @@ const Criterion2 = () => {
     }
   };
 
+ 
+    const [rowCount, setRowCount] = useState(0);
+    const [inputs, setInputs] = useState([]);
+  
+    const handleAddRow = () => {
+      setRowCount(rowCount + 1);
+      setInputs([...inputs, ""]);
+    };
+  
+    const handleInputChange = (index, value) => {
+      const newInputs = [...inputs];
+      newInputs[index] = value;
+      setInputs(newInputs);
+    };
+
   return (
     <>
       <NavBar />
       <div className="criterion-container">
         <div className="content">
           <h1>Criterion II - Learning and Evaluation(200 Points)</h1>
-
-          {/* Criterion 3.1.1 Form */}
           <div>
             <h2>Key Indicator - 2.1: Student Enrollment & Profile</h2>
             <h2>2.1.1 Demand Ratio</h2>
             <p>Seats Availble per year</p>
+         <div>
+    
+      <table>
+        <thead>
+          <tr>
+            <th>Academic Year</th>
+            <th>Name of programme</th>
+            <th>Nuber of seats Available</th>
+            <th>Number of Eligible Applicants Received</th>
+            <th>Number of seats filled</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Array.from({ length: rowCount }, (_, index) => (
+            <tr key={index}>
+              <td>
+                <input
+                  type="text"
+                  value={inputs[index]?.academicYear}
+                  onChange={(e) => handleInputChange(index, 'academicYear', e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={inputs[index]?.programmeName}
+                  onChange={(e) => handleInputChange(index, 'programmeName', e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={inputs[index]?.seatsAvailable}
+                  onChange={(e) => handleInputChange(index, 'seatsAvailable', e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={inputs[index]?.applicantsReceived}
+                  onChange={(e) => handleInputChange(index, 'applicantsReceived', e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={inputs[index]?.seatsFilled}
+                  onChange={(e) => handleInputChange(index, 'seatsFilled', e.target.value)}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <button onClick={handleAddRow}>Add Row</button>
+    </div>
+
+            <h3>Documents to attach</h3>
+            <p>List of Applications Received</p>
+            <input type="file" onChange={handleFile311Change} />
+            <button onClick={handleUpload311} disabled={uploading311 || uploaded311}>
+              {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
+            </button>
+            {error311 && <div className="error">{error311}</div>}
+
+            <p>Admitted List of Student</p>
+            <input type="file" onChange={handleFile311Change} />
+            <button onClick={handleUpload311} disabled={uploading311 || uploaded311}>
+              {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
+            </button>
+            {error311 && <div className="error">{error311}</div>}
+
+            <p>Any other Related additional Information</p>
             <input type="file" onChange={handleFile311Change} />
             <button onClick={handleUpload311} disabled={uploading311 || uploaded311}>
               {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
             </button>
             {error311 && <div className="error">{error311}</div>}
           </div>
-
-          {/* Criterion 3.1.2 Form */}
+          
           <div>
-            <h2>Criterion 3.1.2 - Seed Money Details:</h2>
+            <h2>{`2.1.2 - Seats filled against reserved for various categories(SC, ST, OBC, EWS, Divyanga, etc.) as per applicable reservation policy during the year (Excluding the Supernumerary seats)`}</h2>
             <button onClick={handleToggleForm312}>
               {toggleForm312 ? "Hide Form" : "Show Form"}
             </button>
