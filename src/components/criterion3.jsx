@@ -306,7 +306,17 @@ const handleSubmit316 = async (e) => {
     setUploading316(false);
   }
 };
+// Inside your component function
+const [toggleForm314, setToggleForm314] = useState(false);
+const [toggleForm316, setToggleForm316] = useState(false);
 
+const handleToggleForm314 = () => {
+  setToggleForm314(!toggleForm314);
+};
+
+const handleToggleForm316 = () => {
+  setToggleForm316(!toggleForm316);
+};
   return (
     <>
       <NavBar />
@@ -475,173 +485,189 @@ const handleSubmit316 = async (e) => {
             </form>
             )}
           </div>
+
+
+
+
           <div>
-      <h2>Criterion 3.1.4 - JRFs, SRFs, Post-Doctoral Fellows, Research Associates, and other research fellows enrolled in the institution during the year</h2>
-      <form onSubmit={handleSubmit314}>
-        <div>
-          <label htmlFor="fellowName">Name of Research Fellow / Enrollment No.:</label>
-          <input
-            type="text"
-            id="fellowName"
-            name="fellowName"
-            value={formData314.fellowName}
-            onChange={handleInputChange314}
-          />
-        </div>
-        <div>
-          <label htmlFor="yearOfEnrollment">Year of Enrolment:</label>
-          <input
-            type="text"
-            id="yearOfEnrollment"
-            name="yearOfEnrollment"
-            value={formData314.yearOfEnrollment}
-            onChange={handleInputChange314}
-          />
-        </div>
-        <div>
-          <label htmlFor="duration">Duration of Fellowship:</label>
-          <input
-            type="text"
-            id="duration"
-            name="duration"
-            value={formData314.duration}
-            onChange={handleInputChange314}
-          />
-        </div>
-        <div>
-          <label htmlFor="fellowshipType">Type of the Fellowship:</label>
-          <input
-            type="text"
-            id="fellowshipType"
-            name="fellowshipType"
-            value={formData314.fellowshipType}
-            onChange={handleInputChange314}
-          />
-        </div>
-        <div>
-          <label htmlFor="grantingAgency">Granting Agency:</label>
-          <input
-            type="text"
-            id="grantingAgency"
-            name="grantingAgency"
-            value={formData314.grantingAgency}
-            onChange={handleInputChange314}
-          />
-        </div>
-        <div>
-          <label htmlFor="file314">Document to Attach:</label>
-          <input type="file" id="file314" name="file314" onChange={handleFileChange314} />
-        </div>
-        <button type="submit" disabled={uploading314 || uploaded314}>
-          {uploading314 ? "Submitting..." : uploaded314 ? "Submitted" : "Submit"}
-        </button>
-        {error314 && <div className="error">{error314}</div>}
-      </form>
+  <h2>Criterion 3.1.4 - JRFs, SRFs, Post-Doctoral Fellows, Research Associates, and other research fellows enrolled in the institution during the year</h2>
+  <button onClick={handleToggleForm314}>
+    {toggleForm314 ? "Hide Form" : "Show Form"}
+  </button>
+  {toggleForm314 && (
+    <form onSubmit={handleSubmit314}>
+    <div>
+      <label htmlFor="fellowName">Name of Research Fellow / Enrollment No.:</label>
+      <input
+        type="text"
+        id="fellowName"
+        name="fellowName"
+        value={formData314.fellowName}
+        onChange={handleInputChange314}
+      />
     </div>
+    <div>
+      <label htmlFor="yearOfEnrollment">Year of Enrolment:</label>
+      <input
+        type="text"
+        id="yearOfEnrollment"
+        name="yearOfEnrollment"
+        value={formData314.yearOfEnrollment}
+        onChange={handleInputChange314}
+      />
+    </div>
+    <div>
+      <label htmlFor="duration">Duration of Fellowship:</label>
+      <input
+        type="text"
+        id="duration"
+        name="duration"
+        value={formData314.duration}
+        onChange={handleInputChange314}
+      />
+    </div>
+    <div>
+      <label htmlFor="fellowshipType">Type of the Fellowship:</label>
+      <input
+        type="text"
+        id="fellowshipType"
+        name="fellowshipType"
+        value={formData314.fellowshipType}
+        onChange={handleInputChange314}
+      />
+    </div>
+    <div>
+      <label htmlFor="grantingAgency">Granting Agency:</label>
+      <input
+        type="text"
+        id="grantingAgency"
+        name="grantingAgency"
+        value={formData314.grantingAgency}
+        onChange={handleInputChange314}
+      />
+    </div>
+    <div>
+      <label htmlFor="file314">Document to Attach:</label>
+      <input type="file" id="file314" name="file314" onChange={handleFileChange314} />
+    </div>
+    <button type="submit" disabled={uploading314 || uploaded314}>
+      {uploading314 ? "Submitting..." : uploaded314 ? "Submitted" : "Submit"}
+    </button>
+    {error314 && <div className="error">{error314}</div>}
+  </form>
+  )}
+</div>
 
-  {/* Criterion 3.1.5 Form */}
-  {/* Add Criterion 3.1.5 form JSX here */}
 
-  {/* Criterion 3.1.6 Form */}
-  <div>
-    <h2>Criterion 3.1.6 - Departments with UGC-SAP, CAS, DST-FIST, DBT, ICSSR, and other recognitions by national and international agencies during the year</h2>
+
+{/* Criterion 3.1.6 Form */}
+<div>
+  <h2>Criterion 3.1.6 - Departments with UGC-SAP, CAS, DST-FIST, DBT, ICSSR, and other recognitions by national and international agencies during the year</h2>
+  <button onClick={handleToggleForm316}>
+    {toggleForm316 ? "Hide Form" : "Show Form"}
+  </button>
+  {toggleForm316 && (
     <form onSubmit={handleSubmit316}>
-      <div>
-        <label htmlFor="schemeName">Name of the Scheme:</label>
-        <input
-          type="text"
-          id="schemeName"
-          name="schemeName"
-          value={formData316.schemeName}
-          onChange={handleInputChange316}
-        />
-      </div>
-      <div>
-        <label htmlFor="principalInvestigator">Principal Investigator / Co-principal investigator:</label>
-        <input
-          type="text"
-          id="principalInvestigator"
-          name="principalInvestigator"
-          value={formData316.principalInvestigator}
-          onChange={handleInputChange316}
-        />
-      </div>
-      <div>
-        <label htmlFor="fundingAgency">Name of the Funding Agency:</label>
-        <input
-          type="text"
-          id="fundingAgency"
-          name="fundingAgency"
-          value={formData316.fundingAgency}
-          onChange={handleInputChange316}
-        />
-      </div>
-      <div>
-        <label htmlFor="type">Type Govt. / Non Govt.:</label>
-        <input
-          type="text"
-          id="type"
-          name="type"
-          value={formData316.type}
-          onChange={handleInputChange316}
-        />
-      </div>
-      <div>
-        <label htmlFor="department">Dept.:</label>
-        <input
-          type="text"
-          id="department"
-          name="department"
-          value={formData316.department}
-          onChange={handleInputChange316}
-        />
-      </div>
-      <div>
-        <label htmlFor="yearOfAward">Year of Award:</label>
-        <input
-          type="text"
-          id="yearOfAward"
-          name="yearOfAward"
-          value={formData316.yearOfAward}
-          onChange={handleInputChange316}
-        />
-      </div>
-      <div>
-        <label htmlFor="fundLayoutAmount">Fund Layout amount Provided:</label>
-        <input
-          type="text"
-          id="fundLayoutAmount"
-          name="fundLayoutAmount"
-          value={formData316.fundLayoutAmount}
-          onChange={handleInputChange316}
-        />
-      </div>
-      <div>
-        <label htmlFor="duration">Duration:</label>
-        <input
-          type="text"
-          id="duration"
-          name="duration"
-          value={formData316.duration}
-          onChange={handleInputChange316}
-        />
-      </div>
-      <div>
-        <label htmlFor="files">Document to Attach:</label>
-        <input
-          type="file"
-          id="files"
-          name="files"
-          multiple
-          onChange={handleFileChange316}
-        />
-      </div>
-      <button type="submit" disabled={uploading316 || uploaded316}>
-                {uploading316 ? "Submitting..." : uploaded316? "Submitted" : "Submit"}
-              </button>
-              {error316 && <div className="error">{error316}</div>}
-    </form>
-  </div>
+    <div>
+      <label htmlFor="schemeName">Name of the Scheme:</label>
+      <input
+        type="text"
+        id="schemeName"
+        name="schemeName"
+        value={formData316.schemeName}
+        onChange={handleInputChange316}
+      />
+    </div>
+    <div>
+      <label htmlFor="principalInvestigator">Principal Investigator / Co-principal investigator:</label>
+      <input
+        type="text"
+        id="principalInvestigator"
+        name="principalInvestigator"
+        value={formData316.principalInvestigator}
+        onChange={handleInputChange316}
+      />
+    </div>
+    <div>
+      <label htmlFor="fundingAgency">Name of the Funding Agency:</label>
+      <input
+        type="text"
+        id="fundingAgency"
+        name="fundingAgency"
+        value={formData316.fundingAgency}
+        onChange={handleInputChange316}
+      />
+    </div>
+    <div>
+      <label htmlFor="type">Type Govt. / Non Govt.:</label>
+      <input
+        type="text"
+        id="type"
+        name="type"
+        value={formData316.type}
+        onChange={handleInputChange316}
+      />
+    </div>
+    <div>
+      <label htmlFor="department">Dept.:</label>
+      <input
+        type="text"
+        id="department"
+        name="department"
+        value={formData316.department}
+        onChange={handleInputChange316}
+      />
+    </div>
+    <div>
+      <label htmlFor="yearOfAward">Year of Award:</label>
+      <input
+        type="text"
+        id="yearOfAward"
+        name="yearOfAward"
+        value={formData316.yearOfAward}
+        onChange={handleInputChange316}
+      />
+    </div>
+    <div>
+      <label htmlFor="fundLayoutAmount">Fund Layout amount Provided:</label>
+      <input
+        type="text"
+        id="fundLayoutAmount"
+        name="fundLayoutAmount"
+        value={formData316.fundLayoutAmount}
+        onChange={handleInputChange316}
+      />
+    </div>
+    <div>
+      <label htmlFor="duration">Duration:</label>
+      <input
+        type="text"
+        id="duration"
+        name="duration"
+        value={formData316.duration}
+        onChange={handleInputChange316}
+      />
+    </div>
+    <div>
+      <label htmlFor="files">Document to Attach:</label>
+      <input
+        type="file"
+        id="files"
+        name="files"
+        multiple
+        onChange={handleFileChange316}
+      />
+    </div>
+    <button type="submit" disabled={uploading316 || uploaded316}>
+              {uploading316 ? "Submitting..." : uploaded316? "Submitted" : "Submit"}
+            </button>
+            {error316 && <div className="error">{error316}</div>}
+          </form>
+          )}
+        </div>
+
+
+
         </div>
       </div>
     </>
