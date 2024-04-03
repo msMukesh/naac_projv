@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 import multer from "multer";
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -28,14 +27,14 @@ db.once('open', () => {
 });
 
 // Define the schema for Criterion3 collection
-const Criterion3Schema = new mongoose.Schema({
+const Criterion311Schema = new mongoose.Schema({
   _id: String,
   userName: String,
   filePath: String,
 });
 
 // Define the model for Criterion3 collection
-const Criterion3Model = mongoose.model('Criterion3', Criterion3Schema);
+const Criterion311Model = mongoose.model('Criterion311', Criterion311Schema);
 
 // Set up CORS headers to allow requests from any origin
 app.use((req, res, next) => {
@@ -188,8 +187,6 @@ app.post('/313upload', upload.single('file'), async (req, res) => {
   }
 });
 
-
-
 // Define the schema for Criterion314 collection
 const Criterion314Schema = new mongoose.Schema({
   _id: String,
@@ -207,19 +204,14 @@ const Criterion314Model = mongoose.model('Criterion314', Criterion314Schema);
 app.post('/314upload', upload.single('file'), async (req, res) => {
   try {
     const { fellowName, yearOfEnrollment, duration, fellowshipType, grantingAgency } = req.body;
-    const {path: filePath} = req.file;
+    const { path: filePath } = req.file;
     const _id = `314${fellowName}`;
-
-    // Ensure all required fields are present
-    // if (!fellowName || !yearOfEnrollment || !duration || !fellowshipType || !grantingAgency || !file) {
-    //   return res.status(400).json({ error: 'All fields are required' });
-    // }
 
     // Save data to the database
     const newDocument = new Criterion314Model({
       _id,
       fellowName,
-      yearOfEnrollment: parseInt(yearOfEnrollment),
+      yearOfEnrollment: parseInt(yearOfEnrollment), // Parse strings to integers
       duration: parseInt(duration),
       fellowshipType,
       grantingAgency,
@@ -235,7 +227,7 @@ app.post('/314upload', upload.single('file'), async (req, res) => {
 });
 
 
-// Define the schema for Criterion316 collection
+
 const Criterion316Schema = new mongoose.Schema({
   _id: String,
   schemeName: String,
@@ -247,28 +239,25 @@ const Criterion316Schema = new mongoose.Schema({
   fundLayoutAmount: Number,
   duration: Number,
   filePath: {
-    type: String,
+    type: String, // filePath is a single string
     required: true
-  }});
+  }
+});
 
 const Criterion316Model = mongoose.model('Criterion316', Criterion316Schema);
 
-app.post('/316upload', upload.single('files316'), async (req, res) => 
-{
+app.post('/316upload', upload.single('file'), async (req, res) => {
   try {
-    // Extracting data from request
     const { schemeName, principalInvestigator, fundingAgency, type, department, yearOfAward, fundLayoutAmount, duration } = req.body;
-    
+
     // Check if file is uploaded
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    // const { userName } = req.headers; // Uncomment this line or replace with appropriate variable
-    const { path: file } = req.file;
-    const _id = `316${userName || 'defaultUserName'}`; // Use defaultUserName or uncomment the line above to extract userName
+    const _id = `316${schemeName || 'defaultUserName'}`;
 
-    // Saving data to the database
+    // Assigning the path of the uploaded file directly
     const newDocument = new Criterion316Model({
       _id,
       schemeName,
@@ -279,17 +268,18 @@ app.post('/316upload', upload.single('files316'), async (req, res) =>
       yearOfAward,
       fundLayoutAmount,
       duration,
-      filePath: file.path
+      filePath: req.file.path
     });
+
     await newDocument.save();
 
     return res.status(200).json({ message: 'Data submitted successfully' });
-  } 
-  catch (error) {
+  } catch (error) {
     console.error('Error uploading file:', error);
     return res.status(500).json({ error: 'Error uploading file. Please try again.' });
   }
 });
+
 
 
 // Serve uploaded files statically
