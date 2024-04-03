@@ -204,18 +204,18 @@ const Criterion314Model = mongoose.model('Criterion314', Criterion314Schema);
 app.post('/314upload', upload.single('file'), async (req, res) => {
   try {
     const { fellowName, yearOfEnrollment, duration, fellowshipType, grantingAgency } = req.body;
-    const { path: filePath } = req.file;
+    // const { path: filePath } = req.file;
     const _id = `314${fellowName}`;
 
     // Save data to the database
     const newDocument = new Criterion314Model({
       _id,
       fellowName,
-      yearOfEnrollment: parseInt(yearOfEnrollment), // Parse strings to integers
-      duration: parseInt(duration),
+      yearOfEnrollment, // Parse strings to integers
+      duration,
       fellowshipType,
       grantingAgency,
-      filePath
+      filePath: req.file.path
     });
     await newDocument.save();
 
@@ -225,8 +225,6 @@ app.post('/314upload', upload.single('file'), async (req, res) => {
     return res.status(500).json({ error: 'Error uploading file. Please try again.' });
   }
 });
-
-
 
 const Criterion316Schema = new mongoose.Schema({
   _id: String,

@@ -206,7 +206,7 @@ console.log(formDataToSend);
   };
 
   const handleFileChange314 = (e) => {
-    setFormData314({ ...formData314, file314: e.target.files[0] });
+    setFormData314({ ...formData314, file314: e.target.files });
   };
 
   const handleSubmit314 = async (e) => {
@@ -219,8 +219,10 @@ console.log(formDataToSend);
     formData.append('duration', formData314.duration);
     formData.append('fellowshipType', formData314.fellowshipType);
     formData.append('grantingAgency', formData314.grantingAgency);
-    formData.append('file314', formData314.file314);
-
+    if (formData314.file314) {
+      formData.append("file", formData314.file314[0]); // Corrected typo
+    }
+    
     try {
       const response = await axios.post("http://localhost:5000/314upload", formData, {
         headers: {
@@ -230,10 +232,12 @@ console.log(formDataToSend);
       console.log(response.data);
       alert("Data submitted successfully.");
       setUploaded314(true);
-    } catch (error) {
+    } 
+    catch (error) {
       console.error("Error uploading file:", error);
       setError314("Error uploading file. Please try again.");
-    } finally {
+    } 
+    finally {
       setUploading314(false);
     }
   };
@@ -251,7 +255,6 @@ console.log(formDataToSend);
   duration: "",
   files: null,
 });
-
 
 const [uploading316, setUploading316] = useState(false);
 const [uploaded316, setUploaded316] = useState(false);
