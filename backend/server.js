@@ -47,7 +47,7 @@ app.use((req, res, next) => {
 // Set up multer storage configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, join(__dirname, 'uploads')); // Set the destination folder
+    cb(null, join(__dirname, 'uploads/abc')); // Set the destination folder
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname); // Use the original file name
