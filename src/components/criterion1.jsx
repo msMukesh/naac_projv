@@ -157,8 +157,23 @@ function criterion1() {
       <h2>Key Indicator – 1.2:  Academic Flexibility</h2>
       <button onClick={toggleForm}>{showForm ? 'Hide Form' : 'Show Form'}</button>
       {showForm && (
+        <div>
         <h3>1.2.1  New Courses introduced during the academic year</h3>
+        <table>
+        <thead>
+          <tr>
+            <th>Academic Year</th>
+            <th>Course Code</th>
+            <th>Names of the Course</th>
+            <th>Activities with direct bearing on Employability/Entrepreneurship/Skill Development</th>
+            <th>Name of the Program</th>
+            <th>Copy of the Data Template</th>
+            <th>Action</th>
+          </tr>
+        </thead>
         
+        </table>
+        </div>
       )}
     </div>
     </>
