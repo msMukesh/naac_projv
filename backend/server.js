@@ -67,7 +67,7 @@ app.post('/311upload', upload.single('file'), async (req, res) => {
   const { path: filePath } = req.file;
   const _id = `311${userName}`;
 
-  const newDocument = new Criterion3Model({
+  const newDocument = new Criterion311Model({
     _id,
     userName,
     filePath,
