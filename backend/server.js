@@ -3,15 +3,44 @@ import mongoose from "mongoose";
 import multer from "multer";
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+
 const app = express();
+
+let globalUserName = ""; // Global variable to store userName
+
+app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const port = process.env.PORT || 5000;
 
+// Define the route to handle storing the username
+app.post("/storeUsername", (req, res) => {
+  try {
+    const { userName } = req.body;
+    if (!userName) {
+      return res.status(400).json({ error: "Username is required" });
+    }
+    
+    // Store userName wherever needed (e.g., in a database)
+    // Example: globalUserName = userName;
+
+    console.log("backend: " + userName);
+    return res.status(200).send("Username stored successfully");
+  } catch (error) {
+    console.error("Error storing username:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+
+// Endpoint to retrieve global userName
+// app.get("/api/getUsername", (req, res) => {
+//   res.status(200).json({ userName: globalUserName });
+// });
 // Middleware for parsing JSON bodies
-app.use(express.json());
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/Naac', {
@@ -47,7 +76,7 @@ app.use((req, res, next) => {
 // Set up multer storage configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, join(__dirname, 'uploads')); // Set the destination folder
+    cb(null, join(__dirname, `uploads/${globalUserName}`)); // Set the destination folder
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname); // Use the original file name
@@ -67,8 +96,7 @@ app.post('/311upload', upload.single('file'), async (req, res) => {
   const { path: filePath } = req.file;
   const _id = `311${userName}`;
 
-  const newDocument = new Criterion311
-  Model({
+  const newDocument = new Criterion311Model({
     _id,
     userName,
     filePath,

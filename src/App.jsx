@@ -7,8 +7,8 @@ import Home from './components/Home';
 import { useUserContext } from './context/userContext';
 import LoadingSpinner from './components/LoadingSpinner'; // Import the loading spinner component
 import Criterion3 from './components/Criterion3'; // Import Criterion3 component
-import Criterion1 from './components/criterion1';
-import Criterion2 from './components/criterion2';
+import Criterion1 from './components/Criterion1';
+import Criterion2 from './components/Criterion2';
 
 function App() {
   const { user, loading, error } = useUserContext();

@@ -2,8 +2,29 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie"; // Import Cookies from js-cookie
 import "./dashboard.css";
+import axios from "axios";
 
 const NavBar = ({ logoutUser }) => {
+
+
+  const sendUserNameToServer = async (userName) => {
+    console.log("frontend username" + userName);
+  
+    try {
+      const response = await axios.post("http://localhost:5000/storeUsername", {
+        userName: userName
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to send username to server");
+      }
+      
+      console.log("Username sent successfully");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
 
   const handleLogout = () => {
     // Delete the cookie "userName"
@@ -13,7 +34,13 @@ const NavBar = ({ logoutUser }) => {
       logoutUser();
     }
   };
+// Retrieve and send username when the component renders
+const userName = Cookies.get("userName");
+if (userName) {
+  console.log("frontend"+userName);
 
+  sendUserNameToServer(userName);
+}
   return (
     <nav className="navbar">
       <div className="navbar-brand">NAAC DB</div>
