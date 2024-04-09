@@ -1,8 +1,8 @@
 import React, { useState} from 'react'
 import NavBar from './Navbar'
 
-function criterion1() {
-    const [rowCount, setRowCount] = useState(1);
+const Criterion1 = () => {
+  const [rowCount, setRowCount] = useState(1);
     const [tableData, setTableData] = useState([Array(6).fill('')]);
   
     const handleAddRow = () => {
@@ -180,4 +180,4 @@ function criterion1() {
   )
 }
 
-export default criterion1
+export default Criterion1;

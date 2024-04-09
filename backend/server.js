@@ -3,15 +3,47 @@ import mongoose from "mongoose";
 import multer from "multer";
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import cors from "cors"; // Import the cors package
 const app = express();
+import fs from 'fs';
+app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173"
+}));
+let globalUserName = ""; // Global variable to store userName
+
+app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const port = process.env.PORT || 5000;
 
+app.post("/storeUsername", (req, res) => {
+  try {
+    const { userName } = req.body;
+    if (!userName) {
+      return res.status(400).json({ error: "Username is required" });
+    }
+    
+    // Store userName wherever needed (e.g., in a database)
+    globalUserName = userName;
+
+    console.log("backend: " + userName);
+    return res.status(200).send("Username stored successfully");
+  } catch (error) {
+    console.error("Error storing username:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+
+// Endpoint to retrieve global userName
+// app.get("/api/getUsername", (req, res) => {
+//   res.status(200).json({ userName: globalUserName });
+// });
 // Middleware for parsing JSON bodies
-app.use(express.json());
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/Naac', {
@@ -44,10 +76,20 @@ app.use((req, res, next) => {
   next();
 });
 
+// Function to create directory if it doesn't exist
+const createDirectoryIfNotExists = (directory) => {
+  if (!fs.existsSync(directory)) {
+    fs.mkdirSync(directory, { recursive: true }); // Create directory recursively
+  }
+};
+
 // Set up multer storage configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, join(__dirname, 'uploads/abc')); // Set the destination folder
+    const uploadsDirectory = join(__dirname, 'uploads'); // Path to uploads directory
+    const userDirectory = join(uploadsDirectory, globalUserName); // Path to user's directory inside uploads
+    createDirectoryIfNotExists(userDirectory); // Create user's directory if it doesn't exist
+    cb(null, userDirectory); // Set the destination folder
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname); // Use the original file name
@@ -99,8 +141,10 @@ const Criterion312Model = mongoose.model('Criterion312', Criterion312Schema);
 app.post('/312upload', upload.single('file'), async (req, res) => {
   const { teacherName, amount, year, additionalInfo } = req.body;
   const { path: filePath } = req.file;
-  const _id = `312${teacherName}`;
-
+  const { userName } = req.body;
+  const _id = `312${userName}`;
+ 
+ 
   const newDocument = new Criterion312Model({
     _id,
     teacherName,
@@ -162,9 +206,8 @@ app.post('/313upload', upload.single('file'), async (req, res) => {
     // if (!year || !teacherName || !fellowshipType || !fellowshipName || !sponsoringAgency || !filePath) {
     //   return res.status(400).json({ error: 'All fields are required' });
     // }
-
-    // Generate custom _id
     const _id = `313${teacherName}`;
+    // Generate custom _id
 
     // Save the document
     const newDocument = new Criterion313Model({
@@ -204,9 +247,8 @@ const Criterion314Model = mongoose.model('Criterion314', Criterion314Schema);
 app.post('/314upload', upload.single('file'), async (req, res) => {
   try {
     const { fellowName, yearOfEnrollment, duration, fellowshipType, grantingAgency } = req.body;
-    // const { path: filePath } = req.file;
+  
     const _id = `314${fellowName}`;
-
     // Save data to the database
     const newDocument = new Criterion314Model({
       _id,
@@ -253,8 +295,7 @@ app.post('/316upload', upload.single('file'), async (req, res) => {
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    const _id = `316${schemeName || 'defaultUserName'}`;
-
+    const _id = `316${schemeName}`;
     // Assigning the path of the uploaded file directly
     const newDocument = new Criterion316Model({
       _id,
