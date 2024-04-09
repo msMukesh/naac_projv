@@ -115,13 +115,19 @@ const Criterion3 = () => {
     setUploading312(true);
 
     const formDataToSend = new FormData();
+    const userName = Cookies.get("userName");
+    const id = userName + "312"; // Combining userName with "312" to create id
+    formDataToSend.append("userName", userName);
+    formDataToSend.append("id",id);
     formDataToSend.append("teacherName", formData312.teacherName);
     formDataToSend.append("amount", formData312.amount);
     formDataToSend.append("year", formData312.year);
     formDataToSend.append("additionalInfo", formData312.additionalInfo);
     formDataToSend.append("file", formData312.file312);
-    console.log(formDataToSend)
- const handleToggleForm312 = () => {
+// Logging all data in formDataToSend
+for (const pair of formDataToSend.entries()) {
+  console.log(pair[0], pair[1]);
+} const handleToggleForm312 = () => {
     setToggleForm312(!toggleForm312);
   };
     try {
@@ -145,6 +151,8 @@ const Criterion3 = () => {
       setUploading312(false);
     }
   };
+
+
   const [toggleForm313, setToggleForm313] = useState(false);
   const [uploading313, setUploading313] = useState(false);
   const [uploaded313, setUploaded313] = useState(false);
@@ -157,6 +165,9 @@ const Criterion3 = () => {
     setUploading313(true);
 
     const formDataToSend = new FormData();
+    const userName = Cookies.get("userName");
+    const id = userName + "312"; // Combining userName with "312" to create id
+    formDataToSend.append("id",id);
     formDataToSend.append("year", formData313.year);
     formDataToSend.append("teacherName", formData313.teacherName);
     formDataToSend.append("designation", formData313.designation);
@@ -214,6 +225,9 @@ console.log(formDataToSend);
     setUploading314(true);
 
     const formData = new FormData();
+    const userName = Cookies.get("userName");
+    const id = userName + "312"; // Combining userName with "312" to create id
+    formData.append("id",id);
     formData.append('fellowName', formData314.fellowName);
     formData.append('yearOfEnrollment', formData314.yearOfEnrollment);
     formData.append('duration', formData314.duration);
@@ -275,7 +289,9 @@ const handleSubmit316 = async (e) => {
   setUploading316(true);
 
   const dataToSend = new FormData();
-
+  const userName = Cookies.get("userName");
+  const id = userName + "312"; // Combining userName with "312" to create id
+  dataToSend.append("id",id);
   // Append other form data fields
   dataToSend.append("schemeName", formData316.schemeName);
   dataToSend.append("principalInvestigator", formData316.principalInvestigator);
@@ -341,6 +357,7 @@ const handleToggleForm316 = () => {
             <button onClick={handleToggleForm312}>
               {toggleForm312 ? "Hide Form" : "Show Form"}
             </button>
+
             {toggleForm312 && (
               <form onSubmit={handleSubmit312}>
                 <div>

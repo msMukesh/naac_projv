@@ -59,3 +59,17 @@
     padding: 16px;
   }
   
+  .logout-btn {
+    background-color: #061768; /* Change the background color */
+    color: #ffffff; /* Change the text color */
+    padding: 8px 16px; /* Add padding */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Add border radius */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    text-decoration: none; /* Remove default link underline */
+  }
+  
+  .logout-btn:hover {
+    background-color: #cc0000; /* Change background color on hover */
+  }
+  
