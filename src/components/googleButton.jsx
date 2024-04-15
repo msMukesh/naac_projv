@@ -3,7 +3,7 @@ import GoogleIcon from "../assets/g.png";
 
 const GoogleButton = ({ children, ...buttonProps }) => {
   return (
-    <button {...buttonProps}>
+    <button className="sbtn"{...buttonProps}>
       <div className="google-icon-wrapper">
         <img
           className="google-icon"

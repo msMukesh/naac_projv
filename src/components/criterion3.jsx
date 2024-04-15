@@ -61,24 +61,34 @@ const Criterion3 = () => {
         const userName = Cookies.get("userName");
         const criterionNumbers = [311, 312, 313, 314, 316, 321];
         const promises = criterionNumbers.map(async (number) => {
-          const response = await axios.get(`http://localhost:5000/getFile${number}?userName=${userName}`);
-          return response.data.data;
+          try {
+            const response = await axios.get(`http://localhost:5000/getFile${number}?userName=${userName}`);
+            return response.data.data;
+          } catch (error) {
+            // If the error is 404, return null, indicating data not found
+            if (error.response && error.response.status === 404) {
+              return null;
+            }
+            // For other errors, rethrow the error
+            throw error;
+          }
         });
         const results = await Promise.all(promises);
+        // Update the state only for requests that succeed
         setTableData311(results[0]); // Store result for criterion 311
         setTableData312(results[1]); // Store result for criterion 312
         setTableData313(results[2]); // Store result for criterion 313
         setTableData314(results[3]); // Store result for criterion 314
         setTableData316(results[4]); // Store result for criterion 316
-        setTableData321(results[5]);
+        setTableData321(results[5]); // Store result for criterion 321
       } catch (error) {
         console.error("Error fetching table data:", error);
       }
     };
-
+  
     fetchData();
   }, []); // Fetch data on component mount
-
+  
 
   const handleUpload311 = async () => {
     if (!file311) {
@@ -95,7 +105,7 @@ const Criterion3 = () => {
       // Get user name from cookie
       const userName = Cookies.get("userName");
       formData.append("userName", userName);
-
+      console.log("311 frontend"+userName);
       const response = await axios.post(
         "http://localhost:5000/311upload",
         formData,
@@ -496,6 +506,10 @@ const resetFormAndErrors = () => {
   setError313(null);
 };
 
+const handleDownloadFile = (fileName) => {
+  window.open(`http://localhost:5000/downloadFile?fileName=${encodeURIComponent(fileName)}`, "_blank");
+};
+
   return (
     <>
       <NavBar />
@@ -531,8 +545,16 @@ const resetFormAndErrors = () => {
             <tbody>
               <tr>
                 <td>{tableData311.userName}</td>
-                <td>{tableData311.filePath}</td>
-              </tr>
+
+                <td>
+                  <button onClick={() => handleDownloadFile(tableData311.filePath)}>
+                    Download File
+                  </button>
+                </td>
+
+                {/* <td>{tableData311.filePath}</td> */}
+
+                  </tr>
             </tbody>
           </table>
         </div>
@@ -633,7 +655,12 @@ const resetFormAndErrors = () => {
                 <td>{tableData312.amount}</td>
                 <td>{tableData312.year}</td>
                 <td>{tableData312.additionalInfo}</td>
-                <td>{tableData312.filePath}</td>
+                <td>
+                  <button onClick={() => handleDownloadFile(tableData312.filePath)}>
+                  Download File
+                  </button>
+                </td>
+{/* <td>{tableData312.filePath}</td> */}
 
               </tr>
             </tbody>
@@ -757,8 +784,12 @@ const resetFormAndErrors = () => {
                 <td>{tableData313.designation}</td>
                 <td>{tableData313.fellowshipName}</td>
                 <td>{tableData313.sponsoringAgency}</td>
+                <td>
+                  <button onClick={() => handleDownloadFile(tableData313.filePath)}>
+                  Download File
+                  </button>
+                </td>
                 <td>{tableData313.filePath}</td>
-
               </tr>
             </tbody>
           </table>
@@ -766,24 +797,24 @@ const resetFormAndErrors = () => {
       )}
 
 
-
-          <div>
-  <h2>Criterion 3.1.4 - JRFs, SRFs, Post-Doctoral Fellows, Research Associates, and other research fellows enrolled in the institution during the year</h2>
-  <button onClick={handleToggleForm314}>
-    {toggleForm314 ? "Hide Form" : "Show Form"}
-  </button>
-  {toggleForm314 && (
-    <form onSubmit={handleSubmit314}>
-    <div>
-      <label htmlFor="fellowName">Name of Research Fellow / Enrollment No.:</label>
-      <input
-        type="text"
-        id="fellowName"
-        name="fellowName"
-        value={formData314.fellowName}
-        onChange={handleInputChange314}
-      />
+  <div>
+    <h2>Criterion 3.1.4 - JRFs, SRFs, Post-Doctoral Fellows, Research Associates, and other research fellows enrolled in the institution during the year</h2>
+    <button onClick={handleToggleForm314}>
+      {toggleForm314 ? "Hide Form" : "Show Form"}
+    </button>
+    {toggleForm314 && (
+      <form onSubmit={handleSubmit314}>
+      <div>
+        <label htmlFor="fellowName">Name of Research Fellow / Enrollment No.:</label>
+        <input
+          type="text"
+          id="fellowName"
+          name="fellowName"
+          value={formData314.fellowName}
+          onChange={handleInputChange314}
+        />
     </div>
+
     <div>
       <label htmlFor="yearOfEnrollment">Year of Enrolment:</label>
       <input
@@ -986,6 +1017,7 @@ const resetFormAndErrors = () => {
           </form>
           )}
         </div>
+  </div>
 
         {tableData316 && (
         <div>
@@ -1021,11 +1053,10 @@ const resetFormAndErrors = () => {
           </table>
         </div>
       )}
-</div>
 
-
-<h2>Key Indicator - 3.2 Resource Mobilization for Research</h2>
 <div>
+
+  <h2>Key Indicator - 3.2 Resource Mobilization for Research</h2>
   <h2>3.2.1 Extramural funding for Research (Grants sponsored by non-government sources such as industry, corporate houses, international bodies for research projects), endowments, Chairs in the University during the year (INR in Lakhs)</h2>
   <button onClick={handleToggleForm321}>
     {toggleForm321 ? "Hide Form" : "Show Form"}

@@ -3,7 +3,6 @@ import Signin from "./signin";
 import Signup from "./signup";
 import GoogleButton from "./googleButton";
 import { useUserContext } from "../context/userContext";
-import MyHomePage from "./MyHomePage"; // Import MyHomePage component
 
 const Auth = () => {
   const [index, setIndex] = useState(false);
@@ -17,7 +16,7 @@ const Auth = () => {
   //   console.log("Redirecting to MyHomePage...");
   // };
   return (
-    <div className="container">
+    <div className="authcontainer">
       {!index ? <Signin  /> : <Signup />}
       <GoogleButton onClick={signInWithGoogle}>
         Continue with Google

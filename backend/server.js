@@ -1,11 +1,12 @@
 import express from "express";
 import mongoose from "mongoose";
 import multer from "multer";
-import Cookies from "js-cookie";
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import cors from "cors"; // Import the cors package
 const app = express();
+import path from "path";
+
 import fs from 'fs';
 app.use(cors());
 app.use(cors({
@@ -93,7 +94,15 @@ const upload = multer({
 });
 
 
+// Define the directory where your files are stored
+const filesDirectory = path.join(__dirname, "path/to/files");
 
+// Endpoint to handle file download
+app.get("/downloadFile", (req, res) => {
+  const fileName = req.query.fileName;
+  const absolutePath = path.join(filesDirectory, fileName); // Construct absolute path
+  res.download(fileName); // Send file with original name for download
+});
 
 
 // Define the schema for Criterion3 collection
@@ -108,8 +117,8 @@ const Criterion311Model = mongoose.model('Criterion311', Criterion311Schema);
 
 // Replace your existing '/getFile' route with this one
 app.get('/getFile311', async (req, res) => {
-  const userName = req.query.userName; // Retrieve userName from query params
-  const _id = `311${userName}`;
+  // const userName = req.query.userName; // Retrieve userName from query params
+  const _id = `311${globalUserName}`;
 
   try {
     const foundDetails = await Criterion311Model.findOne({ _id });
@@ -128,7 +137,7 @@ app.get('/getFile311', async (req, res) => {
 
 // Endpoint for file upload for 311
 app.post('/311upload', upload.single('file'), async (req, res) => {
-  // const { userName } = req.body;
+  const { userName } = req.body;
   const { path: filePath } = req.file;
   const _id = `311${globalUserName}`;
 

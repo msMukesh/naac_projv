@@ -1,4 +1,3 @@
-// App.js
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Auth from './components/auth';
@@ -9,6 +8,7 @@ import LoadingSpinner from './components/LoadingSpinner'; // Import the loading 
 import Criterion3 from './components/Criterion3'; // Import Criterion3 component
 import Criterion2 from './components/Criterion2';
 import Criterion1 from './components/Criterion1';
+import './App.css'; // Import the CSS file
 
 function App() {
   const { user, loading, error } = useUserContext();

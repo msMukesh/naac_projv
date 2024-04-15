@@ -38,7 +38,7 @@ const Signup = () => {
         <input placeholder="Email" type="email" ref={emailRef} />
         <input placeholder="Name" type="text" ref={nameRef} />
         <input placeholder="Password" type="password" ref={psdRef} />
-        <button type="submit">Register</button>
+        <button  className="sbtn" type="submit">Register</button>
       </form>
     </div>
   );
