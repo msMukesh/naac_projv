@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import multer from "multer";
+import Cookies from "js-cookie";
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import cors from "cors"; // Import the cors package
@@ -10,14 +11,39 @@ app.use(cors());
 app.use(cors({
   origin: "http://localhost:5173"
 }));
-let globalUserName = ""; // Global variable to store userName
 
 app.use(express.json());
+
+const port = process.env.PORT || 5000;
+
+
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/Naac', {
+  // useNewUrlParser: true,
+  // useUnifiedTopology: true,
+  // useCreateIndex: true, // Corrected option name
+});
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('open', () => {
+  console.log('Connected to MongoDB');
+});
+
+
+// Set up CORS headers to allow requests from any origin
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const port = process.env.PORT || 5000;
+let globalUserName = ""; // Global variable to store userName
 
 app.post("/storeUsername", (req, res) => {
   try {
@@ -37,44 +63,7 @@ app.post("/storeUsername", (req, res) => {
   }
 });
 
-
-
-// Endpoint to retrieve global userName
-// app.get("/api/getUsername", (req, res) => {
-//   res.status(200).json({ userName: globalUserName });
-// });
 // Middleware for parsing JSON bodies
-
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/Naac', {
-  // useNewUrlParser: true,
-  // useUnifiedTopology: true,
-  // useCreateIndex: true, // Corrected option name
-});
-
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', () => {
-  console.log('Connected to MongoDB');
-});
-
-// Define the schema for Criterion3 collection
-const Criterion311Schema = new mongoose.Schema({
-  _id: String,
-  userName: String,
-  filePath: String,
-});
-
-// Define the model for Criterion3 collection
-const Criterion311Model = mongoose.model('Criterion311', Criterion311Schema);
-
-// Set up CORS headers to allow requests from any origin
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-});
 
 // Function to create directory if it doesn't exist
 const createDirectoryIfNotExists = (directory) => {
@@ -103,11 +92,45 @@ const upload = multer({
   fileField: 'file'
 });
 
+
+
+
+
+// Define the schema for Criterion3 collection
+const Criterion311Schema = new mongoose.Schema({
+  _id: String,
+  userName: String,
+  filePath: String,
+});
+
+// Define the model for Criterion3 collection
+const Criterion311Model = mongoose.model('Criterion311', Criterion311Schema);
+
+// Replace your existing '/getFile' route with this one
+app.get('/getFile311', async (req, res) => {
+  const userName = req.query.userName; // Retrieve userName from query params
+  const _id = `311${userName}`;
+
+  try {
+    const foundDetails = await Criterion311Model.findOne({ _id });
+    if (foundDetails) {
+      console.log("Found", foundDetails);
+      res.status(200).json({ data: foundDetails });
+    } else {
+      console.log("Element not found");
+      res.status(404).json({ error: "Element not found" });
+    }
+  } catch (e) {
+    console.error("Error:", e);
+    res.status(500).json({ error: "Error occurred while fetching data." });
+  }
+});
+
 // Endpoint for file upload for 311
 app.post('/311upload', upload.single('file'), async (req, res) => {
-  const { userName } = req.body;
+  // const { userName } = req.body;
   const { path: filePath } = req.file;
-  const _id = `311${userName}`;
+  const _id = `311${globalUserName}`;
 
   const newDocument = new Criterion311Model({
     _id,
@@ -124,6 +147,8 @@ app.post('/311upload', upload.single('file'), async (req, res) => {
   }
 });
 
+
+
 // Define the schema for Criterion312 collection
 const Criterion312Schema = new mongoose.Schema({
   _id: String,
@@ -137,13 +162,34 @@ const Criterion312Schema = new mongoose.Schema({
 // Define the model for Criterion312 collection
 const Criterion312Model = mongoose.model('Criterion312', Criterion312Schema);
 
+
+// Replace your existing '/getFile' route with this one
+app.get('/getFile312', async (req, res) => {
+  
+
+  const _id = `312${globalUserName}`;
+
+  try {
+    const foundDetails = await Criterion312Model.findOne({ _id });
+    if (foundDetails) {
+      console.log("Found", foundDetails);
+      res.status(200).json({ data: foundDetails });
+    } else {
+      console.log("Element not found");
+      res.status(404).json({ error: "Element not found" });
+    }
+  } catch (e) {
+    console.error("Error:", e);
+    res.status(500).json({ error: "Error occurred while fetching data." });
+  }
+});
+
 // Endpoint for file upload for 312
 app.post('/312upload', upload.single('file'), async (req, res) => {
   const { teacherName, amount, year, additionalInfo } = req.body;
   const { path: filePath } = req.file;
   const { userName } = req.body;
   const _id = `312${userName}`;
- 
  
   const newDocument = new Criterion312Model({
     _id,
@@ -162,6 +208,8 @@ app.post('/312upload', upload.single('file'), async (req, res) => {
     return res.status(500).json({ error: 'Error uploading file. Please try again.' });
   }
 });
+
+
 
 const Criterion313Schema = new mongoose.Schema({
   _id: String, // Specify _id as a string
@@ -196,6 +244,26 @@ const Criterion313Schema = new mongoose.Schema({
 
 const Criterion313Model = mongoose.model('Criterion313', Criterion313Schema);
 
+// Replace your existing '/getFile' route with this one
+app.get('/getFile313', async (req, res) => {
+  
+
+  const _id = `313${globalUserName}`;
+
+  try {
+    const foundDetails = await Criterion313Model.findOne({ _id });
+    if (foundDetails) {
+      console.log("Found", foundDetails);
+      res.status(200).json({ data: foundDetails });
+    } else {
+      console.log("Element not found");
+      res.status(404).json({ error: "Element not found" });
+    }
+  } catch (e) {
+    console.error("Error:", e);
+    res.status(500).json({ error: "Error occurred while fetching data." });
+  }
+});
 // Endpoint for file upload for 313
 app.post('/313upload', upload.single('file'), async (req, res) => {
   try {
@@ -206,7 +274,7 @@ app.post('/313upload', upload.single('file'), async (req, res) => {
     // if (!year || !teacherName || !fellowshipType || !fellowshipName || !sponsoringAgency || !filePath) {
     //   return res.status(400).json({ error: 'All fields are required' });
     // }
-    const _id = `313${teacherName}`;
+    const _id = `313${globalUserName}`;
     // Generate custom _id
 
     // Save the document
@@ -243,12 +311,31 @@ const Criterion314Schema = new mongoose.Schema({
 
 const Criterion314Model = mongoose.model('Criterion314', Criterion314Schema);
 
+// Replace your existing '/getFile' route with this one
+app.get('/getFile314', async (req, res) => {
+  const _id = `314${globalUserName}`;
+
+  try {
+    const foundDetails = await Criterion314Model.findOne({ _id });
+    if (foundDetails) {
+      console.log("Found", foundDetails);
+      res.status(200).json({ data: foundDetails });
+    } else {
+      console.log("Element not found");
+      res.status(404).json({ error: "Element not found" });
+    }
+  } catch (e) {
+    console.error("Error:", e);
+    res.status(500).json({ error: "Error occurred while fetching data." });
+  }
+});
+
 // Endpoint for file upload for 314
 app.post('/314upload', upload.single('file'), async (req, res) => {
   try {
     const { fellowName, yearOfEnrollment, duration, fellowshipType, grantingAgency } = req.body;
   
-    const _id = `314${fellowName}`;
+    const _id = `314${globalUserName}`;
     // Save data to the database
     const newDocument = new Criterion314Model({
       _id,
@@ -285,6 +372,24 @@ const Criterion316Schema = new mongoose.Schema({
 });
 
 const Criterion316Model = mongoose.model('Criterion316', Criterion316Schema);
+// Replace your existing '/getFile' route with this one
+app.get('/getFile316', async (req, res) => {
+  const _id = `316${globalUserName}`;
+
+  try {
+    const foundDetails = await Criterion316Model.findOne({ _id });
+    if (foundDetails) {
+      console.log("Found", foundDetails);
+      res.status(200).json({ data: foundDetails });
+    } else {
+      console.log("Element not found");
+      res.status(404).json({ error: "Element not found" });
+    }
+  } catch (e) {
+    console.error("Error:", e);
+    res.status(500).json({ error: "Error occurred while fetching data." });
+  }
+});
 
 app.post('/316upload', upload.single('file'), async (req, res) => {
   try {
@@ -295,7 +400,7 @@ app.post('/316upload', upload.single('file'), async (req, res) => {
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    const _id = `316${schemeName}`;
+    const _id = `316${globalUserName}`;
     // Assigning the path of the uploaded file directly
     const newDocument = new Criterion316Model({
       _id,
@@ -319,6 +424,73 @@ app.post('/316upload', upload.single('file'), async (req, res) => {
   }
 });
 
+// Define the schema for Criterion321 collection
+const Criterion321Schema = new mongoose.Schema({
+  _id: String,
+  projectName: { type: String, required: true },
+  principalInvestigator: { type: String, required: true },
+  fundingAgency: { type: String, required: true },
+  fundingType: { type: String, required: true },
+  department: { type: String, required: true }, // Corrected field name
+  yearOfAward: { type: Number, required: true },
+  fundsProvided: { type: Number, required: true },
+  duration: { type: Number, required: true },
+  filePath: { type: String, required: true }
+});
+
+const Criterion321Model = mongoose.model('Criterion321', Criterion321Schema);
+
+// Replace your existing '/getFile' route with this one
+app.get('/getFile321', async (req, res) => {
+  const _id = `321${globalUserName}`;
+
+  try {
+    const foundDetails = await Criterion321Model.findOne({ _id });
+    if (foundDetails) {
+      console.log("Found", foundDetails);
+      res.status(200).json({ data: foundDetails });
+    } else {
+      console.log("Element not found");
+      res.status(404).json({ error: "Element not found" });
+    }
+  } catch (e) {
+    console.error("Error:", e);
+    res.status(500).json({ error: "Error occurred while fetching data." });
+  }
+});
+
+// Endpoint for file upload for 321
+app.post('/321upload', upload.single('file'), async (req, res) => {
+  try {
+    const { projectName, principalInvestigator, fundingAgency, fundingType, department, yearOfAward, fundsProvided, duration } = req.body; // Corrected field name
+
+    // Check if file is uploaded
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+  
+    const _id = `321${globalUserName}`;
+    // Save data to the database
+    const newDocument = new Criterion321Model({
+      _id,
+      projectName,
+      principalInvestigator,
+      fundingAgency,
+      fundingType,
+      department,
+      yearOfAward, // Parse strings to integers
+      fundsProvided, // Parse strings to integers
+      duration,
+      filePath: req.file.path
+    });
+    await newDocument.save();
+  
+    return res.status(200).json({ message: 'Data submitted successfully' });
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    return res.status(500).json({ error: 'Error uploading file. Please try again.' });
+  }
+});
 
 
 // Serve uploaded files statically
