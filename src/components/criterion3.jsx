@@ -55,41 +55,6 @@ const Criterion3 = () => {
   const [tableData316, setTableData316] = useState(null);
   const [tableData321, setTableData321] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const userName = Cookies.get("userName");
-        const criterionNumbers = [311, 312, 313, 314, 316, 321];
-        const promises = criterionNumbers.map(async (number) => {
-          try {
-            const response = await axios.get(`http://localhost:5000/getFile${number}?userName=${userName}`);
-            return response.data.data;
-          } catch (error) {
-            // If the error is 404, return null, indicating data not found
-            if (error.response && error.response.status === 404) {
-              return null;
-            }
-            // For other errors, rethrow the error
-            throw error;
-          }
-        });
-        const results = await Promise.all(promises);
-        // Update the state only for requests that succeed
-        setTableData311(results[0]); // Store result for criterion 311
-        setTableData312(results[1]); // Store result for criterion 312
-        setTableData313(results[2]); // Store result for criterion 313
-        setTableData314(results[3]); // Store result for criterion 314
-        setTableData316(results[4]); // Store result for criterion 316
-        setTableData321(results[5]); // Store result for criterion 321
-      } catch (error) {
-        console.error("Error fetching table data:", error);
-      }
-    };
-  
-    fetchData();
-  }, []); // Fetch data on component mount
-  
-
   const handleUpload311 = async () => {
     if (!file311) {
       setError311("Please select a file.");
@@ -159,6 +124,8 @@ for (const pair of formDataToSend.entries()) {
       console.log(response.data);
       alert("Data submitted successfully.");
       setUploaded312(true);
+      setToggleForm312(!toggleForm312);
+
     } catch (error) {
       console.error("Error submitting data:", error);
       setError312("Error submitting data. Please try again.");
@@ -233,6 +200,9 @@ console.log(formDataToSend);
       console.log(response.data);
       alert("Data submitted successfully.");
       setUploaded313(true);
+
+      setToggleForm313(!toggleForm313);
+
     } catch (error) {
       console.error("Error submitting data:", error);
       setError313("Error submitting data. Please try again.");
@@ -310,6 +280,9 @@ console.log(formDataToSend);
       console.log(response.data);
       alert("Data submitted successfully.");
       setUploaded314(true);
+
+      setToggleForm314(!toggleForm314);
+
     } 
     catch (error) {
       console.error("Error uploading file:", error);
@@ -381,7 +354,10 @@ const handleSubmit316 = async (e) => {
       },
     });
     console.log(response.data);
+    alert("Data submitted successfully.");
     setUploaded316(true);
+    setToggleForm316(!toggleForm316);
+
   } catch (error) {
     console.error("Error uploading files:", error);
     setError316("Error uploading files. Please try again.");
@@ -450,6 +426,8 @@ const handleSubmit321 = async (e) => {
     });
     console.log(response.data);
     setUploaded321(true);
+    setToggleForm321(!toggleForm321);
+
   } catch (error) {
     console.error("Error uploading files:", error);
     setError321("Error uploading files. Please try again.");
@@ -506,6 +484,41 @@ const resetFormAndErrors = () => {
   setError313(null);
 };
 
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const userName = Cookies.get("userName");
+      const criterionNumbers = [311, 312, 313, 314, 316, 321];
+      const promises = criterionNumbers.map(async (number) => {
+        try {
+          const response = await axios.get(`http://localhost:5000/getFile${number}?userName=${userName}`);
+          return response.data.data;
+        } catch (error) {
+          // If the error is 404, return null, indicating data not found
+          if (error.response && error.response.status === 404) {
+            return null;
+          }
+          // For other errors, rethrow the error
+          throw error;
+        }
+      });
+      const results = await Promise.all(promises);
+      // Update the state only for requests that succeed
+      setTableData311(results[0]); // Store result for criterion 311
+      setTableData312(results[1]); // Store result for criterion 312
+      setTableData313(results[2]); // Store result for criterion 313
+      setTableData314(results[3]); // Store result for criterion 314
+      setTableData316(results[4]); // Store result for criterion 316
+      setTableData321(results[5]); // Store result for criterion 321
+    } catch (error) {
+      console.error("Error fetching table data:", error);
+    }
+  };
+
+  fetchData();
+}, [ uploaded311,uploaded312,uploaded313,uploaded314,uploaded316,uploaded321]); // Fetch data on component mount
+
+
 const handleDownloadFile = (fileName) => {
   window.open(`http://localhost:5000/downloadFile?fileName=${encodeURIComponent(fileName)}`, "_blank");
 };
@@ -528,7 +541,7 @@ const handleDownloadFile = (fileName) => {
 
               <p>Upload relevant supporting document </p>
                         <input type="file" onChange={handleFile311Change} />
-                      <button onClick={handleUpload311} disabled={uploading311 || uploaded311}>
+                      <button className="submitFormBtn" onClick={handleUpload311} disabled={uploading311 || uploaded311}>
                         {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
                       </button>
                       {error311 && <div className="error">{error311}</div>}
@@ -1057,7 +1070,7 @@ const handleDownloadFile = (fileName) => {
                   Download File
                   </button>
                 </td>
-                <td>{tableData316.filePath}</td>
+                {/* <td>{tableData316.filePath}</td> */}
 
               </tr>
             </tbody>
