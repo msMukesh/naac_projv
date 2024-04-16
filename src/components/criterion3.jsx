@@ -511,18 +511,20 @@ const handleDownloadFile = (fileName) => {
 };
 
   return (
-    <>
+    <div className="displayContainer" >
       <NavBar />
       <div className="criterion-container">
-        <div className="content">
-          <h1>Criterion III - Research, Innovations and Extension</h1>
-          <h2>Key Indicator - 3.1 Promotion of Research and Facilities</h2>
+
+      <div className="criterionCon31">
+
+          <h2>Criterion III - Research, Innovations and Extension</h2>
+          <h3>Key Indicator - 3.1 Promotion of Research and Facilities</h3>
 
           {/* Criterion 3.1.1 Form */}
-          <div>
-              <h3>3.1.1 The institution Research facilities are frequently updated and there is well defined policy for
+          <div className="formDiv">
+              <h4>3.1.1 The institution Research facilities are frequently updated and there is well defined policy for
                         promotion of research which is uploaded on the institutional website and implemented 
-              </h3>
+              </h4>
 
               <p>Upload relevant supporting document </p>
                         <input type="file" onChange={handleFile311Change} />
@@ -530,39 +532,40 @@ const handleDownloadFile = (fileName) => {
                         {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
                       </button>
                       {error311 && <div className="error">{error311}</div>}
-            </div>
- {/* Display table if data is available */}
- {tableData311 && (
-        <div>
-          <h2>Table Data</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>User Name</th>
-                <th>File Path</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{tableData311.userName}</td>
+          </div>
 
-                <td>
-                  <button onClick={() => handleDownloadFile(tableData311.filePath)}>
-                    Download File
-                  </button>
-                </td>
+              {/* Display table if data is available */}
+              {tableData311 && (
+                      <div>
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>User Name</th>
+                              <th>File </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>{tableData311.userName}</td>
 
-                {/* <td>{tableData311.filePath}</td> */}
+                              <td>
+                                <button className="Downloadbtn" onClick={() => handleDownloadFile(tableData311.filePath)}>
+                                  Download File
+                                </button>
+                              </td>
 
-                  </tr>
-            </tbody>
-          </table>
-        </div>
-      )}
+                              {/* <td>{tableData311.filePath}</td> */}
+
+                                </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+
           {/* Criterion 3.1.2 Form */}
-          <div>
-          <h3>3.1.2 The institution provides seed money to its teachers for research (amount INR in Lakhs)
-          </h3>            <button onClick={handleToggleForm312}>
+          <div className="formDiv">
+          <h4>3.1.2 The institution provides seed money to its teachers for research (amount INR in Lakhs)
+          </h4>            <button className="toggleFormbtn" onClick={handleToggleForm312}>
               {toggleForm312 ? "Hide Form" : "Show Form"}
             </button>
 
@@ -610,7 +613,7 @@ const handleDownloadFile = (fileName) => {
                   ></textarea>
                 </div>
                 <div>
-                <h2>Document to Attach:</h2>
+                <h5>Document to Attach:</h5>
 
                 <div>
                   <ul>●	Budget and expenditure statements signed by the Finance Officer indicating the amount of seed money provided and utilized</ul>
@@ -627,7 +630,7 @@ const handleDownloadFile = (fileName) => {
                     onChange={handleFile312Change}
                   />
                 </div>
-                <button type="submit" disabled={uploading312 || uploaded312}>
+                <button  className="submitFormBtn" type="submit" disabled={uploading312 || uploaded312}>
                   {uploading312 ? "Submitting..." : uploaded312 ? "Submitted" : "Submit"}
                 </button>
                 {error312 && <div className="error">{error312}</div>}
@@ -637,7 +640,6 @@ const handleDownloadFile = (fileName) => {
  {/* Display table if data is available */}
  {tableData312 && (
         <div>
-          <h2>Table Data</h2>
           <table>
             <thead>
               <tr>
@@ -645,7 +647,7 @@ const handleDownloadFile = (fileName) => {
                 <th>Amount</th>
                 <th>year</th>
                 <th>AdditionalInfo</th>
-                <th>filePath</th>
+                <th>File</th>
 
               </tr>
             </thead>
@@ -656,7 +658,7 @@ const handleDownloadFile = (fileName) => {
                 <td>{tableData312.year}</td>
                 <td>{tableData312.additionalInfo}</td>
                 <td>
-                  <button onClick={() => handleDownloadFile(tableData312.filePath)}>
+                  <button className="Downloadbtn" onClick={() => handleDownloadFile(tableData312.filePath)}>
                   Download File
                   </button>
                 </td>
@@ -667,11 +669,13 @@ const handleDownloadFile = (fileName) => {
           </table>
         </div>
       )}
+
+
           {/* Criterion 3.1.3 Form */}
-          <div>
-          <h3>3.1.3 Teachers receiving national/ international fellowship/financial support by various agencies for advanced studies/ research during the year
-            </h3>              
-            <button onClick={handleToggleForm313}>
+          <div className="formDiv">
+          <h4>3.1.3 Teachers receiving national/ international fellowship/financial support by various agencies for advanced studies/ research during the year
+            </h4>              
+            <button className="toggleFormbtn" onClick={handleToggleForm313}>
               {toggleForm313 ? "Hide Form" : "Show Form"}
             </button>
             {toggleForm313 && (
@@ -738,7 +742,7 @@ const handleDownloadFile = (fileName) => {
               </div>
 
               <div>
-                <h2>Document to Attach:</h2>
+                <h5>Document to Attach:</h5>
                 <div>
                   <ul>●		e-copies of the award letters of the teachers</ul>
                   <ul>●		Any additional information</ul>
@@ -754,7 +758,7 @@ const handleDownloadFile = (fileName) => {
                   onChange={handleFile313Change}
                 />
               </div>
-              <button type="submit" disabled={uploading313 || uploaded313}>
+              <button className="submitFormBtn" type="submit" disabled={uploading313 || uploaded313}>
                 {uploading313 ? "Submitting..." : uploaded313 ? "Submitted" : "Submit"}
               </button>
               {error313 && <div className="error">{error313}</div>}
@@ -764,7 +768,6 @@ const handleDownloadFile = (fileName) => {
 
           {tableData313 && (
         <div>
-          <h2>Table Data</h2>
           <table>
             <thead>
               <tr>
@@ -773,7 +776,7 @@ const handleDownloadFile = (fileName) => {
                 <th>designation</th>
                 <th>fellowshipName</th>
                 <th>sponsoringAgency</th>
-                <th>filePath</th>
+                <th>File</th>
 
               </tr>
             </thead>
@@ -785,11 +788,11 @@ const handleDownloadFile = (fileName) => {
                 <td>{tableData313.fellowshipName}</td>
                 <td>{tableData313.sponsoringAgency}</td>
                 <td>
-                  <button onClick={() => handleDownloadFile(tableData313.filePath)}>
+                  <button className="Downloadbtn" onClick={() => handleDownloadFile(tableData313.filePath)}>
                   Download File
                   </button>
                 </td>
-                <td>{tableData313.filePath}</td>
+                {/* <td>{tableData313.filePath}</td> */}
               </tr>
             </tbody>
           </table>
@@ -797,9 +800,9 @@ const handleDownloadFile = (fileName) => {
       )}
 
 
-  <div>
-    <h2>Criterion 3.1.4 - JRFs, SRFs, Post-Doctoral Fellows, Research Associates, and other research fellows enrolled in the institution during the year</h2>
-    <button onClick={handleToggleForm314}>
+<div className="formDiv">
+    <h4>Criterion 3.1.4 - JRFs, SRFs, Post-Doctoral Fellows, Research Associates, and other research fellows enrolled in the institution during the year</h4>
+    <button className="toggleFormbtn"  onClick={handleToggleForm314}>
       {toggleForm314 ? "Hide Form" : "Show Form"}
     </button>
     {toggleForm314 && (
@@ -865,7 +868,7 @@ const handleDownloadFile = (fileName) => {
 
       <input type="file" id="file314" name="file314" onChange={handleFileChange314} />
     </div>
-    <button type="submit" disabled={uploading314 || uploaded314}>
+    <button className="submitFormBtn" type="submit" disabled={uploading314 || uploaded314}>
       {uploading314 ? "Submitting..." : uploaded314 ? "Submitted" : "Submit"}
     </button>
     {error314 && <div className="error">{error314}</div>}
@@ -875,7 +878,6 @@ const handleDownloadFile = (fileName) => {
 
 {tableData314 && (
         <div>
-          <h2>Table Data</h2>
           <table>
             <thead>
               <tr>
@@ -884,7 +886,7 @@ const handleDownloadFile = (fileName) => {
                 <th>duration</th>
                 <th>fellowshipType</th>
                 <th>grantingAgency</th>
-                <th>filePath</th>
+                <th>File</th>
 
               </tr>
             </thead>
@@ -895,7 +897,13 @@ const handleDownloadFile = (fileName) => {
                 <td>{tableData314.duration}</td>
                 <td>{tableData314.fellowshipType}</td>
                 <td>{tableData314.grantingAgency}</td>
-                <td>{tableData314.filePath}</td>
+                <td>
+                  <button className="Downloadbtn" onClick={() => handleDownloadFile(tableData314.filePath)}>
+                  Download File
+                  </button>
+                </td>
+                {/* <td>{tableData314.filePath}</td> */}
+
 
               </tr>
             </tbody>
@@ -906,9 +914,9 @@ const handleDownloadFile = (fileName) => {
 
 
 {/* Criterion 3.1.6 Form */}
-<div>
-  <h2>Criterion 3.1.6 - Departments with UGC-SAP, CAS, DST-FIST, DBT, ICSSR, and other recognitions by national and international agencies during the year</h2>
-  <button onClick={handleToggleForm316}>
+          <div className="formDiv">
+  <h4>Criterion 3.1.6 - Departments with UGC-SAP, CAS, DST-FIST, DBT, ICSSR, and other recognitions by national and international agencies during the year</h4>
+  <button className="toggleFormbtn" onClick={handleToggleForm316}>
     {toggleForm316 ? "Hide Form" : "Show Form"}
   </button>
   {toggleForm316 && (
@@ -1010,18 +1018,16 @@ const handleDownloadFile = (fileName) => {
     </div>
 
 
-            <button type="submit" disabled={uploading316 || uploaded316}>
+            <button className="submitFormBtn" type="submit" disabled={uploading316 || uploaded316}>
               {uploading316 ? "Submitting..." : uploaded316? "Submitted" : "Submit"}
             </button>
             {error316 && <div className="error">{error316}</div>}
           </form>
           )}
         </div>
-  </div>
 
         {tableData316 && (
         <div>
-          <h2>Table Data</h2>
           <table>
             <thead>
               <tr>
@@ -1033,7 +1039,7 @@ const handleDownloadFile = (fileName) => {
                 <th>yearOfAward</th>
                 <th>fundLayoutAmount</th>
                 <th>duration</th>
-                <th>filePath</th>
+                <th>File</th>
               </tr>
             </thead>
             <tbody>
@@ -1046,6 +1052,11 @@ const handleDownloadFile = (fileName) => {
                 <td>{tableData316.yearOfAward}</td>
                 <td>{tableData316.fundLayoutAmount}</td>
                 <td>{tableData316.duration}</td>
+                <td>
+                  <button className="Downloadbtn" onClick={() => handleDownloadFile(tableData316.filePath)}>
+                  Download File
+                  </button>
+                </td>
                 <td>{tableData316.filePath}</td>
 
               </tr>
@@ -1054,11 +1065,17 @@ const handleDownloadFile = (fileName) => {
         </div>
       )}
 
-<div>
 
-  <h2>Key Indicator - 3.2 Resource Mobilization for Research</h2>
-  <h2>3.2.1 Extramural funding for Research (Grants sponsored by non-government sources such as industry, corporate houses, international bodies for research projects), endowments, Chairs in the University during the year (INR in Lakhs)</h2>
-  <button onClick={handleToggleForm321}>
+</div>
+
+
+<div className="criterionCon32">
+  <h3>Key Indicator - 3.2 Resource Mobilization for Research</h3>
+
+  <div className="formDiv">
+
+  <h4>3.2.1 Extramural funding for Research (Grants sponsored by non-government sources such as industry, corporate houses, international bodies for research projects), endowments, Chairs in the University during the year (INR in Lakhs)</h4>
+  <button className="toggleFormbtn" onClick={handleToggleForm321}>
     {toggleForm321 ? "Hide Form" : "Show Form"}
   </button>
   {toggleForm321 && (
@@ -1152,17 +1169,15 @@ const handleDownloadFile = (fileName) => {
         </div>
         <input type="file" id="file321" name="file321" onChange={handleFileChange321} />
       </div>
-      <button type="submit" disabled={uploading321 || uploaded321}>
+      <button className="submitFormBtn" type="submit" disabled={uploading321 || uploaded321}>
         {uploading321 ? "Submitting..." : uploaded321 ? "Submitted" : "Submit"}
       </button>
       {error321 && <div className="error">{error321}</div>}
     </form>
   )}
 </div>
-
 {tableData321 && (
   <div>
-    <h2>Table Data</h2>
     <table>
       <thead>
         <tr>
@@ -1174,7 +1189,7 @@ const handleDownloadFile = (fileName) => {
           <th>Year of Award</th>
           <th>Funds (Amount) Provided</th>
           <th>Duration</th>
-          <th>File Path</th>
+          <th>File </th>
         </tr>
       </thead>
       <tbody>
@@ -1187,7 +1202,12 @@ const handleDownloadFile = (fileName) => {
           <td>{tableData321.yearOfAward}</td>
           <td>{tableData321.fundsProvided}</td>
           <td>{tableData321.duration}</td>
-          <td>{tableData321.filePath}</td>
+          <td>
+                  <button className="Downloadbtn" onClick={() => handleDownloadFile(tableData321.filePath)}>
+                  Download File
+                  </button>
+                </td>
+          {/* <td>{tableData321.filePath}</td> */}
         </tr>
       </tbody>
     </table>
@@ -1195,7 +1215,10 @@ const handleDownloadFile = (fileName) => {
 )}
 
 </div>
-    </>
+
+
+</div>
+    </div>
   );
 };
 

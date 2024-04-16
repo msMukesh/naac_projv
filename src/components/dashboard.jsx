@@ -16,16 +16,18 @@ const Dashboard = () => {
   }, [user]);
 
   return (
-    <>
-      <NavBar logoutUser={logoutUser} />
+    <div className="dashboardContainer">
+          <NavBar logoutUser={logoutUser} />
+
       <div className="dashboard-container">
+
         <div className="content">
           <h1>Dashboard</h1>
           <h2>Name: {userName}</h2> {/* Display userName state */}
           <h2>Email: {user.email}</h2>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
