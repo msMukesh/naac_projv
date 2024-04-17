@@ -20,7 +20,7 @@ input {
   box-shadow: 0 1px 4px #ccc;
   border-radius: 6px;
   font-size: 18px;
-  width: 50%;
+  width: 90%;
   margin-top: 18px;
 }
 
@@ -42,7 +42,7 @@ input {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 400px;
+  width: 450px;
   padding: 22px;
   border: 1px solid #ddd; /* Lighter border */
   background-color: #fff;
@@ -55,15 +55,7 @@ input {
   text-decoration: underline;
 }
 
-.form > form > input {
-  margin-top: 14px; /* Additional margin-top */
-  padding: 12px; /* Padding */
-  font-size: 18px; /* Font size */
-  border: 1px solid #ccc; /* Border */
-  border-radius: 6px; /* Border radius */
-  width: calc(100% - 24px); /* Adjust width */
-  transition: border-color 0.25s; /* Transition effect for border color */
-}
+
 
 .form > form > input:focus {
   border-color: #646cff; /* Border color on focus */
@@ -85,6 +77,16 @@ input {
   justify-content: center;
   flex-direction: column;
   margin-top: 30px; /* Separate form from header */
+}
+.form > form > input {
+  margin-top: 14px; /* Additional margin-top */
+  padding: 12px; /* Padding */
+  font-size: 18px; /* Font size */
+  border: 1px solid #ccc; /* Border */
+  border-radius: 6px; /* Border radius */
+  transition: border-color 0.25s; /* Transition effect for border color */
+  width: calc(100% + 28px); /* Adjusted width */
+
 }
 
 

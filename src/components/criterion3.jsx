@@ -365,7 +365,6 @@ const handleSubmit316 = async (e) => {
     setUploading316(false);
   }
   resetFormAndErrors();
-
 };
 
 // State for Criterion 3.2.1
@@ -523,6 +522,17 @@ const handleDownloadFile = (fileName) => {
   window.open(`http://localhost:5000/downloadFile?fileName=${encodeURIComponent(fileName)}`, "_blank");
 };
 
+const getNextSequenceValue = async (sequenceName) => {
+  const sequenceDocument = await SequenceModel.findOneAndUpdate(
+    { _id: sequenceName },
+    { $inc: { sequence_value: 1 } },
+    { new: true }
+  );
+
+  return sequenceDocument.sequence_value;
+};
+
+
   return (
     <div className="displayContainer" >
       <NavBar />
@@ -530,8 +540,8 @@ const handleDownloadFile = (fileName) => {
 
       <div className="criterionCon31">
 
-          <h2>Criterion III - Research, Innovations and Extension</h2>
-          <h3>Key Indicator - 3.1 Promotion of Research and Facilities</h3>
+          <h2 class="criterionMainTitle">Criterion III - Research, Innovations and Extension</h2>
+          <h3 className="subTitle">Key Indicator - 3.1 Promotion of Research and Facilities</h3>
 
           {/* Criterion 3.1.1 Form */}
           <div className="formDiv">
@@ -583,7 +593,7 @@ const handleDownloadFile = (fileName) => {
             </button>
 
             {toggleForm312 && (
-              <form onSubmit={handleSubmit312}>
+              <form  onSubmit={handleSubmit312}>
                 <div>
                   <label htmlFor="teacherName">Name of the teacher:</label>
                   <input
@@ -1083,7 +1093,7 @@ const handleDownloadFile = (fileName) => {
 
 
 <div className="criterionCon32">
-  <h3>Key Indicator - 3.2 Resource Mobilization for Research</h3>
+  <h3 className="subTitle">Key Indicator - 3.2 Resource Mobilization for Research</h3>
 
   <div className="formDiv">
 

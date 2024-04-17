@@ -1,5 +1,5 @@
 /* dashboard.css */
-.displayContainer {
+.dashboardContainer {
   position: fixed;
   top: 0;
   left: 0;
@@ -12,7 +12,8 @@
 .dashboard-container {
     display: flex;
     justify-content: flex-start;
-  }
+}
+
   .navbar {
     background-color: #000000;
     display: flex;

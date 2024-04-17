@@ -25,7 +25,7 @@ input {
     box-shadow: 0 1px 4px #ccc;
     border-radius: 6px;
     font-size: 18px;
-    max-width: 30%;
+    max-width: 80%;
     margin-top: 18px;
   }
   
@@ -76,11 +76,11 @@ input {
 
 
 
-form {
+.formDiv > form {
     border: 1px solid #dadce0; 
     padding: 20px; /* Add padding for spacing */
     margin-bottom: 20px; /* Add margin at the bottom */
-    width:90%;
+    width:100%;
     /* display: flex;
     justify-content: center;
     flex-direction: column; */
@@ -152,16 +152,19 @@ form {
 }
 
 .formDiv input[type="text"],
+.formDiv input[type="number"],
+.formDiv input[type="file"],
 .formDiv textarea {
-    width: 100%; /* Make inputs and textareas full width */
+    width: 40%; /* Make inputs and textareas full width */
     padding: 10px; /* Padding for inputs and textareas */
     margin-bottom: 10px; /* Add margin at the bottom */
     border: 1px solid #dadce0; /* Light gray border */
     border-radius: 4px; /* Rounded corners */
 }
 
+
 .formDiv textarea {
-    width: 60%;
+    width: 40%;
     resize: vertical; /* Allow vertical resizing */
 }
 
@@ -172,6 +175,8 @@ form {
 }
 
 .formDiv input[type="file"] {
+    width: 40%; /* Make inputs and textareas full width */
+
     margin-bottom: 10px; /* Add margin at the bottom */
 }
 
@@ -222,15 +227,15 @@ table {
     background-color: #5a6268; /* Darker gray on hover */
   }
   
-  h2{
+  .criterionMainTitle{
     margin-top: 64px;
   }
-  h3 {
+  .subTitle {
     margin-top: 32px;
     position: relative; /* Ensure proper positioning for pseudo-element */
   }
   
-  h3::before {
+  .subTitle::before {
     content: "";
     position: absolute;
     top: -8px; /* Adjust the position of the line relative to the heading */
