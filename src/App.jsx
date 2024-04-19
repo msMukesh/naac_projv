@@ -33,9 +33,9 @@ function App() {
           }
         />
 
-        <Route path="/criterion1" element={<Criterion1 />} /> {/* Add Criterion1 route */}
-        <Route path="/criterion2" element={<Criterion2 />} /> {/* Add Criterion2 route */}
-        <Route path="/criterion3" element={<Criterion3 />} /> {/* Add Criterion3 route */}
+        <Route path="/Criterion1" element={<Criterion1 />} /> {/* Add Criterion1 route */}
+        <Route path="/Criterion2" element={<Criterion2 />} /> {/* Add Criterion2 route */}
+        <Route path="/Criterion3" element={<Criterion3 />} /> {/* Add Criterion3 route */}
       </Routes>
     </BrowserRouter>
   );
