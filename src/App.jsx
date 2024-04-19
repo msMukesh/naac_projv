@@ -9,7 +9,7 @@ import Criterion3 from './components/Criterion3';
 import Criterion2 from './components/Criterion2';
 import Criterion1 from './components/Criterion1';
 import './App.css'; // Import the CSS file
-//
+//deploy
 function App() {
   const { user, loading, error } = useUserContext();
 
