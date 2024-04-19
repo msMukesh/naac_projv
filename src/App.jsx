@@ -1,4 +1,3 @@
-// App.js
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Auth from './components/auth';
@@ -9,10 +8,10 @@ import LoadingSpinner from './components/LoadingSpinner'; // Import the loading 
 import Criterion3 from './components/Criterion3'; // Import Criterion3 component
 import Criterion2 from './components/Criterion2';
 import Criterion1 from './components/Criterion1';
+import './App.css'; // Import the CSS file
 
 function App() {
   const { user, loading, error } = useUserContext();
-
 
   return (
     <BrowserRouter>
@@ -34,13 +33,9 @@ function App() {
           }
         />
 
-                <Route path="/criterion3" element={<Criterion3 />} /> {/* Add Criterion3 route */}
-                <Route path="/criterion1" element={<Criterion1 />} /> 
-                <Route path="/criterion2" element={<Criterion2 />} /> 
-
+        <Route path="/criterion1" element={<Criterion1 />} /> {/* Add Criterion1 route */}
+        <Route path="/criterion2" element={<Criterion2 />} /> {/* Add Criterion2 route */}
         <Route path="/criterion3" element={<Criterion3 />} /> {/* Add Criterion3 route */}
-
-
       </Routes>
     </BrowserRouter>
   );
