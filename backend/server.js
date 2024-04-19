@@ -19,7 +19,7 @@ const port = process.env.PORT || 5000;
 
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/Naac', {
+mongoose.connect('mongodb+srv://msmukesh2001:naacdb123@naac.kcdpff4.mongodb.net/?retryWrites=true&w=majority&appName=Naac', {
   // useNewUrlParser: true,
   // useUnifiedTopology: true,
   // useCreateIndex: true, // Corrected option name
