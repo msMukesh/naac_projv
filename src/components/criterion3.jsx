@@ -522,15 +522,7 @@ const handleDownloadFile = (fileName) => {
   window.open(`http://localhost:5000/downloadFile?fileName=${encodeURIComponent(fileName)}`, "_blank");
 };
 
-const getNextSequenceValue = async (sequenceName) => {
-  const sequenceDocument = await SequenceModel.findOneAndUpdate(
-    { _id: sequenceName },
-    { $inc: { sequence_value: 1 } },
-    { new: true }
-  );
 
-  return sequenceDocument.sequence_value;
-};
 
 
   return (
@@ -686,7 +678,6 @@ const getNextSequenceValue = async (sequenceName) => {
                   </button>
                 </td>
 {/* <td>{tableData312.filePath}</td> */}
-
               </tr>
             </tbody>
           </table>

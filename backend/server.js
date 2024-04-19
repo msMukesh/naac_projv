@@ -135,11 +135,71 @@ app.get('/getFile311', async (req, res) => {
   }
 });
 
-// Endpoint for file upload for 311
+// Define schema for sequence collection
+const sequenceSchema = new mongoose.Schema({
+  _id: String, // Sequence name
+  sequence_value: Number, // Current value of the sequence
+});
+
+// Create model for sequence collection
+const SequenceModel = mongoose.model('Sequence', sequenceSchema);
+const getNextSequenceValue = async () => {
+  // Find the sequence document for sequence collection
+  let sequenceDocument = await SequenceModel.findOne({ _id: '311_sequence' });
+
+  // If the sequence document doesn't exist, initialize it with sequence_value: 1
+  if (!sequenceDocument) {
+    sequenceDocument = new SequenceModel({
+      _id: '311_sequence',
+      sequence_value: 1
+    });
+    await sequenceDocument.save();
+    return sequenceDocument.sequence_value;
+  }
+
+  // Retrieve the maximum existing sequence value from the database
+  const maxExistingValue = await Criterion311Model.find().select('sequence_value').sort({ sequence_value: -1 }).limit(1);
+
+  // Check if any numbers less than the current sequence value are missing in the sequence
+  for (let i = sequenceDocument.sequence_value; i <= maxExistingValue; i++) {
+    const exists = await Criterion311Model.exists({ sequence_value: i });
+    if (!exists) {
+      // If a missing number is found, use it as the sequence value and return
+      sequenceDocument.sequence_value = i;
+      await sequenceDocument.save();
+      return sequenceDocument.sequence_value;
+    }
+  }
+
+  // If no missing numbers are found, increment the sequence value and return it
+  sequenceDocument.sequence_value++;
+  await sequenceDocument.save();
+  return sequenceDocument.sequence_value;
+};
+
+
+
 app.post('/311upload', upload.single('file'), async (req, res) => {
   const { userName } = req.body;
   const { path: filePath } = req.file;
-  const _id = `311${globalUserName}`;
+  
+  // Get the next sequence value
+  let sequenceValue;
+  try {
+    sequenceValue = await getNextSequenceValue();
+  } catch (error) {
+    console.error('Error getting next sequence value:', error);
+    return res.status(500).json({ error: 'Error uploading file. Please try again.' });
+  }
+  
+  // Check if sequenceValue is a valid number
+  if (isNaN(sequenceValue)) {
+    console.error('Invalid sequence value:', sequenceValue);
+    return res.status(500).json({ error: 'Error uploading file. Please try again.' });
+  }
+
+  // Construct the _id
+  const _id = `311${userName}${sequenceValue}`;
 
   const newDocument = new Criterion311Model({
     _id,
@@ -155,6 +215,29 @@ app.post('/311upload', upload.single('file'), async (req, res) => {
     return res.status(500).json({ error: 'Error uploading file. Please try again.' });
   }
 });
+
+
+
+// Endpoint for file upload for 311
+// app.post('/311upload', upload.single('file'), async (req, res) => {
+//   const { userName } = req.body;
+//   const { path: filePath } = req.file;
+//   const _id = `311${globalUserName}`;
+
+//   const newDocument = new Criterion311Model({
+//     _id,
+//     userName,
+//     filePath,
+//   });
+
+//   try {
+//     await newDocument.save();
+//     return res.status(200).json({ message: 'File uploaded successfully' });
+//   } catch (error) {
+//     console.error('Error saving document:', error);
+//     return res.status(500).json({ error: 'Error uploading file. Please try again.' });
+//   }
+// });
 
 
 
