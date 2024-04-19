@@ -5,7 +5,7 @@ import Dashboard from './components/dashboard';
 import Home from './components/Home';
 import { useUserContext } from './context/userContext';
 import LoadingSpinner from './components/LoadingSpinner'; // Import the loading spinner component
-import Criterion3 from './components/Criterion3';
+import Criterion3 from './components/Criterion3'; // Import Criterion3 component
 import Criterion2 from './components/Criterion2';
 import Criterion1 from './components/Criterion1';
 import './App.css'; // Import the CSS file
