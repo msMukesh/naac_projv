@@ -1,13 +1,37 @@
-import express from "express";
-import mongoose from "mongoose";
-import multer from "multer";
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-import cors from "cors"; // Import the cors package
+const express = require("express");
+const mongoose = require("mongoose");
+const multer = require("multer");
+const { fileURLToPath } = require('url');
+const { dirname, join } = require('path');
+const cors = require("cors");
 const app = express();
-import path from "path";
+const path = require("path");
+const fs = require('fs');
 
-import fs from 'fs';
+// MongoDB connection
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://msmukesh:naacdb1234@naaccluster.rheatzk.mongodb.net/?retryWrites=true&w=majority&appName=NaacCluster";
+
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+async function run() {
+  try {
+    await client.connect();
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    await client.close();
+  }
+}
+
+run().catch(console.dir);
+
 app.use(cors());
 app.use(cors({
   origin: "http://localhost:5173"
@@ -17,13 +41,7 @@ app.use(express.json());
 
 const port = process.env.PORT || 5000;
 
-
-// Connect to MongoDB
-mongoose.connect('mongodb+srv://msmukesh2001:naacdb123@naac.kcdpff4.mongodb.net/?retryWrites=true&w=majority&appName=Naac', {
-  // useNewUrlParser: true,
-  // useUnifiedTopology: true,
-  // useCreateIndex: true, // Corrected option name
-});
+mongoose.connect(uri);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -31,8 +49,6 @@ db.once('open', () => {
   console.log('Connected to MongoDB');
 });
 
-
-// Set up CORS headers to allow requests from any origin
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -40,11 +56,10 @@ app.use((req, res, next) => {
   next();
 });
 
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = dirname(__filename);
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-let globalUserName = ""; // Global variable to store userName
+let globalUserName = "";
 
 app.post("/storeUsername", (req, res) => {
   try {
@@ -53,7 +68,6 @@ app.post("/storeUsername", (req, res) => {
       return res.status(400).json({ error: "Username is required" });
     }
     
-    // Store userName wherever needed (e.g., in a database)
     globalUserName = userName;
 
     console.log("backend: " + userName);
@@ -64,60 +78,48 @@ app.post("/storeUsername", (req, res) => {
   }
 });
 
-// Middleware for parsing JSON bodies
-
-// Function to create directory if it doesn't exist
 const createDirectoryIfNotExists = (directory) => {
   if (!fs.existsSync(directory)) {
-    fs.mkdirSync(directory, { recursive: true }); // Create directory recursively
+    fs.mkdirSync(directory, { recursive: true });
   }
 };
 
-// Set up multer storage configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadsDirectory = join(__dirname, 'uploads'); // Path to uploads directory
-    const userDirectory = join(uploadsDirectory, globalUserName); // Path to user's directory inside uploads
-    createDirectoryIfNotExists(userDirectory); // Create user's directory if it doesn't exist
-    cb(null, userDirectory); // Set the destination folder
+    const uploadsDirectory = join(__dirname, 'uploads');
+    const userDirectory = join(uploadsDirectory, globalUserName);
+    createDirectoryIfNotExists(userDirectory);
+    cb(null, userDirectory);
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname); // Use the original file name
+    cb(null, file.originalname);
   }
 });
 
-// Initialize multer upload middleware
 const upload = multer({ 
   storage,
-  // Ensure the field name matches the one in the form data
   fileField: 'file'
 });
 
-
-// Define the directory where your files are stored
 const filesDirectory = path.join(__dirname, "path/to/files");
 
-// Endpoint to handle file download
 app.get("/downloadFile", (req, res) => {
   const fileName = req.query.fileName;
-  const absolutePath = path.join(filesDirectory, fileName); // Construct absolute path
-  res.download(fileName); // Send file with original name for download
+  const absolutePath = path.join(filesDirectory, fileName);
+  res.download(fileName);
 });
 
-
-// Define the schema for Criterion3 collection
+// Define the schema for Criterion311 collection
 const Criterion311Schema = new mongoose.Schema({
   _id: String,
   userName: String,
   filePath: String,
 });
 
-// Define the model for Criterion3 collection
+// Define the model for Criterion311 collection
 const Criterion311Model = mongoose.model('Criterion311', Criterion311Schema);
 
-// Replace your existing '/getFile' route with this one
 app.get('/getFile311', async (req, res) => {
-  // const userName = req.query.userName; // Retrieve userName from query params
   const _id = `311${globalUserName}`;
 
   try {
