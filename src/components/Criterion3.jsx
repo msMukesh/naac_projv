@@ -72,7 +72,7 @@ const Criterion3 = () => {
       formData.append("userName", userName);
       console.log("311 frontend"+userName);
       const response = await axios.post(
-        "http://localhost:5000/311upload",
+        "https://naac-projv.onrender.com/311upload",
         formData,
         {
           headers: {
@@ -113,7 +113,7 @@ for (const pair of formDataToSend.entries()) {
   };
     try {
       const response = await axios.post(
-        "http://localhost:5000/312upload",
+        "https://naac-projv.onrender.com/312upload",
         formDataToSend,
         {
           headers: {
@@ -188,7 +188,7 @@ for (const pair of formDataToSend.entries()) {
 console.log(formDataToSend);
     try {
       const response = await axios.post(
-        "http://localhost:5000/313upload",
+        "https://naac-projv.onrender.com/313upload",
         formDataToSend,
         {
           headers: {
@@ -216,7 +216,7 @@ console.log(formDataToSend);
 
   async function getDetails() {
     try {
-      const response = await axios.get("http://localhost:5000/getFile311");
+      const response = await axios.get("https://naac-projv.onrender.com/getFile311");
       console.log(response.data);
       // Handle the response data as needed
     } catch (error) {
@@ -272,7 +272,7 @@ console.log(formDataToSend);
     }
     
     try {
-      const response = await axios.post("http://localhost:5000/314upload", formData, {
+      const response = await axios.post("https://naac-projv.onrender.com/314upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -348,7 +348,7 @@ const handleSubmit316 = async (e) => {
   }
 
   try {
-    const response = await axios.post("http://localhost:5000/316upload", dataToSend, {
+    const response = await axios.post("https://naac-projv.onrender.com/316upload", dataToSend, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -418,7 +418,7 @@ const handleSubmit321 = async (e) => {
   }
 
   try {
-    const response = await axios.post("http://localhost:5000/321upload", dataToSend, {
+    const response = await axios.post("https://naac-projv.onrender.com/321upload", dataToSend, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -490,7 +490,7 @@ useEffect(() => {
       const criterionNumbers = [311, 312, 313, 314, 316, 321];
       const promises = criterionNumbers.map(async (number) => {
         try {
-          const response = await axios.get(`http://localhost:5000/getFile${number}?userName=${userName}`);
+          const response = await axios.get(`https://naac-projv.onrender.com/getFile${number}?userName=${userName}`);
           return response.data.data;
         } catch (error) {
           // If the error is 404, return null, indicating data not found
@@ -519,7 +519,7 @@ useEffect(() => {
 
 
 const handleDownloadFile = (fileName) => {
-  window.open(`http://localhost:5000/downloadFile?fileName=${encodeURIComponent(fileName)}`, "_blank");
+  window.open(`https://naac-projv.onrender.com/downloadFile?fileName=${encodeURIComponent(fileName)}`, "_blank");
 };
 
 
