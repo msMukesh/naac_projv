@@ -5,20 +5,83 @@ import NavBar from "./Navbar";
 import "./Criterion3.css";
 const Criterion3 = () => {
 
+  const [tableData311, setTableData311] = useState(null);
+  const [tableData312, setTableData312] = useState(null);
+  const [tableData313, setTableData313] = useState(null);
+  const [tableData314, setTableData314] = useState(null);
+  const [tableData316, setTableData316] = useState(null);
+  const [tableData321, setTableData321] = useState(null);
+
   // State for Criterion 3.1.1
   const [file311, setFile311] = useState(null);
   const [uploading311, setUploading311] = useState(false);
   const [uploaded311, setUploaded311] = useState(false);
   const [error311, setError311] = useState(null);
+
+  const handleFile311Change = (e) => {
+    setFile311(e.target.files[0]);
+    setUploaded311(false); // Reset the upload status
+    setError311(null); // Reset any errors
+  };
+
   const [criterionNumber, setCriterionNumber] = useState(null);
-  // State for Criterion 3.1.2
-  const [formData312, setFormData312] = useState({
-    teacherName: "",
-    amount: "",
-    year: "",
-    additionalInfo: "",
-    file312: null,
-  });
+
+  const handleUpload311 = async () => {
+    if (!file311) {
+      setError311("Please select a file.");
+      return;
+    }
+    setUploading311(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file311);
+      // Get user name from cookie
+      const userName = Cookies.get("userName");
+      formData.append("userName", userName);
+      console.log("311 frontend"+userName);
+      const response = await axios.post(
+        "http://localhost:5000/311upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(response.data);
+      alert("File uploaded successfully.");
+ // Reset the form and update states after successful upload
+      setUploaded311(true); // Set upload status to true
+
+ // Reset the file input after 3 seconds
+ setTimeout(() => {
+  setUploaded311(false); // Reset uploaded status to false after 3 seconds
+}, 1000); // 3000 milliseconds = 3 seconds
+
+
+      setFile311(null); // Reset the file input
+
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      setError311("Error uploading file. Please try again.");
+    } finally {
+      setUploading311(false);
+    }
+    // resetFormAndErrors();
+  };
+
+
+// Initial state for Criterion 3.1.2
+const initialFormData312 = {
+  teacherName: "",
+  amount: "",
+  year: "",
+  additionalInfo: "",
+  file312: null,
+};
+
+// State for Criterion 3.1.2
+const [formData312, setFormData312] = useState(initialFormData312);
 
   const [toggleForm312, setToggleForm312] = useState(false);
   const [uploading312, setUploading312] = useState(false);
@@ -27,10 +90,6 @@ const Criterion3 = () => {
 
   const handleToggleForm312 = () => {
     setToggleForm312(!toggleForm312);
-  };
-
-  const handleFile311Change = (e) => {
-    setFile311(e.target.files[0]);
   };
 
   const handleFile312Change = (e) => {
@@ -48,53 +107,11 @@ const Criterion3 = () => {
     });
   };
 
-  const [tableData311, setTableData311] = useState(null);
-  const [tableData312, setTableData312] = useState(null);
-  const [tableData313, setTableData313] = useState(null);
-  const [tableData314, setTableData314] = useState(null);
-  const [tableData316, setTableData316] = useState(null);
-  const [tableData321, setTableData321] = useState(null);
-
-  const handleUpload311 = async () => {
-    if (!file311) {
-      setError311("Please select a file.");
-      return;
-    }
-
-    setUploading311(true);
-
-    try {
-      const formData = new FormData();
-      formData.append("file", file311);
-
-      // Get user name from cookie
-      const userName = Cookies.get("userName");
-      formData.append("userName", userName);
-      console.log("311 frontend"+userName);
-      const response = await axios.post(
-        "http://localhost:5000/311upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log(response.data);
-      alert("File uploaded successfully.");
-      setUploaded311(true);
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      setError311("Error uploading file. Please try again.");
-    } finally {
-      setUploading311(false);
-    }
-    resetFormAndErrors();
-  };
 
   const handleSubmit312 = async (e) => {
     e.preventDefault();
     setUploading312(true);
+
     const formDataToSend = new FormData();
     const userName = Cookies.get("userName");
     const id = userName + "312"; // Combining userName with "312" to create id
@@ -108,7 +125,14 @@ const Criterion3 = () => {
 // Logging all data in formDataToSend
 for (const pair of formDataToSend.entries()) {
   console.log(pair[0], pair[1]);
-} const handleToggleForm312 = () => {
+} 
+
+  // Check if a file is uploaded before appending it to FormData
+  if (formData312.file312) {
+    formDataToSend.append("file", formData312.file312);
+  }
+
+const handleToggleForm312 = () => {
     setToggleForm312(!toggleForm312);
   };
     try {
@@ -123,7 +147,18 @@ for (const pair of formDataToSend.entries()) {
       );
       console.log(response.data);
       alert("Data submitted successfully.");
-      setUploaded312(true);
+       // Reset the form and other states after successful submission
+    setFormData312(initialFormData312);
+
+
+     // Reset the form and update states after successful upload
+     setUploaded312(true); // Set upload status to true
+     // Reset the file input after 3 seconds
+     setTimeout(() => {
+      setUploaded312(false); // Reset uploaded status to false after 3 seconds
+    }, 1000); // 3000 milliseconds = 3 seconds
+
+    
       setToggleForm312(!toggleForm312);
 
     } catch (error) {
@@ -132,21 +167,22 @@ for (const pair of formDataToSend.entries()) {
     } finally {
       setUploading312(false);
     }
-    resetFormAndErrors();
+    // resetFormAndErrors();
   };
-
-
   
-  // State for Criterion 3.1.3
-  const [formData313, setFormData313] = useState({
-    year: "",
-    teacherName: "",
-    designation: "",
-    fellowshipType: "",
-    fellowshipName: "",
-    sponsoringAgency: "",
-    file313: null,
-  });
+  // Initial state for Criterion 3.1.3
+const initialFormData313 = {
+  year: "",
+  teacherName: "",
+  designation: "",
+  fellowshipType: "",
+  fellowshipName: "",
+  sponsoringAgency: "",
+  file313: null,
+};
+
+// State for Criterion 3.1.3
+const [formData313, setFormData313] = useState(initialFormData313);
 
   const handleFile313Change = (e) => {
     setFormData313({
@@ -170,13 +206,14 @@ for (const pair of formDataToSend.entries()) {
   const handleToggleForm313 = () => {
     setToggleForm313(!toggleForm313);
   };
+
   const handleSubmit313 = async (e) => {
     e.preventDefault();
     setUploading313(true);
 
     const formDataToSend = new FormData();
     const userName = Cookies.get("userName");
-    const id = userName + "312"; // Combining userName with "312" to create id
+    const id = userName + "313"; // Combining userName with "312" to create id
     formDataToSend.append("id",id);
     formDataToSend.append("year", formData313.year);
     formDataToSend.append("teacherName", formData313.teacherName);
@@ -199,7 +236,18 @@ console.log(formDataToSend);
 
       console.log(response.data);
       alert("Data submitted successfully.");
-      setUploaded313(true);
+      setFormData313(initialFormData313);
+
+
+     // Reset the form and update states after successful upload
+     setUploaded313(true); // Set upload status to true
+     // Reset the file input after 3 seconds
+     setTimeout(() => {
+      setUploaded313(false); // Reset uploaded status to false after 3 seconds
+    }, 1000); // 3000 milliseconds = 3 seconds
+
+
+
 
       setToggleForm313(!toggleForm313);
 
@@ -210,7 +258,7 @@ console.log(formDataToSend);
       setUploading313(false);
     }
 
-    resetFormAndErrors();
+    // resetFormAndErrors();
 
   };
 
@@ -224,7 +272,6 @@ console.log(formDataToSend);
       // Handle errors
     }
   }
-  
 
   useEffect(()=>{
     getDetails()
@@ -232,15 +279,20 @@ console.log(formDataToSend);
   },[])
   
 
+  // Initial state for Criterion 3.1.3
+const initialFormData314 = {
+  fellowName: '',
+  yearOfEnrollment: '',
+  duration: '',
+  fellowshipType: '',
+  grantingAgency: '',
+  file314: null,
+};
 
-  const [formData314, setFormData314] = useState({
-    fellowName: '',
-    yearOfEnrollment: '',
-    duration: '',
-    fellowshipType: '',
-    grantingAgency: '',
-    file314: null,
-  });
+// State for Criterion 3.1.3
+const [formData314, setFormData314] = useState(initialFormData314);
+
+
   const [uploading314, setUploading314] = useState(false);
   const [uploaded314, setUploaded314] = useState(false);
   const [error314, setError314] = useState(null);
@@ -260,7 +312,7 @@ console.log(formDataToSend);
 
     const formData = new FormData();
     const userName = Cookies.get("userName");
-    const id = userName + "312"; // Combining userName with "312" to create id
+    const id = userName + "314"; // Combining userName with "312" to create id
     formData.append("id",id);
     formData.append('fellowName', formData314.fellowName);
     formData.append('yearOfEnrollment', formData314.yearOfEnrollment);
@@ -279,7 +331,17 @@ console.log(formDataToSend);
       });
       console.log(response.data);
       alert("Data submitted successfully.");
-      setUploaded314(true);
+      setFormData314(initialFormData314);
+
+          // Reset the form and update states after successful upload
+     setUploaded314(true); // Set upload status to true
+     // Reset the file input after 3 seconds
+     setTimeout(() => {
+      setUploaded314(false); // Reset uploaded status to false after 3 seconds
+    }, 1000); // 3000 milliseconds = 3 seconds
+
+
+
 
       setToggleForm314(!toggleForm314);
 
@@ -292,13 +354,14 @@ console.log(formDataToSend);
       setUploading314(false);
     }
 
-    resetFormAndErrors();
+    // resetFormAndErrors();
 
   };
   
   
- // State for Criterion 3.1.6
- const [formData316, setFormData316] = useState({
+
+// Initial state for Criterion 3.1.6
+const initialFormData316 = {
   schemeName: "",
   principalInvestigator: "",
   fundingAgency: "",
@@ -308,7 +371,10 @@ console.log(formDataToSend);
   fundLayoutAmount: "",
   duration: "",
   files: null,
-});
+};
+
+// State for Criterion 3.1.6
+const [formData316, setFormData316] = useState(initialFormData316);
 
 const [uploading316, setUploading316] = useState(false);
 const [uploaded316, setUploaded316] = useState(false);
@@ -330,7 +396,7 @@ const handleSubmit316 = async (e) => {
 
   const dataToSend = new FormData();
   const userName = Cookies.get("userName");
-  const id = userName + "312"; // Combining userName with "312" to create id
+  const id = userName + "316"; // Combining userName with "312" to create id
   dataToSend.append("id",id);
   // Append other form data fields
   dataToSend.append("schemeName", formData316.schemeName);
@@ -355,7 +421,16 @@ const handleSubmit316 = async (e) => {
     });
     console.log(response.data);
     alert("Data submitted successfully.");
-    setUploaded316(true);
+    setFormData316(initialFormData316);
+
+        // Reset the form and update states after successful upload
+        setUploaded316(true); // Set upload status to true
+        // Reset the file input after 3 seconds
+        setTimeout(() => {
+         setUploaded316(false); // Reset uploaded status to false after 3 seconds
+       }, 1000); // 3000 milliseconds = 3 seconds
+
+       
     setToggleForm316(!toggleForm316);
 
   } catch (error) {
@@ -364,21 +439,24 @@ const handleSubmit316 = async (e) => {
   } finally {
     setUploading316(false);
   }
-  resetFormAndErrors();
+  // resetFormAndErrors();
 };
 
-// State for Criterion 3.2.1
-const [formData321, setFormData321] = useState({
+// Initial state for Criterion 3.2.1
+const initialFormData321 = {
   projectName: "",
   principalInvestigator: "",
   fundingAgency: "",
-  fundingType: "", // Include fundingType
+  fundingType: "", // Include funding type
   department: "", // Corrected field name
   yearOfAward: "",
   fundsProvided: "",
   duration: "",
-  files: null,
-});
+  files: null, // Field for file uploads
+};
+
+// State for Criterion 3.2.1
+const [formData321, setFormData321] = useState(initialFormData321);
 
 const [uploading321, setUploading321] = useState(false);
 const [uploaded321, setUploaded321] = useState(false);
@@ -397,7 +475,6 @@ const handleFileChange321 = (e) => {
 const handleSubmit321 = async (e) => {
   e.preventDefault();
   setUploading321(true);
-
   const dataToSend = new FormData();
   const userName = Cookies.get("userName");
   const id = userName + "321"; // Combining userName with "321" to create id
@@ -424,8 +501,17 @@ const handleSubmit321 = async (e) => {
       },
     });
     console.log(response.data);
-    setUploaded321(true);
-    setToggleForm321(!toggleForm321);
+
+    setFormData321(initialFormData321);
+
+    // Reset the form and update states after successful upload
+    setUploaded321(true); // Set upload status to true
+    // Reset the file input after 3 seconds
+    setTimeout(() => {
+     setUploaded321(false); // Reset uploaded status to false after 3 seconds
+   }, 1000); // 3000 milliseconds = 3 seconds
+
+   setToggleForm321(!toggleForm321);
 
   } catch (error) {
     console.error("Error uploading files:", error);
@@ -433,7 +519,7 @@ const handleSubmit321 = async (e) => {
   } finally {
     setUploading321(false);
   }
-  resetFormAndErrors(); // Assuming you have a function to reset form and errors
+// resetFormAndErrors();   // Assuming you have a function to reset form and errors
 };
 
 
@@ -457,31 +543,31 @@ const handleToggleForm321 = () => {
 };
 
 // Function to reset form data and clear errors
-const resetFormAndErrors = () => {
-  setFile311(null);
-  setFormData312({
-    teacherName: "",
-    amount: "",
-    year: "",
-    additionalInfo: "",
-    file312: null,
-  });
-  setFormData313({
-    year: "",
-    teacherName: "",
-    designation: "",
-    fellowshipType: "",
-    fellowshipName: "",
-    sponsoringAgency: "",
-    file313: null,
-  });
-  setUploaded311(false);
-  setUploaded312(false);
-  setUploaded313(false);
-  setError311(null);
-  setError312(null);
-  setError313(null);
-};
+// const resetFormAndErrors = () => {
+//   setFile311(null);
+//   setFormData312({
+//     teacherName: "",
+//     amount: "",
+//     year: "",
+//     additionalInfo: "",
+//     file312: null,
+//   });
+//   setFormData313({
+//     year: "",
+//     teacherName: "",
+//     designation: "",
+//     fellowshipType: "",
+//     fellowshipName: "",
+//     sponsoringAgency: "",
+//     file313: null,
+//   });
+//   setUploaded311(false);
+//   setUploaded312(false);
+//   setUploaded313(false);
+//   setError311(null);
+//   setError312(null);
+//   setError313(null);
+// };
 
 useEffect(() => {
   const fetchData = async () => {
@@ -490,7 +576,7 @@ useEffect(() => {
       const criterionNumbers = [311, 312, 313, 314, 316, 321];
       const promises = criterionNumbers.map(async (number) => {
         try {
-          const response = await axios.get(`http://localhost:5000/getFile${number}?userName=${userName}`);
+          const response = await axios.get(`http://localhost:5000/getFile${number}`);
           return response.data.data;
         } catch (error) {
           // If the error is 404, return null, indicating data not found
@@ -538,12 +624,16 @@ const handleDownloadFile = (fileName) => {
           {/* Criterion 3.1.1 Form */}
           <div className="formDiv">
               <h4>3.1.1 The institution Research facilities are frequently updated and there is well defined policy for
-                        promotion of research which is uploaded on the institutional website and implemented 
+                  promotion of research which is uploaded on the institutional website and implemented 
               </h4>
 
               <p>Upload relevant supporting document </p>
-                        <input type="file" onChange={handleFile311Change} />
-                      <button className="submitFormBtn" onClick={handleUpload311} disabled={uploading311 || uploaded311}>
+ <input
+        type="file"
+        onChange={handleFile311Change}
+        
+      />
+                            <button className="submitFormBtn" onClick={handleUpload311} disabled={uploading311 || uploaded311}>
                         {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
                       </button>
                       {error311 && <div className="error">{error311}</div>}

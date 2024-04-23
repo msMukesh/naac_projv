@@ -109,6 +109,61 @@ app.get("/downloadFile", (req, res) => {
   res.download(fileName);
 });
 
+// Define schema for sequence collection
+// const sequenceSchema = new mongoose.Schema({
+//   _id: String, 
+//   sequence_value: Number, 
+// });
+
+// Create model for sequence collection
+// const SequenceModel = mongoose.model('Sequence', sequenceSchema);
+
+
+// Helper function to retrieve a Mongoose model by name
+function getModelByName(modelName) {
+  if (mongoose.models[modelName]) {
+    return mongoose.models[modelName];
+  } else {
+    throw new Error(`Model with name ${modelName} does not exist.`);
+  }
+}
+
+const getNextSequenceValue = async (criterionNumber) => {
+  // Define a pattern to identify documents with the specified criterion number and user name
+  const regexPattern = `^${criterionNumber}${globalUserName}`;
+  console.log("regexpattern"+ regexPattern);
+
+   // Get the correct model based on the criterion number
+   const CriterionModel = getModelByName(`Criterion${criterionNumber}`);
+
+  // Get the maximum sequence value
+  const [maxSequenceDoc] = await CriterionModel.find({
+    _id: { $regex: regexPattern },
+  })
+    .sort({ _id: -1 }) // Sort in descending order to get the maximum value
+    .limit(1);
+
+    console.log("maxSequenceDoc"+maxSequenceDoc);
+  const maxExistingValue = maxSequenceDoc
+    ? parseInt(maxSequenceDoc._id.slice(criterionNumber.length + globalUserName.length), 10)
+    : 1; // If there's no existing document, start from 0
+
+    console.log("max existing "+ maxExistingValue);
+  // Check for missing sequence values by iterating from 1 to the maxExistingValue
+  for (let i = 1; i <= maxExistingValue; i++) {
+    const sequenceId = `${criterionNumber}${globalUserName}${i}`; // Construct the sequence ID
+    const exists = await CriterionModel.exists({ _id: sequenceId }); // Check if it exists
+    if (!exists) {
+      // If there's a gap, use the missing sequence value
+      return i;
+    }    
+  }
+  // If no gaps found, increment the maximum existing value and return it
+  return maxExistingValue + 1;
+};
+
+
+
 // Define the schema for Criterion311 collection
 const Criterion311Schema = new mongoose.Schema({
   _id: String,
@@ -120,16 +175,39 @@ const Criterion311Schema = new mongoose.Schema({
 const Criterion311Model = mongoose.model('Criterion311', Criterion311Schema);
 
 app.get('/getFile311', async (req, res) => {
-  const _id = `311${globalUserName}`;
-
+  // Initialize the criterion number
+  const criterionNumber = 311;
+  
   try {
-    const foundDetails = await Criterion311Model.findOne({ _id });
-    if (foundDetails) {
-      console.log("Found", foundDetails);
-      res.status(200).json({ data: foundDetails });
+    // Get the highest sequence value for the given criterion number
+    const sequenceValue = await getNextSequenceValue(criterionNumber);
+    
+    // Initialize an array to hold all found documents
+    const foundDocuments = [];
+
+    // Loop from sequence 1 to sequenceValue to get all documents
+    for (let i = 1; i <= sequenceValue; i++) {
+      // Get the model for the current sequence
+      const CriterionModel = getModelByName(`Criterion${criterionNumber}`);
+
+      const _id = `${criterionNumber}${globalUserName}${i}`;
+      console.log("test print id: " + _id);
+      // Find the document with the given ID in the current model
+      const foundDetails = await CriterionModel.findOne({ _id });
+      
+      // If a document is found, add it to the array
+      if (foundDetails) {
+        foundDocuments.push(foundDetails);
+      }
+    }
+    console.log("found documents"+foundDocuments);
+    // Check if any documents were found and return the appropriate response
+    if (foundDocuments.length > 0) {
+      console.log("Found documents:", foundDocuments);
+      res.status(200).json({ data: foundDocuments });
     } else {
-      console.log("Element not found");
-      res.status(404).json({ error: "Element not found" });
+      console.log("No documents found for this ID");
+      res.status(404).json({ error: "No documents found for this ID" });
     }
   } catch (e) {
     console.error("Error:", e);
@@ -137,87 +215,46 @@ app.get('/getFile311', async (req, res) => {
   }
 });
 
-// Define schema for sequence collection
-const sequenceSchema = new mongoose.Schema({
-  _id: String, // Sequence name
-  sequence_value: Number, // Current value of the sequence
-});
 
-// Create model for sequence collection
-const SequenceModel = mongoose.model('Sequence', sequenceSchema);
-const getNextSequenceValue = async () => {
-  // Find the sequence document for sequence collection
-  let sequenceDocument = await SequenceModel.findOne({ _id: '311_sequence' });
+app.post('/311upload', upload.single('file'), async (req, res) => { 
 
-  // If the sequence document doesn't exist, initialize it with sequence_value: 1
-  if (!sequenceDocument) {
-    sequenceDocument = new SequenceModel({
-      _id: '311_sequence',
-      sequence_value: 1
-    });
-    await sequenceDocument.save();
-    return sequenceDocument.sequence_value;
-  }
-
-  // Retrieve the maximum existing sequence value from the database
-  const maxExistingValue = await Criterion311Model.find().select('sequence_value').sort({ sequence_value: -1 }).limit(1);
-
-  // Check if any numbers less than the current sequence value are missing in the sequence
-  for (let i = sequenceDocument.sequence_value; i <= maxExistingValue; i++) {
-    const exists = await Criterion311Model.exists({ sequence_value: i });
-    if (!exists) {
-      // If a missing number is found, use it as the sequence value and return
-      sequenceDocument.sequence_value = i;
-      await sequenceDocument.save();
-      return sequenceDocument.sequence_value;
-    }
-  }
-
-  // If no missing numbers are found, increment the sequence value and return it
-  sequenceDocument.sequence_value++;
-  await sequenceDocument.save();
-  return sequenceDocument.sequence_value;
-};
-
-
-
-app.post('/311upload', upload.single('file'), async (req, res) => {
   const { userName } = req.body;
   const { path: filePath } = req.file;
-  
+  const criterionNumber = '311'; // This would be based on your scenario
+
   // Get the next sequence value
   let sequenceValue;
   try {
-    sequenceValue = await getNextSequenceValue();
+    console.log("criterionNumber"+criterionNumber);
+    sequenceValue = await getNextSequenceValue(criterionNumber);
   } catch (error) {
     console.error('Error getting next sequence value:', error);
     return res.status(500).json({ error: 'Error uploading file. Please try again.' });
   }
-  
+  console.log("sequence value in post "+ sequenceValue);
   // Check if sequenceValue is a valid number
   if (isNaN(sequenceValue)) {
     console.error('Invalid sequence value:', sequenceValue);
     return res.status(500).json({ error: 'Error uploading file. Please try again.' });
   }
 
-  // Construct the _id
-  const _id = `311${userName}${sequenceValue}`;
-
+  try {
+      // Construct the _id
+  const _id = `311${globalUserName}${sequenceValue}`;
+console.log("idididid"+ _id);
   const newDocument = new Criterion311Model({
     _id,
-    userName,
+    globalUserName,
     filePath,
   });
 
-  try {
-    await newDocument.save();
+  await newDocument.save();
     return res.status(200).json({ message: 'File uploaded successfully' });
   } catch (error) {
     console.error('Error saving document:', error);
     return res.status(500).json({ error: 'Error uploading file. Please try again.' });
   }
 });
-
 
 
 // Endpoint for file upload for 311
@@ -259,10 +296,7 @@ const Criterion312Model = mongoose.model('Criterion312', Criterion312Schema);
 
 // Replace your existing '/getFile' route with this one
 app.get('/getFile312', async (req, res) => {
-  
-
   const _id = `312${globalUserName}`;
-
   try {
     const foundDetails = await Criterion312Model.findOne({ _id });
     if (foundDetails) {
@@ -272,7 +306,8 @@ app.get('/getFile312', async (req, res) => {
       console.log("Element not found");
       res.status(404).json({ error: "Element not found" });
     }
-  } catch (e) {
+  } 
+  catch (e) {
     console.error("Error:", e);
     res.status(500).json({ error: "Error occurred while fetching data." });
   }
@@ -281,10 +316,19 @@ app.get('/getFile312', async (req, res) => {
 // Endpoint for file upload for 312
 app.post('/312upload', upload.single('file'), async (req, res) => {
   const { teacherName, amount, year, additionalInfo } = req.body;
-  const { path: filePath } = req.file;
+  const filePath = req.file ? req.file.path : null; // If there's a file, use its path
   const { userName } = req.body;
-  const _id = `312${userName}`;
- 
+
+  const criterionNumber = '312'; // This would be based on your scenario
+
+  let sequenceValue;
+  try {
+    sequenceValue = await getNextSequenceValue(criterionNumber);
+  } catch (error) {
+    console.error('Error getting next sequence value:', error);
+    return res.status(500).json({ error: 'Error uploading file. Please try again.' });
+  }
+  const _id = `312${globalUserName}${sequenceValue}`;
   const newDocument = new Criterion312Model({
     _id,
     teacherName,
@@ -309,30 +353,24 @@ const Criterion313Schema = new mongoose.Schema({
   _id: String, // Specify _id as a string
 
   year: {
-    type: Number,
-    required: true
+    type: Number
   },
   teacherName: {
-    type: String,
-    required: true
+    type: String
   },
   designation: String,
   fellowshipType: {
     type: String,
-    enum: ['International', 'National', 'State'], // Assuming these are the possible values
-    required: true
+    enum: ['International', 'National', 'State'] // Assuming these are the possible values
   },
   fellowshipName: {
-    type: String,
-    required: true
+    type: String
   },
   sponsoringAgency: {
-    type: String,
-    required: true
+    type: String
   },
   filePath: {
-    type: String,
-    required: true
+    type: String
   }
 });
 
@@ -340,7 +378,6 @@ const Criterion313Model = mongoose.model('Criterion313', Criterion313Schema);
 
 // Replace your existing '/getFile' route with this one
 app.get('/getFile313', async (req, res) => {
-  
 
   const _id = `313${globalUserName}`;
 
@@ -362,14 +399,27 @@ app.get('/getFile313', async (req, res) => {
 app.post('/313upload', upload.single('file'), async (req, res) => {
   try {
     const { year, teacherName, designation, fellowshipType, fellowshipName, sponsoringAgency } = req.body;
-    const { path: filePath } = req.file;
+  
+    const filePath = req.file ? req.file.path : null; // If there's a file, use its path
 
     // Validate required fields
     // if (!year || !teacherName || !fellowshipType || !fellowshipName || !sponsoringAgency || !filePath) {
     //   return res.status(400).json({ error: 'All fields are required' });
     // }
-    const _id = `313${globalUserName}`;
-    // Generate custom _id
+
+    const criterionNumber = '313'; // This would be based on your scenario
+    let sequenceValue;
+  
+    try {
+      sequenceValue = await getNextSequenceValue(criterionNumber);
+    } catch (error) {
+      console.error('Error getting next sequence value:', error);
+      return res.status(500).json({ error: 'Error uploading file. Please try again.' });
+    }
+    console.log("313 sequence value:"+ sequenceValue);
+  
+    const _id = `313${globalUserName}${sequenceValue}`;
+      // Generate custom _id
 
     // Save the document
     const newDocument = new Criterion313Model({
@@ -395,12 +445,12 @@ app.post('/313upload', upload.single('file'), async (req, res) => {
 // Define the schema for Criterion314 collection
 const Criterion314Schema = new mongoose.Schema({
   _id: String,
-  fellowName: { type: String, required: true },
-  yearOfEnrollment: { type: Number, required: true },
-  duration: { type: Number, required: true },
-  fellowshipType: { type: String, required: true },
-  grantingAgency: { type: String, required: true },
-  filePath: { type: String, required: true }
+  fellowName: { type: String },
+  yearOfEnrollment: { type: Number },
+  duration: { type: Number },
+  fellowshipType: { type: String},
+  grantingAgency: { type: String },
+  filePath: { type: String }
 });
 
 const Criterion314Model = mongoose.model('Criterion314', Criterion314Schema);
@@ -428,8 +478,22 @@ app.get('/getFile314', async (req, res) => {
 app.post('/314upload', upload.single('file'), async (req, res) => {
   try {
     const { fellowName, yearOfEnrollment, duration, fellowshipType, grantingAgency } = req.body;
+
+    const criterionNumber = '314'; // This would be based on your scenario
+    let sequenceValue;
   
-    const _id = `314${globalUserName}`;
+    const filePath = req.file ? req.file.path : null; // If there's a file, use its path
+
+    try {
+      sequenceValue = await getNextSequenceValue(criterionNumber);
+    } catch (error) {
+      console.error('Error getting next sequence value:', error);
+      return res.status(500).json({ error: 'Error uploading file. Please try again.' });
+    }
+  
+    const _id = `314${globalUserName}${sequenceValue}`;
+      // Generate custom _id
+
     // Save data to the database
     const newDocument = new Criterion314Model({
       _id,
@@ -438,7 +502,7 @@ app.post('/314upload', upload.single('file'), async (req, res) => {
       duration,
       fellowshipType,
       grantingAgency,
-      filePath: req.file.path
+      filePath
     });
     await newDocument.save();
 
@@ -461,7 +525,6 @@ const Criterion316Schema = new mongoose.Schema({
   duration: Number,
   filePath: {
     type: String, // filePath is a single string
-    required: true
   }
 });
 
@@ -487,15 +550,32 @@ app.get('/getFile316', async (req, res) => {
 
 app.post('/316upload', upload.single('file'), async (req, res) => {
   try {
-    const { schemeName, principalInvestigator, fundingAgency, type, department, yearOfAward, fundLayoutAmount, duration } = req.body;
+    const {
+      schemeName,
+      principalInvestigator,
+      fundingAgency,
+      type,
+      department,
+      yearOfAward,
+      fundLayoutAmount,
+      duration,
+    } = req.body;
+    
+    // If a file is uploaded, assign its path; otherwise, set it to null
+    const filePath = req.file ? req.file.path : null;
 
-    // Check if file is uploaded
-    if (!req.file) {
-      return res.status(400).json({ error: 'No file uploaded' });
+    const criterionNumber = '316';
+    let sequenceValue;
+
+    try {
+      sequenceValue = await getNextSequenceValue(criterionNumber);
+    } catch (error) {
+      console.error('Error getting next sequence value:', error);
+      return res.status(500).json({ error: 'Error getting sequence value. Please try again.' });
     }
 
-    const _id = `316${globalUserName}`;
-    // Assigning the path of the uploaded file directly
+    const _id = `316${globalUserName}${sequenceValue}`;
+
     const newDocument = new Criterion316Model({
       _id,
       schemeName,
@@ -506,30 +586,33 @@ app.post('/316upload', upload.single('file'), async (req, res) => {
       yearOfAward,
       fundLayoutAmount,
       duration,
-      filePath: req.file.path
+      filePath, // This can be null if no file is uploaded
     });
 
     await newDocument.save();
 
     return res.status(200).json({ message: 'Data submitted successfully' });
   } catch (error) {
-    console.error('Error uploading file:', error);
-    return res.status(500).json({ error: 'Error uploading file. Please try again.' });
+    console.error('Error uploading data:', error);
+    return res.status(500).json({ error: 'Error uploading data. Please try again.' });
   }
 });
+
 
 // Define the schema for Criterion321 collection
 const Criterion321Schema = new mongoose.Schema({
   _id: String,
-  projectName: { type: String, required: true },
-  principalInvestigator: { type: String, required: true },
-  fundingAgency: { type: String, required: true },
-  fundingType: { type: String, required: true },
-  department: { type: String, required: true }, // Corrected field name
-  yearOfAward: { type: Number, required: true },
-  fundsProvided: { type: Number, required: true },
-  duration: { type: Number, required: true },
-  filePath: { type: String, required: true }
+  projectName: { type: String, },
+  principalInvestigator: { type: String, },
+  fundingAgency: { type: String, },
+  fundingType: { type: String, },
+  department: { type: String, }, // Corrected field name
+  yearOfAward: { type: Number, },
+  fundsProvided: { type: Number, },
+  duration: { type: Number, },
+  filePath: { type: String, },
+  // filePath: { type: String, required: true }
+
 });
 
 const Criterion321Model = mongoose.model('Criterion321', Criterion321Schema);
@@ -556,15 +639,32 @@ app.get('/getFile321', async (req, res) => {
 // Endpoint for file upload for 321
 app.post('/321upload', upload.single('file'), async (req, res) => {
   try {
-    const { projectName, principalInvestigator, fundingAgency, fundingType, department, yearOfAward, fundsProvided, duration } = req.body; // Corrected field name
+    const {
+      projectName,
+      principalInvestigator,
+      fundingAgency,
+      fundingType,
+      department,
+      yearOfAward,
+      fundsProvided,
+      duration,
+    } = req.body;
 
-    // Check if file is uploaded
-    if (!req.file) {
-      return res.status(400).json({ error: 'No file uploaded' });
+    // If a file is uploaded, set the path; otherwise, set it to null
+    const filePath = req.file ? req.file.path : null;
+
+    const criterionNumber = '321';
+    let sequenceValue;
+
+    try {
+      sequenceValue = await getNextSequenceValue(criterionNumber);
+    } catch (error) {
+      console.error('Error getting next sequence value:', error);
+      return res.status(500).json({ error: 'Error getting sequence value. Please try again.' });
     }
-  
-    const _id = `321${globalUserName}`;
-    // Save data to the database
+
+    const _id = `321${globalUserName}${sequenceValue}`;
+
     const newDocument = new Criterion321Model({
       _id,
       projectName,
@@ -572,19 +672,21 @@ app.post('/321upload', upload.single('file'), async (req, res) => {
       fundingAgency,
       fundingType,
       department,
-      yearOfAward, // Parse strings to integers
-      fundsProvided, // Parse strings to integers
+      yearOfAward,
+      fundsProvided,
       duration,
-      filePath: req.file.path
+      filePath, // This can be null if no file is uploaded
     });
+
     await newDocument.save();
-  
+
     return res.status(200).json({ message: 'Data submitted successfully' });
   } catch (error) {
-    console.error('Error uploading file:', error);
-    return res.status(500).json({ error: 'Error uploading file. Please try again.' });
+    console.error('Error saving data:', error);
+    return res.status(500).json({ error: 'Error saving data. Please try again.' });
   }
 });
+
 
 
 // Serve uploaded files statically
