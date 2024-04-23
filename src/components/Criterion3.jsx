@@ -339,10 +339,6 @@ const [formData314, setFormData314] = useState(initialFormData314);
      setTimeout(() => {
       setUploaded314(false); // Reset uploaded status to false after 3 seconds
     }, 1000); // 3000 milliseconds = 3 seconds
-
-
-
-
       setToggleForm314(!toggleForm314);
 
     } 
@@ -375,7 +371,6 @@ const initialFormData316 = {
 
 // State for Criterion 3.1.6
 const [formData316, setFormData316] = useState(initialFormData316);
-
 const [uploading316, setUploading316] = useState(false);
 const [uploaded316, setUploaded316] = useState(false);
 const [error316, setError316] = useState(null);
@@ -569,39 +564,83 @@ const handleToggleForm321 = () => {
 //   setError313(null);
 // };
 
+// useEffect(() => {
+//   const fetchData = async () => {
+//     try {
+//       const userName = Cookies.get("userName");
+//       const criterionNumbers = [311, 312, 313, 314, 316, 321];
+//       const promises = criterionNumbers.map(async (number) => {
+//         try {
+//           const response = await axios.get(`http://localhost:5000/getFile${number}`);
+//           return response.data.data;
+//         } catch (error) {
+//           // If the error is 404, return null, indicating data not found
+//           if (error.response && error.response.status === 404) {
+//             return null;
+//           }
+//           // For other errors, rethrow the error
+//           throw error;
+//         }
+//       });
+//       const results = await Promise.all(promises);
+//       // Update the state only for requests that succeed
+//       setTableData311(results[0]); // Store result for criterion 311
+//       setTableData312(results[1]); // Store result for criterion 312
+//       setTableData313(results[2]); // Store result for criterion 313
+//       setTableData314(results[3]); // Store result for criterion 314
+//       setTableData316(results[4]); // Store result for criterion 316
+//       setTableData321(results[5]); // Store result for criterion 321
+//     } catch (error) {
+//       console.error("Error fetching table data:", error);
+//     }
+//   };
+
+//   fetchData();
+// }, [ uploaded311,uploaded312,uploaded313,uploaded314,uploaded316,uploaded321]); // Fetch data on component mount
+
+
 useEffect(() => {
   const fetchData = async () => {
     try {
       const userName = Cookies.get("userName");
       const criterionNumbers = [311, 312, 313, 314, 316, 321];
-      const promises = criterionNumbers.map(async (number) => {
-        try {
-          const response = await axios.get(`http://localhost:5000/getFile${number}`);
-          return response.data.data;
-        } catch (error) {
-          // If the error is 404, return null, indicating data not found
-          if (error.response && error.response.status === 404) {
-            return null;
-          }
-          // For other errors, rethrow the error
-          throw error;
-        }
-      });
-      const results = await Promise.all(promises);
-      // Update the state only for requests that succeed
-      setTableData311(results[0]); // Store result for criterion 311
-      setTableData312(results[1]); // Store result for criterion 312
-      setTableData313(results[2]); // Store result for criterion 313
-      setTableData314(results[3]); // Store result for criterion 314
-      setTableData316(results[4]); // Store result for criterion 316
-      setTableData321(results[5]); // Store result for criterion 321
+
+      // Construct query parameters
+      const params = {
+        userName,
+        criterionNumbers: criterionNumbers.join(','),
+      };
+
+      // Send GET request with query parameters
+      const response = await axios.get("http://localhost:5000/getFilesByCriteria", { params });
+
+      const results = response.data.results; // Each element is an array of data for a criterion
+      // Update the state with the corresponding results
+      setTableData311(results[0]); // Update with array for criterion 311
+      console.log("results[0]): "+results[0]);
+
+      setTableData312(results[1]); // Update with array for criterion 312
+      console.log("results[1]): "+results[1]);
+
+      setTableData313(results[2]); // Update with array for criterion 313
+      console.log("results[2]: "+results[2]);
+
+      setTableData314(results[3]); // Update with array for criterion 314
+      console.log("results[3]: "+results[3]);
+
+      setTableData316(results[4]); // Update with array for criterion 316
+      console.log("results[4]: "+results[4]);
+
+      setTableData321(results[5]); // Update with array for criterion 321
+      console.log("results[5]: "+results[5]);
+
     } catch (error) {
       console.error("Error fetching table data:", error);
     }
   };
 
-  fetchData();
-}, [ uploaded311,uploaded312,uploaded313,uploaded314,uploaded316,uploaded321]); // Fetch data on component mount
+  fetchData(); // Fetch data once when the component mounts
+ }, [ uploaded311,uploaded312,uploaded313,uploaded314,uploaded316,uploaded321]); // Fetch data on component mount
 
 
 const handleDownloadFile = (fileName) => {
@@ -639,33 +678,34 @@ const handleDownloadFile = (fileName) => {
                       {error311 && <div className="error">{error311}</div>}
           </div>
 
-              {/* Display table if data is available */}
-              {tableData311 && (
-                      <div>
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>User Name</th>
-                              <th>File </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>{tableData311.userName}</td>
-
-                              <td>
-                                <button className="Downloadbtn" onClick={() => handleDownloadFile(tableData311.filePath)}>
-                                  Download File
-                                </button>
-                              </td>
-
-                              {/* <td>{tableData311.filePath}</td> */}
-
-                                </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    )}
+          {tableData311 && (
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th>User Name</th>
+          <th>File</th>
+        </tr>
+      </thead>
+      <tbody>
+        {/* Map over the tableData311 array to create a row for each object */}
+        {tableData311.map((data, index) => (
+          <tr key={index}>
+            <td>{data._id}</td>
+            <td>
+              <button
+                className="Downloadbtn"
+                onClick={() => handleDownloadFile(data.filePath)}
+              >
+                Download File
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+)}
 
           {/* Criterion 3.1.2 Form */}
           <div className="formDiv">
@@ -757,18 +797,21 @@ const handleDownloadFile = (fileName) => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>{tableData312.teacherName}</td>
-                <td>{tableData312.amount}</td>
-                <td>{tableData312.year}</td>
-                <td>{tableData312.additionalInfo}</td>
+            {tableData312.map((data, index) => (
+
+              <tr key={index}>
+                <td>{data.teacherName}</td>
+                <td>{data.amount}</td>
+                <td>{data.year}</td>
+                <td>{data.additionalInfo}</td>
                 <td>
-                  <button className="Downloadbtn" onClick={() => handleDownloadFile(tableData312.filePath)}>
+                  <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                   Download File
                   </button>
                 </td>
 {/* <td>{tableData312.filePath}</td> */}
               </tr>
+            ))}
             </tbody>
           </table>
         </div>
@@ -885,19 +928,22 @@ const handleDownloadFile = (fileName) => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>{tableData313.year}</td>
-                <td>{tableData313.teacherName}</td>
-                <td>{tableData313.designation}</td>
-                <td>{tableData313.fellowshipName}</td>
-                <td>{tableData313.sponsoringAgency}</td>
+            {tableData313.map((data, index) => (
+
+                <tr key={index}>
+                <td>{data.year}</td>
+                <td>{data.teacherName}</td>
+                <td>{data.designation}</td>
+                <td>{data.fellowshipName}</td>
+                <td>{data.sponsoringAgency}</td>
                 <td>
-                  <button className="Downloadbtn" onClick={() => handleDownloadFile(tableData313.filePath)}>
+                  <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                   Download File
                   </button>
                 </td>
                 {/* <td>{tableData313.filePath}</td> */}
               </tr>
+            ))}
             </tbody>
           </table>
         </div>
@@ -995,14 +1041,18 @@ const handleDownloadFile = (fileName) => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>{tableData314.fellowName}</td>
-                <td>{tableData314.yearOfEnrollment}</td>
-                <td>{tableData314.duration}</td>
-                <td>{tableData314.fellowshipType}</td>
-                <td>{tableData314.grantingAgency}</td>
+
+            {tableData314.map((data, index) => (
+
+<tr key={index}>
+
+                <td>{data.fellowName}</td>
+                <td>{data.yearOfEnrollment}</td>
+                <td>{data.duration}</td>
+                <td>{data.fellowshipType}</td>
+                <td>{data.grantingAgency}</td>
                 <td>
-                  <button className="Downloadbtn" onClick={() => handleDownloadFile(tableData314.filePath)}>
+                  <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                   Download File
                   </button>
                 </td>
@@ -1010,6 +1060,7 @@ const handleDownloadFile = (fileName) => {
 
 
               </tr>
+            ))}
             </tbody>
           </table>
         </div>
@@ -1147,23 +1198,25 @@ const handleDownloadFile = (fileName) => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>{tableData316.schemeName}</td>
-                <td>{tableData316.principalInvestigator}</td>
-                <td>{tableData316.fundingAgency}</td>
-                <td>{tableData316.type}</td>
-                <td>{tableData316.department}</td>
-                <td>{tableData316.yearOfAward}</td>
-                <td>{tableData316.fundLayoutAmount}</td>
-                <td>{tableData316.duration}</td>
+            {tableData316.map((data, index) => (
+                <tr key={index}>                
+               <td>{data.schemeName}</td>
+                <td>{data.principalInvestigator}</td>
+                <td>{data.fundingAgency}</td>
+                <td>{data.type}</td>
+                <td>{data.department}</td>
+                <td>{data.yearOfAward}</td>
+                <td>{data.fundLayoutAmount}</td>
+                <td>{data.duration}</td>
                 <td>
-                  <button className="Downloadbtn" onClick={() => handleDownloadFile(tableData316.filePath)}>
+                  <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                   Download File
                   </button>
                 </td>
                 {/* <td>{tableData316.filePath}</td> */}
 
               </tr>
+            ))}
             </tbody>
           </table>
         </div>
@@ -1297,22 +1350,23 @@ const handleDownloadFile = (fileName) => {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>{tableData321.projectName}</td>
-          <td>{tableData321.principalInvestigator}</td>
-          <td>{tableData321.fundingAgency}</td>
-          <td>{tableData321.fundingType}</td>
-          <td>{tableData321.department}</td>
-          <td>{tableData321.yearOfAward}</td>
-          <td>{tableData321.fundsProvided}</td>
-          <td>{tableData321.duration}</td>
+      {tableData321.map((data, index) => (
+          <tr key={index}>          <td>{data.projectName}</td>
+          <td>{data.principalInvestigator}</td>
+          <td>{data.fundingAgency}</td>
+          <td>{data.fundingType}</td>
+          <td>{data.department}</td>
+          <td>{data.yearOfAward}</td>
+          <td>{data.fundsProvided}</td>
+          <td>{data.duration}</td>
           <td>
-                  <button className="Downloadbtn" onClick={() => handleDownloadFile(tableData321.filePath)}>
+                  <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                   Download File
                   </button>
                 </td>
           {/* <td>{tableData321.filePath}</td> */}
         </tr>
+      ))}
       </tbody>
     </table>
   </div>
