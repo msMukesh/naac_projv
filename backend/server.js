@@ -128,6 +128,7 @@ function getModelByName(modelName) {
   }
 }
 
+
 const getNextSequenceValue = async (criterionNumber) => {
   // Define a pattern to identify documents with the specified criterion number and user name
   const regexPattern = `^${criterionNumber}${globalUserName}`;
@@ -161,6 +162,28 @@ const getNextSequenceValue = async (criterionNumber) => {
   // If no gaps found, increment the maximum existing value and return it
   return maxExistingValue + 1;
 };
+
+app.delete('/deleteFile/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const criterionNumber = id.substring(0, 3); // Extract criterion number
+    const CriterionModel = getModelByName(`Criterion${criterionNumber}`);
+    console.log("delete criterion number: "+criterionNumber);
+    console.log("delete id backend: "+id);
+
+    const result = await CriterionModel.findByIdAndDelete(id);
+
+    if (result) {
+      res.status(200).json({ message: 'File deleted successfully.' });
+    } else {
+      res.status(404).json({ error: 'File not found.' });
+    }
+  } catch (error) {
+    console.error('Error deleting file:', error);
+    res.status(500).json({ error: 'An error occurred while deleting the file.' });
+  }
+});
+
 
 
 

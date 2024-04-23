@@ -12,6 +12,21 @@ const Criterion3 = () => {
   const [tableData316, setTableData316] = useState(null);
   const [tableData321, setTableData321] = useState(null);
 
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/deleteFile/${id}`);
+      if (response.status === 200) {
+        console.log(`Successfully deleted item with ID: ${id}`);
+        // Update tableData311 to reflect deletion
+        setTableData311(tableData311.filter((data) => data._id !== id));
+      }
+    } catch (error) {
+      console.error(`Error deleting item with ID: ${id}:`, error);
+    }
+  };
+
+  
   // State for Criterion 3.1.1
   const [file311, setFile311] = useState(null);
   const [uploading311, setUploading311] = useState(false);
@@ -518,7 +533,6 @@ const handleSubmit321 = async (e) => {
 };
 
 
-
 // Inside your component function
 const [toggleForm314, setToggleForm314] = useState(false);
 const [toggleForm316, setToggleForm316] = useState(false);
@@ -685,13 +699,14 @@ const handleDownloadFile = (fileName) => {
         <tr>
           <th>User Name</th>
           <th>File</th>
+          <th>Actions</th> {/* New column for the action buttons */}
         </tr>
       </thead>
       <tbody>
         {/* Map over the tableData311 array to create a row for each object */}
         {tableData311.map((data, index) => (
           <tr key={index}>
-            <td>{data._id}</td>
+            <td>{data._id}</td> {/* ID column */}
             <td>
               <button
                 className="Downloadbtn"
@@ -700,12 +715,28 @@ const handleDownloadFile = (fileName) => {
                 Download File
               </button>
             </td>
+            <td> {/* Actions column */}
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)}
+              >
+                Delete
+              </button>
+              <button
+                className="Editbtn"
+                onClick={() => console.log(`Edit item with ID: ${data._id}`)}
+              >
+                Edit
+              </button>
+            </td>
           </tr>
         ))}
       </tbody>
     </table>
   </div>
 )}
+
+
 
           {/* Criterion 3.1.2 Form */}
           <div className="formDiv">
@@ -1069,7 +1100,7 @@ const handleDownloadFile = (fileName) => {
 
 
 {/* Criterion 3.1.6 Form */}
-          <div className="formDiv">
+  <div className="formDiv">
   <h4>Criterion 3.1.6 - Departments with UGC-SAP, CAS, DST-FIST, DBT, ICSSR, and other recognitions by national and international agencies during the year</h4>
   <button className="toggleFormbtn" onClick={handleToggleForm316}>
     {toggleForm316 ? "Hide Form" : "Show Form"}

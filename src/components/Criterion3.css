@@ -249,3 +249,34 @@ table {
 h4{
     margin-top: 62px;
 }
+
+
+/* Styles for the Delete button */
+.Deletebtn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .Deletebtn:hover {
+    background-color: #a00000; /* Darker red when hovering */
+  }
+  
+  /* Styles for the Edit button */
+  .Editbtn {
+    margin-left: 8px;
+    margin-top: 4px;
+    background-color: rgb(230, 219, 6);
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .Editbtn:hover {
+    background-color: rgb(200, 180, 0); /* Darker yellow on hover */
+  }
+  
+  
