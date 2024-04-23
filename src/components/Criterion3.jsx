@@ -12,19 +12,34 @@ const Criterion3 = () => {
   const [tableData316, setTableData316] = useState(null);
   const [tableData321, setTableData321] = useState(null);
 
+const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
 
   const handleDelete = async (id) => {
+    sethandleDeleteFlag(!handleDeleteFlag);
     try {
       const response = await axios.delete(`http://localhost:5000/deleteFile/${id}`);
       if (response.status === 200) {
         console.log(`Successfully deleted item with ID: ${id}`);
-        // Update tableData311 to reflect deletion
-        setTableData311(tableData311.filter((data) => data._id !== id));
+        
+        // Get the criterion number from the first three characters of the ID
+        const criterionNumber = id.substring(0, 3);
+  
+        // Dynamically get the state variable and setter function for the given criterion
+        const tableDataName = `tableData${criterionNumber}`;
+        const setTableDataName = `setTableData${criterionNumber}`;
+  
+        // Access the state variable and setter function dynamically
+        const currentTableData = this[tableDataName];
+        const setCurrentTableData = this[setTableDataName];
+  
+        // Update the corresponding state by filtering out the deleted item
+        setCurrentTableData(currentTableData.filter((data) => data._id !== id));
       }
     } catch (error) {
       console.error(`Error deleting item with ID: ${id}:`, error);
     }
   };
+  
 
   
   // State for Criterion 3.1.1
@@ -654,7 +669,7 @@ useEffect(() => {
   };
 
   fetchData(); // Fetch data once when the component mounts
- }, [ uploaded311,uploaded312,uploaded313,uploaded314,uploaded316,uploaded321]); // Fetch data on component mount
+ }, [ uploaded311,uploaded312,uploaded313,uploaded314,uploaded316,uploaded321,handleDeleteFlag]); // Fetch data on component mount
 
 
 const handleDownloadFile = (fileName) => {
@@ -722,12 +737,7 @@ const handleDownloadFile = (fileName) => {
               >
                 Delete
               </button>
-              <button
-                className="Editbtn"
-                onClick={() => console.log(`Edit item with ID: ${data._id}`)}
-              >
-                Edit
-              </button>
+            
             </td>
           </tr>
         ))}
@@ -815,38 +825,54 @@ const handleDownloadFile = (fileName) => {
           </div>
  {/* Display table if data is available */}
  {tableData312 && (
-        <div>
-          <table>
-            <thead>
-              <tr>
-                <th>TeacherName</th>
-                <th>Amount</th>
-                <th>year</th>
-                <th>AdditionalInfo</th>
-                <th>File</th>
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th>Teacher Name</th>
+          <th>Amount</th>
+          <th>Year</th>
+          <th>Additional Info</th>
+          <th>File</th>
+          <th>Actions</th> {/* New column for delete/edit buttons */}
+        </tr>
+      </thead>
+      <tbody>
+        {tableData312.map((data, index) => (
+          <tr key={index}>
+            <td>{data.teacherName}</td>
+            <td>{data.amount}</td>
+            <td>{data.year}</td>
+            <td>{data.additionalInfo}</td>
+            <td>
+              <button
+                className="Downloadbtn"
+                onClick={() => handleDownloadFile(data.filePath)}
+              >
+                Download File
+              </button>
+            </td>
+            <td> {/* Actions column */}
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+              <button
+                className="Editbtn"
+                onClick={() => console.log(`Edit item with ID: ${data._id}`)}
+              >
+                Edit
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+)}
 
-              </tr>
-            </thead>
-            <tbody>
-            {tableData312.map((data, index) => (
-
-              <tr key={index}>
-                <td>{data.teacherName}</td>
-                <td>{data.amount}</td>
-                <td>{data.year}</td>
-                <td>{data.additionalInfo}</td>
-                <td>
-                  <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
-                  Download File
-                  </button>
-                </td>
-{/* <td>{tableData312.filePath}</td> */}
-              </tr>
-            ))}
-            </tbody>
-          </table>
-        </div>
-      )}
 
 
           {/* Criterion 3.1.3 Form */}

@@ -284,35 +284,43 @@ app.get('/getFilesByCriteria', async (req, res) => {
 
     // Convert the comma-separated string into an array
     const criterionArray = criterionNumbers.split(',');
-
     const results = [];
 
+    // Iterate over each criterion
     for (const criterion of criterionArray) {
       const foundDocuments = [];
       const sequenceValue = await getNextSequenceValue(criterion);
-
-      for (let i = 1; i <= sequenceValue; i++) {
+console.log("sequenceValue"+sequenceValue);
+      // Loop through all possible sequence numbers
+      for (let i = 1; i <= sequenceValue+1; i++) {
         const CriterionModel = getModelByName(`Criterion${criterion}`);
         const _id = `${criterion}${userName}${i}`;
+        console.log("Checking ID:", _id);
 
-        const foundDetails = await CriterionModel.findOne({ _id });
-        if (foundDetails) {
-          foundDocuments.push(foundDetails);
+        try {
+          const foundDetails = await CriterionModel.findOne({ _id });
+
+          if (foundDetails) {
+            foundDocuments.push(foundDetails); // Add found document to the array
+          } else {
+            console.log(`No document found for ID: ${_id}`); // Log and continue the loop
+          }
+        } catch (error) {
+          console.error(`Error finding document with ID: ${_id}:`, error); // Log the error but continue
         }
       }
 
-      results.push(foundDocuments); // Add to the results array
+      // Push the array of found documents for this criterion
+      results.push(foundDocuments);
     }
-
-    console.log("results::::" +results);
-    res.status(200).json({ results }); // Return the results array
-  } catch (e) {
-    console.error('Error fetching data:', e);
+console.log("results::"+results);
+    // Return the results array, which contains arrays for each criterion
+    res.status(200).json({ results });
+  } catch (error) {
+    console.error('Error fetching data:', error);
     res.status(500).json({ error: 'Error occurred while fetching data.' });
   }
 });
-
-
 
 
 
