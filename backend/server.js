@@ -132,7 +132,7 @@ function getModelByName(modelName) {
 const getNextSequenceValue = async (criterionNumber) => {
   // Define a pattern to identify documents with the specified criterion number and user name
   const regexPattern = `^${criterionNumber}${globalUserName}`;
-  console.log("regexpattern"+ regexPattern);
+  // console.log("regexpattern"+ regexPattern);
 
    // Get the correct model based on the criterion number
    const CriterionModel = getModelByName(`Criterion${criterionNumber}`);
@@ -144,12 +144,12 @@ const getNextSequenceValue = async (criterionNumber) => {
     .sort({ _id: -1 }) // Sort in descending order to get the maximum value
     .limit(1);
 
-    console.log("maxSequenceDoc"+maxSequenceDoc);
+    // console.log("maxSequenceDoc"+maxSequenceDoc);
   const maxExistingValue = maxSequenceDoc
     ? parseInt(maxSequenceDoc._id.slice(criterionNumber.length + globalUserName.length), 10)
     : 1; // If there's no existing document, start from 0
 
-    console.log("max existing "+ maxExistingValue);
+    // console.log("max existing "+ maxExistingValue);
   // Check for missing sequence values by iterating from 1 to the maxExistingValue
   for (let i = 1; i <= maxExistingValue; i++) {
     const sequenceId = `${criterionNumber}${globalUserName}${i}`; // Construct the sequence ID
@@ -162,6 +162,39 @@ const getNextSequenceValue = async (criterionNumber) => {
   // If no gaps found, increment the maximum existing value and return it
   return maxExistingValue + 1;
 };
+
+
+// Function to get the maximum existing sequence value for a given criterion number
+const getMaxExistingValue = async (criterionNumber) => {
+  // Define a pattern to identify documents with the specified criterion number and user name
+  const regexPattern = `^${criterionNumber}${globalUserName}`;
+  console.log("RegEx pattern:", regexPattern);
+
+  // Get the correct model based on the criterion number
+  const CriterionModel = getModelByName(`Criterion${criterionNumber}`);
+
+  // Find the document with the maximum sequence value
+  const [maxSequenceDoc] = await CriterionModel.find({
+    _id: { $regex: regexPattern },
+  })
+    .sort({ _id: -1 }) // Sort in descending order to get the highest value
+    .limit(1);
+
+  console.log("Max sequence document:", maxSequenceDoc);
+
+  // If there's a document, extract the sequence number, otherwise, set it to 1
+  const maxExistingValue = maxSequenceDoc
+    ? parseInt(maxSequenceDoc._id.slice(criterionNumber.length + globalUserName.length), 10)
+    : 1; // Default to 1 if no document is found
+
+  console.log("Max existing value:", maxExistingValue);
+
+  // Return the maximum existing value
+  return maxExistingValue;
+};
+
+
+
 
 app.delete('/deleteFile/:id', async (req, res) => {
   try {
@@ -289,10 +322,13 @@ app.get('/getFilesByCriteria', async (req, res) => {
     // Iterate over each criterion
     for (const criterion of criterionArray) {
       const foundDocuments = [];
-      const sequenceValue = await getNextSequenceValue(criterion);
+      console.log("criterion number::"+criterion);
+
+
+      const sequenceValue = await getMaxExistingValue(criterion);
 console.log("sequenceValue"+sequenceValue);
       // Loop through all possible sequence numbers
-      for (let i = 1; i <= sequenceValue+1; i++) {
+      for (let i = 1; i <= sequenceValue; i++) {
         const CriterionModel = getModelByName(`Criterion${criterion}`);
         const _id = `${criterion}${userName}${i}`;
         console.log("Checking ID:", _id);
