@@ -1,1 +1,1 @@
-export const DB_NAME = "NAACApplication"
+export const DB_NAME = "myDatabase"
