@@ -1,76 +1,251 @@
-.criterion-container {
-    padding: 20px;
-    background-color: #f8f9fa; /* Light gray background */
-}
-
-.content {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-h1 {
-    text-align: center;
-}
-
-button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px; /* Increased padding for buttons */
-    border: none;
-    cursor: pointer;
-    margin-top: 10px; /* Reduced margin-top for buttons */
-    transition: background-color 0.3s ease;
-    border-radius: 5px; /* Added border-radius for rounded corners */
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-form {
-    margin-top: 20px;
-}
-
-form div {
-    margin-bottom: 20px; /* Increased margin-bottom for form elements */
-}
-
-label {
-    display: block;
-    font-weight: bold;
-}
-
-input[type="text"],
-input[type="number"],
-input[type="file"],
-textarea {
+.displayContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    margin-top: 5px; /* Added margin-top for input elements */
+    height: 100%;
+    background-color: #f0f0f0; /* Change this to your desired background color */
+    overflow: auto; /* Allow scrolling */
+}
+  
+  .criterion-container {
+    max-width: 90%;
+    margin: 0 auto; /* Center the container horizontally */
 }
 
-textarea {
-    height: 120px; /* Increased height for textareas */
+.criterion-container > * {
+    text-align: justify; /* Align contents to the left */
+}
+
+input {
+    padding: 8px;
+    margin: 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    box-shadow: 0 1px 4px #ccc;
+    border-radius: 6px;
+    font-size: 18px;
+    max-width: 80%;
+    margin-top: 18px;
+  }
+  
+  .toggleFormbtn {
+    background-color: #3498db; /* Blue background color */
+    color: #ffffff; /* White text color */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding for the button */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Cursor style */
+    border-radius: 4px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+.toggleFormbtn:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+}
+
+.submitFormBtn {
+    background-color: #28a745; /* Green background color */
+    color: #ffffff; /* White text color */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding for the button */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Cursor style */
+    border-radius: 4px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+.submitFormBtn:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.Downloadbtn {
+    background-color: #6c757d; /* Gray background color */
+    color: #ffffff; /* White text color */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding for the button */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Cursor style */
+    border-radius: 4px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+.Downloadbtn:hover {
+    background-color: #5a6268; /* Darker gray on hover */
+}
+
+
+
+.formDiv > form {
+    border: 1px solid #dadce0; 
+    padding: 20px; /* Add padding for spacing */
+    margin-bottom: 20px; /* Add margin at the bottom */
+    width:100%;
+    /* display: flex;
+    justify-content: center;
+    flex-direction: column; */
+}
+
+.formDiv h4 {
+    margin-top: 32px; /* Remove top margin for the heading */
+    margin-bottom: 20px; /* Add bottom margin for spacing */
+}
+
+
+.formDiv .submitFormBtn {
+    background-color: #28a745; /* Green background color */
+    color: #ffffff; /* White text color */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding for the button */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Cursor style */
+    border-radius: 4px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+.formDiv .submitFormBtn:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.formDiv.toggleFormbtn {
+    background-color: #3498db; /* Blue background color */
+    color: #ffffff; /* White text color */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding for the button */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Cursor style */
+    border-radius: 4px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+.formDiv.toggleFormbtn:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+}
+/*
+.formDiv button {
+    background-color: #1a73e8; 
+    color: #ffffff; 
+    border: none; 
+    padding: 10px 20px; 
+    font-size: 16px; 
+    cursor: pointer; 
+    border-radius: 4px; 
+    margin-bottom: 10px; 
+}
+
+
+.formDiv button:hover {
+    background-color: #0f65e3; 
+}
+*/
+
+.formDiv form {
+    width: 100%;
+    margin-top: 20px; /* Add margin at the top */
+}
+
+.formDiv label {
+    display: block; /* Display labels as block elements */
+    margin-bottom: 5px; /* Add margin at the bottom */
+    font-size: 18px; /* Set font size */
+    color: #040404; /* Set color to dark gray */
+}
+
+.formDiv input[type="text"],
+.formDiv input[type="number"],
+.formDiv input[type="file"],
+.formDiv textarea {
+    width: 40%; /* Make inputs and textareas full width */
+    padding: 10px; /* Padding for inputs and textareas */
+    margin-bottom: 10px; /* Add margin at the bottom */
+    border: 1px solid #dadce0; /* Light gray border */
+    border-radius: 4px; /* Rounded corners */
+}
+
+
+.formDiv textarea {
+    width: 40%;
+    resize: vertical; /* Allow vertical resizing */
+}
+
+.formDiv ul {
+    margin-top: 0; /* Remove top margin for lists */
+    margin-bottom: 10px; /* Add bottom margin for spacing */
+    padding-left: 20px; /* Add left padding for indentation */
+}
+
+.formDiv input[type="file"] {
+    width: 40%; /* Make inputs and textareas full width */
+
+    margin-bottom: 10px; /* Add margin at the bottom */
 }
 
 .error {
-    color: red;
+    color: red; /* Red color for error messages */
 }
 
-/* Animations */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+
+h3 {
+    margin-top: 32px;
 }
 
-.fadeIn {
-    animation: fadeIn 0.5s ease-in-out;
+table {
+    width: 100%;
+    border-collapse: collapse; /* Collapse borders for a cleaner look */
+    margin-top: 16px; /* Add margin at the top */
+  }
+  
+  th, td {
+    border: 1px solid #999999; /* Dark gray border */
+    padding: 8px; /* Padding for cells */
+    text-align: left; /* Align text to the left */
+  }
+  
+  th {
+    background-color: #f2f2f2; /* Light gray background for table header */
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f9f9f9; /* Alternate row background color */
+  }
+  
+  tr:hover {
+    background-color: #f2f2f2; /* Hover color for rows */
+  }
+  
+  .Downloadbtn {
+    background-color: #6c757d; /* Gray background color */
+    color: #ffffff; /* White text color */
+    border: none; /* No border */
+    padding: 6px 12px; /* Padding for the button */
+    font-size: 14px; /* Font size */
+    cursor: pointer; /* Cursor style */
+    border-radius: 4px; /* Rounded corners */
+  }
+  
+  .Downloadbtn:hover {
+    background-color: #5a6268; /* Darker gray on hover */
+  }
+  
+  .criterionMainTitle{
+    margin-top: 64px;
+  }
+  .subTitle {
+    margin-top: 32px;
+    position: relative; /* Ensure proper positioning for pseudo-element */
+  }
+  
+  .subTitle::before {
+    content: "";
+    position: absolute;
+    top: -8px; /* Adjust the position of the line relative to the heading */
+    left: 0;
+    width: 100%;
+    height: 1px; /* Thickness of the line */
+    background-color: #999999; /* Color of the line */
+  }
+  
+
+h4{
+    margin-top: 62px;
 }
