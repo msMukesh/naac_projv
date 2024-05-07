@@ -3,6 +3,7 @@ import { useUserContext } from "../context/userContext";
 import NavBar from "./Navbar";
 import "./dashboard.css";
 import Cookies from "js-cookie";
+import Chatbot from "./Chatbot";
 
 const Dashboard = () => {
   const { user, logoutUser } = useUserContext();
@@ -16,6 +17,7 @@ const Dashboard = () => {
   }, [user]);
 
   return (
+    <>
     <div className="dashboardContainer">
           <NavBar logoutUser={logoutUser} />
 
@@ -26,8 +28,11 @@ const Dashboard = () => {
           <h2>Name: {userName}</h2> {/* Display userName state */}
           <h2>Email: {user.email}</h2>
         </div>
+        <Chatbot></Chatbot>
       </div>
     </div>
+    
+    </>
   );
 };
 
