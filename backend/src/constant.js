@@ -1,1 +1,1 @@
-export const DB_NAME = "NaacCluster"
+export const DB_NAME = "test"
