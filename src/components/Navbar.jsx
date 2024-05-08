@@ -66,6 +66,9 @@ const NavBar = ({ logoutUser }) => {
         </button>
         <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`} id="navbarNav">
           <ul className="navbar-nav ms-auto"> {/* Move the navbar items to the right */}
+          <li className="nav-item">
+              <Link to="/NaacReport" className="nav-link">Naac Report </Link>
+            </li>
             <li className="nav-item">
               <Link to="/criterion1" className="nav-link">Criterion 1</Link>
             </li>

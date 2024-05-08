@@ -8,6 +8,7 @@ import LoadingSpinner from './components/LoadingSpinner'; // Import the loading 
 import Criterion3 from './components/Criterion3'; // Import Criterion3 component
 import Criterion2 from './components/Criterion2';
 import Criterion1 from './components/Criterion1';
+import NaacReport from './components/NaacReport';
 import './App.css'; // Import the CSS file
 //
 function App() {
@@ -32,6 +33,7 @@ function App() {
             </>
           }
         />
+        <Route path="/NaacReport" element={<NaacReport />} /> {/* Add Criterion1 route */}
 
         <Route path="/Criterion1" element={<Criterion1 />} /> {/* Add Criterion1 route */}
         <Route path="/Criterion2" element={<Criterion2 />} /> {/* Add Criterion2 route */}
