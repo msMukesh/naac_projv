@@ -4,7 +4,7 @@ import Chatbot from './Chatbot'
 function MainPage() {
   return (
     <>
-    <div>MainPage</div>
+ 
     <Chatbot></Chatbot>
     </>
     
