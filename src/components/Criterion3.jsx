@@ -24,6 +24,13 @@ const Criterion3 = () => {
   const [tableData348, setTableData348] = useState(null);
   const [tableData349, setTableData349] = useState(null);
   const [tableData352, setTableData352] = useState(null);
+  const [tableData361, setTableData361] = useState(null);
+  const [tableData362, setTableData362] = useState(null);
+  const [tableData363, setTableData363] = useState(null);
+  const [tableData364, setTableData364] = useState(null);
+  const [tableData371, setTableData371] = useState(null);
+  const [tableData372, setTableData372] = useState(null);
+
 
 
 const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
@@ -1629,6 +1636,466 @@ const [formData323, setFormData323] = useState(initialFormData323);
 
 
 
+                      const initialFormData361 = {
+                        titleOfProgram: '',
+                        beneficiaryOrganization: '',
+                        outreachProgramDescription: '',
+                        eventDate: '',
+                        eventVenue: '',
+                        outcome: '',
+                        impactDescription: '',
+                        files: null,
+                      };
+                      
+                        const [formData361, setFormData361] = useState(initialFormData361);
+                        const [uploading361, setUploading361] = useState(false);
+                        const [uploaded361, setUploaded361] = useState(false);
+                        const [error361, setError361] = useState(null);
+                        const [toggleForm361, setToggleForm361] = useState(false);
+                      
+                        const handleInputChange361 = (e) => {
+                          const { name, value } = e.target;
+                          setFormData361({ ...formData361, [name]: value });
+                        };
+                      
+                        const handleFileChange361 = (e) => {
+                          setFormData361({ ...formData361, files: e.target.files });
+                        };
+                      
+                        const handleToggleForm361 = () => {
+                          setToggleForm361((prevState) => !prevState);
+                        };
+                      
+                        const handleSubmit361 = async (e) => {
+                          e.preventDefault();
+                          setUploading361(true);
+                          setError361(null);
+                      
+                          const formData = new FormData();
+                          const userName = Cookies.get("userName");
+                          const id = userName + "361"; // Unique ID for data submission
+                      
+                          formData.append("id", id);
+                          formData.append("titleOfProgram", formData361.titleOfProgram);
+                          formData.append("beneficiaryOrganization", formData361.beneficiaryOrganization);
+                          formData.append("outreachProgramDescription", formData361.outreachProgramDescription);
+                          formData.append("eventDate", formData361.eventDate);
+                          formData.append("eventVenue", formData361.eventVenue);
+                          formData.append("outcome", formData361.outcome);
+                          formData.append("impactDescription", formData361.impactDescription);
+                      
+                          if (formData361.files) {
+                            formData.append("file", formData361.files[0]); // Supporting document upload
+                          }
+                      
+                          try {
+                            await axios.post("http://localhost:5000/361upload", formData, {
+                              headers: {
+                                "Content-Type": "multipart/form-data",
+                              },
+                            });
+                      
+                            setFormData361(initialFormData361); // Reset form data after submission
+                            setUploaded361(true);
+                      
+                            setTimeout(() => {
+                              setUploaded361(false); // Reset upload status after some time
+                            }, 1000);
+                      
+                            setToggleForm361(false); // Hide form after submission
+                          } catch (error) {
+                            console.error("Error uploading files:", error);
+                            setError361("Error uploading files. Please try again.");
+                          } finally {
+                            setUploading361(false); // Reset uploading status
+                          }
+                        };
+
+
+
+
+
+
+
+
+                        const initialFormData362 = {
+                          teacherName: '',
+                          activityName: '',
+                          awardName: '',
+                          awardingBody: '',
+                          yearOfAward: '',
+                          files: null,
+                        };
+                        
+                          const [formData362, setFormData362] = useState(initialFormData362);
+                          const [uploading362, setUploading362] = useState(false);
+                          const [uploaded362, setUploaded362] = useState(false);
+                          const [error362, setError362] = useState(null);
+                          const [toggleForm362, setToggleForm362] = useState(false);
+                        
+                          const handleInputChange362 = (e) => {
+                            const { name, value } = e.target;
+                            setFormData362({ ...formData362, [name]: value });
+                          };
+                        
+                          const handleFileChange362 = (e) => {
+                            setFormData362({ ...formData362, files: e.target.files });
+                          };
+                        
+                          const handleToggleForm362 = () => {
+                            setToggleForm362((prevState) => !prevState);
+                          };
+                        
+                          const handleSubmit362 = async (e) => {
+                            e.preventDefault();
+                            setUploading362(true);
+                            setError362(null);
+                        
+                            const formData = new FormData();
+                            const userName = Cookies.get("userName");
+                            const id = userName + "362"; // Unique ID for data submission
+                        
+                            formData.append("id", id);
+                            formData.append("teacherName", formData362.teacherName);
+                            formData.append("activityName", formData362.activityName);
+                            formData.append("awardName", formData362.awardName);
+                            formData.append("awardingBody", formData362.awardingBody);
+                            formData.append("yearOfAward", formData362.yearOfAward);
+                        
+                            if (formData362.files) {
+                              formData.append("file", formData362.files[0]); // Supporting document upload
+                            }
+                        
+                            try {
+                              await axios.post("http://localhost:5000/362upload", formData, {
+                                headers: {
+                                  "Content-Type": "multipart/form-data",
+                                },
+                              });
+                        
+                              setFormData362(initialFormData362); // Reset form data after submission
+                              setUploaded362(true);
+                        
+                              setTimeout(() => {
+                                setUploaded362(false); // Reset upload status after some time
+                              }, 1000);
+                        
+                              setToggleForm362(false); // Hide form after submission
+                            } catch (error) {
+                              console.error("Error uploading files:", error);
+                              setError362("Error uploading files. Please try again.");
+                            } finally {
+                              setUploading362(false); // Reset uploading status
+                            }
+                          };
+                        
+
+
+
+                          const initialFormData363 = {
+                            activityName: '',
+                            organizingUnit: '',
+                            schemeName: '',
+                            numberOfStudents: '',
+                            issuesAddressed: '',
+                            files: null,
+                          };
+                          
+                            const [formData363, setFormData363] = useState(initialFormData363);
+                            const [uploading363, setUploading363] = useState(false);
+                            const [uploaded363, setUploaded363] = useState(false);
+                            const [error363, setError363] = useState(null);
+                            const [toggleForm363, setToggleForm363] = useState(false);
+                          
+                            const handleInputChange363 = (e) => {
+                              const { name, value } = e.target;
+                              setFormData363({ ...formData363, [name]: value });
+                            };
+                          
+                            const handleFileChange363 = (e) => {
+                              setFormData363({ ...formData363, files: e.target.files });
+                            };
+                          
+                            const handleToggleForm363 = () => {
+                              setToggleForm363((prevState) => !prevState);
+                            };
+                          
+                            const handleSubmit363 = async (e) => {
+                              e.preventDefault();
+                              setUploading363(true);
+                              setError363(null);
+                          
+                              const formData = new FormData();
+                              const userName = Cookies.get("userName");
+                              const id = userName + "363"; // Unique ID for data submission
+                          
+                              formData.append("id", id);
+                              formData.append("activityName", formData363.activityName);
+                              formData.append("organizingUnit", formData363.organizingUnit);
+                              formData.append("schemeName", formData363.schemeName);
+                              formData.append("numberOfStudents", formData363.numberOfStudents);
+                              formData.append("issuesAddressed", formData363.issuesAddressed);
+                          
+                              if (formData363.files) {
+                                formData.append("file", formData363.files[0]); // Supporting document upload
+                              }
+                          
+                              try {
+                                await axios.post("http://localhost:5000/363upload", formData, {
+                                  headers: {
+                                    "Content-Type": "multipart/form-data",
+                                  },
+                                });
+                          
+                                setFormData363(initialFormData363); // Reset form data after submission
+                                setUploaded363(true);
+                          
+                                setTimeout(() => {
+                                  setUploaded363(false); // Reset upload status after some time
+                                }, 1000);
+                          
+                                setToggleForm363(false); // Hide form after submission
+                              } catch (error) {
+                                console.error("Error uploading files:", error);
+                                setError363("Error uploading files. Please try again.");
+                              } finally {
+                                setUploading363(false); // Reset uploading status
+                              }
+                            };
+
+                            
+                            const initialFormData364 = {
+                              activityName: '',
+                              schemeName: '',
+                              yearOfActivity: '',
+                              studentNames: '',
+                              files: null,
+                            };
+                            
+                              const [formData364, setFormData364] = useState(initialFormData364);
+                              const [uploading364, setUploading364] = useState(false);
+                              const [uploaded364, setUploaded364] = useState(false);
+                              const [error364, setError364] = useState(null);
+                              const [toggleForm364, setToggleForm364] = useState(false);
+                            
+                              const handleInputChange364 = (e) => {
+                                const { name, value } = e.target;
+                                setFormData364({ ...formData364, [name]: value });
+                              };
+                            
+                              const handleFileChange364 = (e) => {
+                                setFormData364({ ...formData364, files: e.target.files });
+                              };
+                            
+                              const handleToggleForm364 = () => {
+                                setToggleForm364((prevState) => !prevState);
+                              };
+                            
+                              const handleSubmit364 = async (e) => {
+                                e.preventDefault();
+                                setUploading364(true);
+                                setError364(null);
+                            
+                                const formData = new FormData();
+                                const userName = Cookies.get("userName");
+                                const id = userName + "364"; // Unique ID for data submission
+                            
+                                formData.append("id", id);
+                                formData.append("activityName", formData364.activityName);
+                                formData.append("schemeName", formData364.schemeName);
+                                formData.append("yearOfActivity", formData364.yearOfActivity);
+                                formData.append("studentNames", formData364.studentNames);
+                            
+                                if (formData364.files) {
+                                  formData.append("file", formData364.files[0]); // Supporting document upload
+                                }
+                            
+                                try {
+                                  await axios.post("http://localhost:5000/364upload", formData, {
+                                    headers: {
+                                      "Content-Type": "multipart/form-data",
+                                    },
+                                  });
+                            
+                                  setFormData364(initialFormData364); // Reset form data after submission
+                                  setUploaded364(true);
+                            
+                                  setTimeout(() => {
+                                    setUploaded364(false); // Reset upload status after some time
+                                  }, 1000);
+                            
+                                  setToggleForm364(false); // Hide form after submission
+                                } catch (error) {
+                                  console.error("Error uploading files:", error);
+                                  setError364("Error uploading files. Please try again.");
+                                } finally {
+                                  setUploading364(false); // Reset uploading status
+                                }
+                              };
+
+
+
+
+
+
+
+                              const initialFormData371 = {
+                                collaborativeTitle: '',
+                                collaboratingAgency: '',
+                                financialSupportSource: '',
+                                collaborationYear: '',
+                                collaborationDuration: '',
+                                facultyInvolved: '',
+                                natureOfActivity: '',
+                                files: null,
+                              };
+                              
+                                const [formData371, setFormData371] = useState(initialFormData371);
+                                const [uploading371, setUploading371] = useState(false);
+                                const [uploaded371, setUploaded371] = useState(false);
+                                const [error371, setError371] = useState(null);
+                                const [toggleForm371, setToggleForm371] = useState(false);
+                              
+                                const handleInputChange371 = (e) => {
+                                  const { name, value } = e.target;
+                                  setFormData371({ ...formData371, [name]: value });
+                                };
+                              
+                                const handleFileChange371 = (e) => {
+                                  setFormData371({ ...formData371, files: e.target.files });
+                                };
+                              
+                                const handleToggleForm371 = () => {
+                                  setToggleForm371((prevState) => !prevState);
+                                };
+                              
+                                const handleSubmit371 = async (e) => {
+                                  e.preventDefault();
+                                  setUploading371(true);
+                                  setError371(null);
+                              
+                                  const formData = new FormData();
+                                  const userName = Cookies.get("userName");
+                                  const id = userName + "371"; // Unique ID for data submission
+                              
+                                  formData.append("id", id);
+                                  formData.append("collaborativeTitle", formData371.collaborativeTitle);
+                                  formData.append("collaboratingAgency", formData371.collaboratingAgency);
+                                  formData.append("financialSupportSource", formData371.financialSupportSource);
+                                  formData.append("collaborationYear", formData371.collaborationYear);
+                                  formData.append("collaborationDuration", formData371.collaborationDuration);
+                                  formData.append("facultyInvolved", formData371.facultyInvolved);
+                                  formData.append("natureOfActivity", formData371.natureOfActivity);
+                              
+                                  if (formData371.files) {
+                                    formData.append("file", formData371.files[0]); // Supporting document upload
+                                  }
+                              
+                                  try {
+                                    await axios.post("http://localhost:5000/371upload", formData, {
+                                      headers: {
+                                        "Content-Type": "multipart/form-data",
+                                      },
+                                    });
+                              
+                                    setFormData371(initialFormData371); // Reset form data after submission
+                                    setUploaded371(true);
+                              
+                                    setTimeout(() => {
+                                      setUploaded371(false); // Reset upload status after some time
+                                    }, 1000);
+                              
+                                    setToggleForm371(false); // Hide form after submission
+                                  } catch (error) {
+                                    console.error("Error uploading files:", error);
+                                    setError371("Error uploading files. Please try again.");
+                                  } finally {
+                                    setUploading371(false); // Reset uploading status
+                                  }
+                                };
+
+
+
+
+
+
+
+                                const initialFormData372 = {
+                                  organizationName: '',
+                                  mouYear: '',
+                                  mouDuration: '',
+                                  facultyCoordinators: '',
+                                  actualActivities: '',
+                                  participants: '',
+                                  files: null,
+                                };
+                                
+                                  const [formData372, setFormData372] = useState(initialFormData372);
+                                  const [uploading372, setUploading372] = useState(false);
+                                  const [uploaded372, setUploaded372] = useState(false);
+                                  const [error372, setError372] = useState(null);
+                                  const [toggleForm372, setToggleForm372] = useState(false);
+                                
+                                  const handleInputChange372 = (e) => {
+                                    const { name, value } = e.target;
+                                    setFormData372({ ...formData372, [name]: value });
+                                  };
+                                
+                                  const handleFileChange372 = (e) => {
+                                    setFormData372({ ...formData372, files: e.target.files });
+                                  };
+                                
+                                  const handleToggleForm372 = () => {
+                                    setToggleForm372((prevState) => !prevState);
+                                  };
+                                
+                                  const handleSubmit372 = async (e) => {
+                                    e.preventDefault();
+                                    setUploading372(true);
+                                    setError372(null);
+                                
+                                    const formData = new FormData();
+                                    const userName = Cookies.get("userName");
+                                    const id = userName + "372"; // Unique ID for data submission
+                                
+                                    formData.append("id", id);
+                                    formData.append("organizationName", formData372.organizationName);
+                                    formData.append("mouYear", formData372.mouYear);
+                                    formData.append("mouDuration", formData372.mouDuration);
+                                    formData.append("facultyCoordinators", formData372.facultyCoordinators);
+                                    formData.append("actualActivities", formData372.actualActivities);
+                                    formData.append("participants", formData372.participants);
+                                
+                                    if (formData372.files) {
+                                      formData.append("file", formData372.files[0]); // Supporting document upload
+                                    }
+                                
+                                    try {
+                                      await axios.post("http://localhost:5000/372upload", formData, {
+                                        headers: {
+                                          "Content-Type": "multipart/form-data",
+                                        },
+                                      });
+                                
+                                      setFormData372(initialFormData372); // Reset form data after submission
+                                      setUploaded372(true);
+                                
+                                      setTimeout(() => {
+                                        setUploaded372(false); // Reset upload status after some time
+                                      }, 1000);
+                                
+                                      setToggleForm372(false); // Hide form after submission
+                                    } catch (error) {
+                                      console.error("Error uploading files:", error);
+                                      setError372("Error uploading files. Please try again.");
+                                    } finally {
+                                      setUploading372(false); // Reset uploading status
+                                    }
+                                  };
+                                
+
+
+
 
 
 
@@ -1740,9 +2207,6 @@ useEffect(() => {
   uploaded321,
   handleDeleteFlag
 ]);
-
-
-
 
 
 const handleDownloadFile = (fileName) => {
@@ -4401,6 +4865,12 @@ const handleDownloadFile = (fileName) => {
 
 
 
+</div>
+
+
+
+<div className="criterionCon35">
+<h3 className="subTitle">Key Indicators – 3.5 Consultancy</h3>
 
 
 <div className="formDiv">
@@ -4518,34 +4988,188 @@ const handleDownloadFile = (fileName) => {
         </form>
       )}
     </div>
+    {tableData352 && (
 
     <div>
-      <h3>Revenue Generated - Criterion 3.5.2</h3>
+  <h3>Revenue Generated - Criterion 3.5.2</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Name of Consultants</th>
+        <th>Name of Consultancy Projects</th>
+        <th>Consulting/Sponsoring Agency</th>
+        <th>Revenue Generated</th>
+        <th>Total Revenue Generated</th>
+        <th>Corporate Training Details</th>
+        <th>Title of the Training</th>
+        <th>Number of Participants Benefitted</th>
+        <th>Download File</th>
+      </tr>
+    </thead>
+    <tbody>
+      {tableData352.map((item, index) => (
+        <tr key={index}>
+          <td>{item.nameOfConsultants}</td>
+          <td>{item.nameOfConsultancyProjects}</td>
+          <td>{item.consultingAgency}</td>
+          <td>{item.revenueGenerated}</td>
+          <td>{item.totalRevenueGenerated}</td>
+          <td>{item.corporateTrainingDetails}</td>
+          <td>{item.titleOfTraining}</td>
+          <td>{item.numberOfParticipants}</td>
+          <td>
+            {item.filePath ? (
+              <button onClick={() => handleDownloadFile(item.filePath)}>
+                Download File
+              </button>
+            ) : (
+              "No File Attached"
+            )}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+    )}
+
+</div>
+
+
+
+
+<div className="criterionCon36">
+<h3 className="subTitle">Key Indicators - 3.6 Extension Activities</h3>
+
+<div className="formDiv">
+      <h4>
+        3.6.1 Extension activities in the neighborhood community in terms of impact and sensitizing the students to social issues and holistic development during the year
+      </h4>
+      <button className="toggleFormbtn" onClick={handleToggleForm361}>
+        {toggleForm361 ? "Hide Form" : "Show Form"}
+      </button>
+
+      {toggleForm361 && (
+        <form onSubmit={handleSubmit361}>
+          <div>
+            <label htmlFor="titleOfProgram">Title of the Program:</label>
+            <input
+              type="text"
+              id="titleOfProgram"
+              name="titleOfProgram"
+              value={formData361.titleOfProgram}
+              onChange={handleInputChange361}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="beneficiaryOrganization">Beneficiary Organization:</label>
+            <input
+              type="text"
+              id="beneficiaryOrganization"
+              name="beneficiaryOrganization"
+              value={formData361.beneficiaryOrganization}
+              onChange={handleInputChange361}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="outreachProgramDescription">Description of the Outreach Program:</label>
+            <textarea
+              id="outreachProgramDescription"
+              name="outreachProgramDescription"
+              value={formData361.outreachProgramDescription}
+              onChange={handleInputChange361}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="eventDate">Date of the Event:</label>
+            <input
+              type="date"
+              id="eventDate"
+              name="eventDate"
+              value={formData361.eventDate}
+              onChange={handleInputChange361}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="eventVenue">Venue of the Event:</label>
+            <input
+              type="text"
+              id="eventVenue"
+              name="eventVenue"
+              value={formData361.eventVenue}
+              onChange={handleInputChange361}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="outcome">Outcome:</label>
+            <textarea
+              id="outcome"
+              name="outcome"
+              value={formData361.outcome}
+              onChange={handleInputChange361}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="impactDescription">Describe the Impact (within 500 words):</label>
+            <textarea
+              id="impactDescription"
+              name="impactDescription"
+              value={formData361.impactDescription}
+              onChange={handleInputChange361}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="files">Document to Attach:</label>
+            <div>
+              <ul>• Relevant Supporting Document</ul>
+              <ul>• Any Additional Information</ul>
+            </div>
+            <input type="file" id="files" name="files" onChange={handleFileChange361} />
+          </div>
+
+          <button className="submitFormBtn" type="submit" disabled={uploading361 || uploaded361}>
+            {uploading361 ? "Submitting..." : uploaded361 ? "Submitted" : "Submit"}
+          </button>
+
+          {error361 && <div className="error">{error361}</div>}
+        </form>
+      )}
+    </div>
+
+    {tableData361 && (
+    <div>
+      <h3>Extension Activities - Criterion 3.6.1</h3>
       <table>
         <thead>
           <tr>
-            <th>Name of Consultants</th>
-            <th>Name of Consultancy Projects</th>
-            <th>Consulting/Sponsoring Agency</th>
-            <th>Revenue Generated</th>
-            <th>Total Revenue Generated</th>
-            <th>Corporate Training Details</th>
-            <th>Title of the Training</th>
-            <th>Number of Participants Benefitted</th>
+            <th>Title of the Program</th>
+            <th>Beneficiary Organization</th>
+            <th>Description of the Outreach Program</th>
+            <th>Date of the Event</th>
+            <th>Venue of the Event</th>
+            <th>Outcome</th>
+            <th>Impact Description</th>
             <th>Download File</th>
           </tr>
         </thead>
         <tbody>
-          {tableData352.map((data, index) => (
+          {tableData361.map((data, index) => (
             <tr key={index}>
-              <td>{data.nameOfConsultants}</td>
-              <td>{data.nameOfConsultancyProjects}</td>
-              <td>{data.consultingAgency}</td>
-              <td>{data.revenueGenerated}</td>
-              <td>{data.totalRevenueGenerated}</td>
-              <td>{data.corporateTrainingDetails}</td>
-              <td>{data.titleOfTraining}</td>
-              <td>{data.numberOfParticipants}</td>
+              <td>{data.titleOfProgram}</td>
+              <td>{data.beneficiaryOrganization}</td>
+              <td>{data.outreachProgramDescription}</td>
+              <td>{data.eventDate}</td>
+              <td>{data.eventVenue}</td>
+              <td>{data.outcome}</td>
+              <td>{data.impactDescription}</td>
               <td>
                 {data.filePath ? (
                   <button onClick={() => handleDownloadFile(data.filePath)}>
@@ -4560,10 +5184,656 @@ const handleDownloadFile = (fileName) => {
         </tbody>
       </table>
     </div>
+        )}
+
+
+<div className="formDiv">
+      <h4>
+        3.6.2 Awards received by the Institution, its teachers, and students from Government/Government-recognized bodies in recognition of extension activities during the year
+      </h4>
+      <button className="toggleFormbtn" onClick={handleToggleForm362}>
+        {toggleForm362 ? "Hide Form" : "Show Form"}
+      </button>
+
+      {toggleForm362 && (
+        <form onSubmit={handleSubmit362}>
+          <div>
+            <label htmlFor="teacherName">Name of the Teacher:</label>
+            <input
+              type="text"
+              id="teacherName"
+              name="teacherName"
+              value={formData362.teacherName}
+              onChange={handleInputChange362}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="activityName">Name of the Activity:</label>
+            <input
+              type="text"
+              id="activityName"
+              name="activityName"
+              value={formData362.activityName}
+              onChange={handleInputChange362}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="awardName">Name of the Award/Recognition:</label>
+            <input
+              type="text"
+              id="awardName"
+              name="awardName"
+              value={formData362.awardName}
+              onChange={handleInputChange362}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="awardingBody">Name of the Awarding Body:</label>
+            <input
+              type="text"
+              id="awardingBody"
+              name="awardingBody"
+              value={formData362.awardingBody}
+              onChange={handleInputChange362}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="yearOfAward">Year of the Award:</label>
+            <input
+              type="number"
+              id="yearOfAward"
+              name="yearOfAward"
+              value={formData362.yearOfAward}
+              onChange={handleInputChange362}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="files">Document to Attach:</label>
+            <div>
+              <ul>• Relevant Supporting Document</ul>
+              <ul>• Any Additional Information</ul>
+            </div>
+            <input type="file" id="files" name="files" onChange={handleFileChange362} />
+          </div>
+
+          <button className="submitFormBtn" type="submit" disabled={uploading362 || uploaded362}>
+            {uploading362 ? "Submitting..." : uploaded362 ? "Submitted" : "Submit"}
+          </button>
+
+          {error362 && <div className="error">{error362}</div>}
+        </form>
+      )}
+    </div>
+
+
+    {tableData362 && (
+    <div>
+      <h3>Awards and Recognition - Criterion 3.6.2</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Name of the Teacher</th>
+            <th>Name of the Activity</th>
+            <th>Name of the Award/Recognition</th>
+            <th>Name of the Awarding Body</th>
+            <th>Year of the Award</th>
+            <th>Download File</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tableData362.map((data, index) => (
+            <tr key={index}>
+              <td>{data.teacherName}</td>
+              <td>{data.activityName}</td>
+              <td>{data.awardName}</td>
+              <td>{data.awardingBody}</td>
+              <td>{data.yearOfAward}</td>
+              <td>
+                {data.filePath ? (
+                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                    Download File
+                  </button>
+                ) : (
+                  "No File Attached"
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    )}
+
+
+
+<div className="formDiv">
+      <h4>
+        3.6.3 Extension and outreach programs conducted by the institution through NSS/NCC, Government, and Government-recognized bodies during the year
+      </h4>
+      <button className="toggleFormbtn" onClick={handleToggleForm363}>
+        {toggleForm363 ? "Hide Form" : "Show Form"}
+      </button>
+
+      {toggleForm363 && (
+        <form onSubmit={handleSubmit363}>
+          <div>
+            <label htmlFor="activityName">Name of the Activity:</label>
+            <input
+              type="text"
+              id="activityName"
+              name="activityName"
+              value={formData363.activityName}
+              onChange={handleInputChange363}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="organizingUnit">Organizing Unit/Agency:</label>
+            <input
+              type="text"
+              id="organizingUnit"
+              name="organizingUnit"
+              value={formData363.organizingUnit}
+              onChange={handleInputChange363}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="schemeName">Name of the Scheme:</label>
+            <input
+              type="text"
+              id="schemeName"
+              name="schemeName"
+              value={formData363.schemeName}
+              onChange={handleInputChange363}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="numberOfStudents">Number of Students Participated:</label>
+            <input
+              type="number"
+              id="numberOfStudents"
+              name="numberOfStudents"
+              value={formData363.numberOfStudents}
+              onChange={handleInputChange363}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="issuesAddressed">Issues Addressed:</label>
+            <textarea
+              id="issuesAddressed"
+              name="issuesAddressed"
+              value={formData363.issuesAddressed}
+              onChange={handleInputChange363}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="files">Document to Attach:</label>
+            <div>
+              <ul>• Relevant Supporting Document</ul>
+              <ul>• Any Additional Information</ul>
+            </div>
+            <input type="file" id="files" name="files" onChange={handleFileChange363} />
+          </div>
+
+          <button className="submitFormBtn" type="submit" disabled={uploading363 || uploaded363}>
+            {uploading363 ? "Submitting..." : uploaded363 ? "Submitted" : "Submit"}
+          </button>
+
+          {error363 && <div className="error">{error363}</div>}
+        </form>
+      )}
+    </div>
+
+    {tableData363 && (
+    <div>
+      <h3>Extension and Outreach Programs - Criterion 3.6.3</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Name of the Activity</th>
+            <th>Organizing Unit/Agency</th>
+            <th>Name of the Scheme</th>
+            <th>Number of Students Participated</th>
+            <th>Issues Addressed</th>
+            <th>Download File</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tableData363.map((data, index) => (
+            <tr key={index}>
+              <td>{data.activityName}</td>
+              <td>{data.organizingUnit}</td>
+              <td>{data.schemeName}</td>
+              <td>{data.numberOfStudents}</td>
+              <td>{data.issuesAddressed}</td>
+              <td>
+                {data.filePath ? (
+                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                    Download File
+                  </button>
+                ) : (
+                  "No File Attached"
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    )}
 
 
 
 
+<div className="formDiv">
+      <h4>
+        3.6.4 Students participating in extension activities listed at 3.6.3 above during the year
+      </h4>
+      <button className="toggleFormbtn" onClick={handleToggleForm364}>
+        {toggleForm364 ? "Hide Form" : "Show Form"}
+      </button>
+
+      {toggleForm364 && (
+        <form onSubmit={handleSubmit364}>
+          <div>
+            <label htmlFor="activityName">Name of the Activity:</label>
+            <input
+              type="text"
+              id="activityName"
+              name="activityName"
+              value={formData364.activityName}
+              onChange={handleInputChange364}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="schemeName">Name of the Scheme:</label>
+            <input
+              type="text"
+              id="schemeName"
+              name="schemeName"
+              value={formData364.schemeName}
+              onChange={handleInputChange364}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="yearOfActivity">Year of the Activity:</label>
+            <input
+              type="number"
+              id="yearOfActivity"
+              name="yearOfActivity"
+              value={formData364.yearOfActivity}
+              onChange={handleInputChange364}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="studentNames">Names of the Students Participating in Such Activities:</label>
+            <textarea
+              id="studentNames"
+              name="studentNames"
+              value={formData364.studentNames}
+              onChange={handleInputChange364}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="files">Document to Attach:</label>
+            <div>
+              <ul>• Relevant Supporting Document</ul>
+              <ul>• Any Additional Information</ul>
+            </div>
+            <input type="file" id="files" name="files" onChange={handleFileChange364} />
+          </div>
+
+          <button className="submitFormBtn" type="submit" disabled={uploading364 || uploaded364}>
+            {uploading364 ? "Submitting..." : uploaded364 ? "Submitted" : "Submit"}
+          </button>
+
+          {error364 && <div className="error">{error364}</div>}
+        </form>
+      )}
+    </div>
+
+    {tableData364 && (
+    <div>
+      <h3>Students Participating in Extension Activities - Criterion 3.6.4</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Name of the Activity</th>
+            <th>Name of the Scheme</th>
+            <th>Year of the Activity</th>
+            <th>Names of the Students</th>
+            <th>Download File</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tableData364.map((data, index) => (
+            <tr key={index}>
+              <td>{data.activityName}</td>
+              <td>{data.schemeName}</td>
+              <td>{data.yearOfActivity}</td>
+              <td>{data.studentNames}</td>
+              <td>
+                {data.filePath ? (
+                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                    Download File
+                  </button>
+                ) : (
+                  "No File Attached"
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    )}
+
+
+
+
+
+</div>
+
+
+<div className="criterionCon37">
+<h3 className="subTitle">Key Indicator - 3.7 Collaboration</h3>
+
+<div className="formDiv">
+      <h4>
+        3.7.1 Collaborative activities with other institutions/research establishment/industry for research and academic development of faculty and students per year
+      </h4>
+      <button className="toggleFormbtn" onClick={handleToggleForm371}>
+        {toggleForm371 ? "Hide Form" : "Show Form"}
+      </button>
+
+      {toggleForm371 && (
+        <form onSubmit={handleSubmit371}>
+          <div>
+            <label htmlFor="collaborativeTitle">Title of the Collaborative Activity:</label>
+            <input
+              type="text"
+              id="collaborativeTitle"
+              name="collaborativeTitle"
+              value={formData371.collaborativeTitle}
+              onChange={handleInputChange371}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="collaboratingAgency">Name of the Collaborating Agency (with contact details):</label>
+            <input
+              type="text"
+              id="collaboratingAgency"
+              name="collaboratingAgency"
+              value={formData371.collaboratingAgency}
+              onChange={handleInputChange371}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="financialSupportSource">Source of Financial Support:</label>
+            <input
+              type="text"
+              id="financialSupportSource"
+              name="financialSupportSource"
+              value={formData371.financialSupportSource}
+              onChange={handleInputChange371}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="collaborationYear">Year of the Collaboration:</label>
+            <input
+              type="number"
+              id="collaborationYear"
+              name="collaborationYear"
+              value={formData371.collaborationYear}
+              onChange={handleInputChange371}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="collaborationDuration">Duration of the Collaboration:</label>
+            <input
+              type="number"
+              id="collaborationDuration"
+              name="collaborationDuration"
+              value={formData371.collaborationDuration}
+              onChange={handleInputChange371}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="facultyInvolved">Names of the Faculty Members Involved:</label>
+            <input
+              type="text"
+              id="facultyInvolved"
+              name="facultyInvolved"
+              value={formData371.facultyInvolved}
+              onChange={handleInputChange371}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="natureOfActivity">Nature of the Activity:</label>
+            <input
+              type="text"
+              id="natureOfActivity"
+              name="natureOfActivity"
+              value={formData371.natureOfActivity}
+              onChange={handleInputChange371}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="files">Document to Attach:</label>
+            <div>
+              <ul>• Relevant Supporting Document</ul>
+              <ul>• Any Additional Information</ul>
+            </div>
+            <input type="file" id="files" name="files" onChange={handleFileChange371} />
+          </div>
+
+          <button className="submitFormBtn" type="submit" disabled={uploading371 || uploaded371}>
+            {uploading371 ? "Submitting..." : uploaded371 ? "Submitted" : "Submit"}
+          </button>
+
+          {error371 && <div className="error">{error371}</div>}
+        </form>
+      )}
+    </div>
+
+    {tableData371 && (
+    <div>
+      <h3>Collaborative Activities - Criterion 3.7.1</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Title of the Collaborative Activity</th>
+            <th>Name of the Collaborating Agency</th>
+            <th>Source of Financial Support</th>
+            <th>Year of the Collaboration</th>
+            <th>Duration of the Collaboration</th>
+            <th>Names of the Faculty Members Involved</th>
+            <th>Nature of the Activity</th>
+            <th>Download File</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tableData371.map((data, index) => (
+            <tr key={index}>
+              <td>{data.collaborativeTitle}</td>
+              <td>{data.collaboratingAgency}</td>
+              <td>{data.financialSupportSource}</td>
+              <td>{data.collaborationYear}</td>
+              <td>{data.collaborationDuration}</td>
+              <td>{data.facultyInvolved}</td>
+              <td>{data.natureOfActivity}</td>
+              <td>
+                {data.filePath ? (
+                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                    Download File
+                  </button>
+                ) : (
+                  "No File Attached"
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    )}
+
+
+<div className="formDiv">
+      <h4>
+        3.7.2 Functional MoUs with institutions/industries in India and abroad for various collaborative purposes during the year
+      </h4>
+      <button className="toggleFormbtn" onClick={handleToggleForm372}>
+        {toggleForm372 ? "Hide Form" : "Show Form"}
+      </button>
+
+      {toggleForm372 && (
+        <form onSubmit={handleSubmit372}>
+          <div>
+            <label htmlFor="organizationName">Name of the Organization with which MoU is signed:</label>
+            <input
+              type="text"
+              id="organizationName"
+              name="organizationName"
+              value={formData372.organizationName}
+              onChange={handleInputChange372}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="mouYear">Year of Signing:</label>
+            <input
+              type="number"
+              id="mouYear"
+              name="mouYear"
+              value={formData372.mouYear}
+              onChange={handleInputChange372}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="mouDuration">Duration of the MoU (in years):</label>
+            <input
+              type="number"
+              id="mouDuration"
+              name="mouDuration"
+              value={formData372.mouDuration}
+              onChange={handleInputChange372}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="facultyCoordinators">Names of the Faculty Coordinators:</label>
+            <textarea
+              id="facultyCoordinators"
+              name="facultyCoordinators"
+              value={formData372.facultyCoordinators}
+              onChange={handleInputChange372}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="actualActivities">List the Actual Activities Under Each MoU:</label>
+            <textarea
+              id="actualActivities"
+              name="actualActivities"
+              value={formData372.actualActivities}
+              onChange={handleInputChange372}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="participants">Year-wise Number of Students/Teachers Who Participated:</label>
+            <textarea
+              id="participants"
+              name="participants"
+              value={formData372.participants}
+              onChange={handleInputChange372}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="files">Document to Attach:</label>
+            <div>
+              <ul>• Relevant Supporting Document</ul>
+              <ul>• Any Additional Information</ul>
+            </div>
+            <input type="file" id="files" name="files" onChange={handleFileChange372} />
+          </div>
+
+          <button className="submitFormBtn" type="submit" disabled={uploading372 || uploaded372}>
+            {uploading372 ? "Submitting..." : uploaded372 ? "Submitted" : "Submit"}
+          </button>
+
+          {error372 && <div className="error">{error372}</div>}
+        </form>
+      )}
+
+{tableData372 && (
+ <div>
+      <h3>Functional MoUs - Criterion 3.7.2</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Name of the Organization</th>
+            <th>Year of Signing</th>
+            <th>Duration of the MoU</th>
+            <th>Faculty Coordinators</th>
+            <th>Actual Activities</th>
+            <th>Number of Participants</th>
+            <th>Download File</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tableData372.map((data, index) => (
+            <tr key={index}>
+              <td>{data.organizationName}</td>
+              <td>{data.mouYear}</td>
+              <td>{data.mouDuration}</td>
+              <td>{data.facultyCoordinators}</td>
+              <td>{data.actualActivities}</td>
+              <td>{data.participants}</td>
+              <td>
+                {data.filePath ? (
+                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                    Download File
+                  </button>
+                ) : (
+                  "No File Attached"
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+)}
+
+
+
+
+
+    </div>
 
 
 
@@ -4571,6 +5841,9 @@ const handleDownloadFile = (fileName) => {
 
 
 </div>
+
+
+
 
 
 </div>

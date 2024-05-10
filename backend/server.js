@@ -1615,7 +1615,7 @@ app.get('/getFile345', async (req, res) => {
 
 
 const Criterion346Schema = new mongoose.Schema({
-  _id: { type: String, required: true, unique: true },
+  _id: String,
   teacherName: { type: String, required: true },
   titleOfPaper: { type: String, required: true },
   titleOfBookOrChapter: { type: String, required: true },
@@ -1702,7 +1702,7 @@ app.get('/getFile346', async (req, res) => {
 
 // Define Mongoose Schema for Criterion 3.4.8
 const Criterion348Schema = new mongoose.Schema({
-  _id: { type: String, required: true, unique: true },
+  _id: String,
   titleOfPaper: { type: String, required: true },
   authorName: { type: String, required: true },
   journalTitle: { type: String, required: true },
@@ -1779,7 +1779,7 @@ app.get('/getFile348', async (req, res) => {
 
 // Define Mongoose Schema for Criterion 3.4.9
 const Criterion349Schema = new mongoose.Schema({
-  _id: { type: String, required: true, unique: true },
+  _id: String,
   titleOfPaper: { type: String, required: true },
   authorName: { type: String, required: true },
   journalTitle: { type: String, required: true },
@@ -1853,7 +1853,7 @@ app.get('/getFile349', async (req, res) => {
 
 // Define Mongoose Schema for Criterion 3.5.2
 const Criterion352Schema = new mongoose.Schema({
-  _id: { type: String, required: true, unique: true },
+  _id: String,
   nameOfConsultants: { type: String, required: true },
   nameOfConsultancyProjects: { type: String, required: true },
   consultingAgency: { type: String, required: true },
@@ -1933,6 +1933,483 @@ app.get('/getFile352', async (req, res) => {
     return res.status(500).json({ error: "An error occurred while fetching data. Please try again." });
   }
 });
+
+
+
+
+
+const Criterion361Schema = new mongoose.Schema({
+  _id: String,
+  titleOfProgram: { type: String, required: true },
+  beneficiaryOrganization: { type: String, required: true },
+  outreachProgramDescription: { type: String, required: true },
+  eventDate: { type: Date, required: true },
+  eventVenue: { type: String, required: true },
+  outcome: { type: String, required: true },
+  impactDescription: { type: String, required: true },
+  filePath: { type: String }, // Path to the supporting document
+});
+
+const Criterion361Model = mongoose.model('Criterion361', Criterion361Schema);
+
+// Endpoint to upload data for Criterion 3.6.1
+app.post('/361upload', upload.single('file'), async (req, res) => {
+  try {
+    const {
+      titleOfProgram,
+      beneficiaryOrganization,
+      outreachProgramDescription,
+      eventDate,
+      eventVenue,
+      outcome,
+      impactDescription,
+    } = req.body;
+
+    const filePath = req.file ? req.file.path : null; // If a file is uploaded, get the file path
+
+    const criterionNumber = '361';
+    let sequenceValue;
+
+    try {
+      sequenceValue = await getNextSequenceValue(criterionNumber);
+    } catch (error) {
+      console.error("Error getting sequence value:", error);
+      return res.status(500).json({ error: "Error getting sequence value. Please try again." });
+    }
+
+    const _id = `361${globalUserName}${sequenceValue}`;
+
+    const newDocument = new Criterion361Model({
+      _id,
+      titleOfProgram,
+      beneficiaryOrganization,
+      outreachProgramDescription,
+      eventDate,
+      eventVenue,
+      outcome,
+      impactDescription,
+      filePath, // Can be null if no file is attached
+    });
+
+    await newDocument.save(); // Save the document to the database
+
+    return res.status(200).json({ message: 'Data submitted successfully' });
+  } catch (error) {
+    console.error("Error uploading data:", error);
+    return res.status(500).json({ error: "An error occurred while submitting data. Please try again." });
+  }
+});
+
+// Endpoint to retrieve data for Criterion 3.6.1
+app.get('/getFile361', async (req, res) => {
+  const _id = `361${globalUserName}`;
+
+  try {
+    const foundDetails = await Criterion361Model.findOne({ _id });
+    if (foundDetails) {
+      return res.status(200).json(foundDetails);
+    } else {
+      return res.status(404).json({ error: "Element not found" });
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return res.status(500).json({ error: "An error occurred while fetching data. Please try again." });
+  }
+});
+
+
+
+// Define Mongoose Schema for Criterion 3.6.2
+const Criterion362Schema = new mongoose.Schema({
+  _id: String,
+  teacherName: { type: String, required: true },
+  activityName: { type: String, required: true },
+  awardName: { type: String, required: true },
+  awardingBody: { type: String, required: true },
+  yearOfAward: { type: Number, required: true },
+  filePath: { type: String }, // Path to the supporting document
+});
+
+const Criterion362Model = mongoose.model('Criterion362', Criterion362Schema);
+
+// Endpoint to upload data for Criterion 3.6.2
+app.post('/362upload', upload.single('file'), async (req, res) => {
+  try {
+    const {
+      teacherName,
+      activityName,
+      awardName,
+      awardingBody,
+      yearOfAward,
+    } = req.body;
+
+    const filePath = req.file ? req.file.path : null; // If a file is uploaded, get the file path
+
+    const criterionNumber = '362';
+    let sequenceValue;
+
+    try {
+      sequenceValue = await getNextSequenceValue(criterionNumber);
+    } catch (error) {
+      console.error("Error getting sequence value:", error);
+      return res.status(500).json({ error: "Error getting sequence value. Please try again." });
+    }
+
+    const _id = `362${globalUserName}${sequenceValue}`;
+
+    const newDocument = new Criterion362Model({
+      _id,
+      teacherName,
+      activityName,
+      awardName,
+      awardingBody,
+      yearOfAward,
+      filePath, // Can be null if no file is attached
+    });
+
+    await newDocument.save(); // Save the document to the database
+
+    return res.status(200).json({ message: 'Data submitted successfully' });
+  } catch (error) {
+    console.error("Error uploading data:", error);
+    return res.status(500).json({ error: "An error occurred while submitting data. Please try again." });
+  }
+});
+
+// Endpoint to retrieve data for Criterion 3.6.2
+app.get('/getFile362', async (req, res) => {
+  const _id = `362${globalUserName}`;
+
+  try {
+    const foundDetails = await Criterion362Model.findOne({ _id });
+    if (foundDetails) {
+      return res.status(200).json(foundDetails);
+    } else {
+      return res.status(404).json({ error: "Element not found" });
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return res.status(500).json({ error: "An error occurred while fetching data. Please try again." });
+  }
+});
+
+
+
+
+// Define Mongoose Schema for Criterion 3.6.3
+const Criterion363Schema = new mongoose.Schema({
+  _id: String,
+  activityName: { type: String, required: true },
+  organizingUnit: { type: String, required: true },
+  schemeName: { type: String, required: true },
+  numberOfStudents: { type: Number, required: true },
+  issuesAddressed: { type: String, required: true },
+  filePath: { type: String }, // Path to the supporting document
+});
+
+const Criterion363Model = mongoose.model('Criterion363', Criterion363Schema);
+
+// Endpoint to upload data for Criterion 3.6.3
+app.post('/363upload', upload.single('file'), async (req, res) => {
+  try {
+    const {
+      activityName,
+      organizingUnit,
+      schemeName,
+      numberOfStudents,
+      issuesAddressed,
+    } = req.body;
+
+    const filePath = req.file ? req.file.path : null; // If a file is uploaded, get the file path
+
+    const criterionNumber = '363';
+    let sequenceValue;
+
+    try {
+      sequenceValue = await getNextSequenceValue(criterionNumber);
+    } catch (error) {
+      console.error("Error getting sequence value:", error);
+      return res.status(500).json({ error: "Error getting sequence value. Please try again." });
+    }
+
+    const _id = `363${globalUserName}${sequenceValue}`;
+
+    const newDocument = new Criterion363Model({
+      _id,
+      activityName,
+      organizingUnit,
+      schemeName,
+      numberOfStudents,
+      issuesAddressed,
+      filePath, // Can be null if no file is attached
+    });
+
+    await newDocument.save(); // Save the new document to the database
+
+    return res.status(200).json({ message: 'Data submitted successfully' });
+  } catch (error) {
+    console.error("Error uploading data:", error);
+    return res.status(500).json({ error: "An error occurred while submitting data. Please try again." });
+  }
+});
+
+// Endpoint to retrieve data for Criterion 3.6.3
+app.get('/getFile363', async (req, res) => {
+  const _id = `363${globalUserName}`;
+
+  try {
+    const foundDetails = await Criterion363Model.findOne({ _id });
+    if (foundDetails) {
+      return res.status(200).json(foundDetails);
+    } else {
+      return res.status(404).json({ error: "Element not found" });
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return res.status(500).json({ error: "An error occurred while fetching data. Please try again." });
+  }
+});
+
+
+
+// Define Mongoose Schema for Criterion 3.6.4
+const Criterion364Schema = new mongoose.Schema({
+  _id: String,
+  activityName: { type: String, required: true },
+  schemeName: { type: String, required: true },
+  yearOfActivity: { type: Number, required: true },
+  studentNames: { type: String, required: true },
+  filePath: { type: String }, // Path to the supporting document
+});
+
+const Criterion364Model = mongoose.model('Criterion364', Criterion364Schema);
+
+// Endpoint to upload data for Criterion 3.6.4
+app.post('/364upload', upload.single('file'), async (req, res) => {
+  try {
+    const {
+      activityName,
+      schemeName,
+      yearOfActivity,
+      studentNames,
+    } = req.body;
+
+    const filePath = req.file ? req.file.path : null; // If a file is uploaded, get the file path
+
+    const criterionNumber = '364';
+    let sequenceValue;
+
+    try {
+      sequenceValue = await getNextSequenceValue(criterionNumber);
+    } catch (error) {
+      console.error("Error getting sequence value:", error);
+      return res.status(500).json({ error: "Error getting sequence value. Please try again." });
+    }
+
+    const _id = `364${globalUserName}${sequenceValue}`;
+
+    const newDocument = new Criterion364Model({
+      _id,
+      activityName,
+      schemeName,
+      yearOfActivity,
+      studentNames,
+      filePath, // Can be null if no file is attached
+    });
+
+    await newDocument.save(); // Save the document to the database
+
+    return res.status(200).json({ message: 'Data submitted successfully' });
+  } catch (error) {
+    console.error("Error uploading data:", error);
+    return res.status(500).json({ error: "An error occurred while submitting data. Please try again." });
+  }
+});
+
+// Endpoint to retrieve data for Criterion 3.6.4
+app.get('/getFile364', async (req, res) => {
+  const _id = `364${globalUserName}`;
+
+  try {
+    const foundDetails = await Criterion364Model.findOne({ _id });
+    if (foundDetails) {
+      return res.status(200).json(foundDetails);
+    } else {
+      return res.status(404).json({ error: "Element not found" });
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return res.status(500).json({ error: "An error occurred while fetching data. Please try again." });
+  }
+});
+
+
+
+
+// Define Mongoose Schema for Criterion 3.7.1
+const Criterion371Schema = new mongoose.Schema({
+  _id: String,
+  collaborativeTitle: { type: String, required: true },
+  collaboratingAgency: {  type: String, required: true,},
+  financialSupportSource: { type: String, required: true },
+  collaborationYear: { type: Number, required: true },
+  collaborationDuration: { type: Number, required: true },
+  facultyInvolved: { type: String, required: true },
+  natureOfActivity: { type: String, required: true },
+  filePath: { type: String }, // Path to the supporting document
+});
+
+const Criterion371Model = mongoose.model('Criterion371', Criterion371Schema);
+
+// Endpoint to upload data for Criterion 3.7.1
+app.post('/371upload', upload.single('file'), async (req, res) => {
+  try {
+    const {
+      collaborativeTitle,
+      collaboratingAgency,
+      financialSupportSource,
+      collaborationYear,
+      collaborationDuration,
+      facultyInvolved,
+      natureOfActivity,
+    } = req.body;
+
+    const filePath = req.file ? req.file.path : null; // Get the file path if uploaded
+
+    const criterionNumber = '371';
+    let sequenceValue;
+
+    try {
+      sequenceValue = await getNextSequenceValue(criterionNumber);
+    } catch (error) {
+      console.error("Error getting sequence value:", error);
+      return res.status(500).json({ error: "Error getting sequence value. Please try again." });
+    }
+
+    const _id = `371${globalUserName}${sequenceValue}`;
+
+    const newDocument = new Criterion371Model({
+      _id,
+      collaborativeTitle,
+      collaboratingAgency,
+      financialSupportSource,
+      collaborationYear,
+      collaborationDuration,
+      facultyInvolved,
+      natureOfActivity,
+      filePath, // Can be null if no file is attached
+    });
+
+    await newDocument.save(); // Save the document to the database
+
+    return res.status(200).json({ message: 'Data submitted successfully' });
+  } catch (error) {
+    console.error("Error uploading data:", error);
+    return res.status(500).json({ error: "An error occurred while submitting data. Please try again." });
+  }
+});
+
+// Endpoint to retrieve data for Criterion 3.7.1
+app.get('/getFile371', async (req, res) => {
+  const _id = `371${globalUserName}`;
+
+  try {
+    const foundDetails = await Criterion371Model.findOne({ _id });
+    if (foundDetails) {
+      return res.status(200).json(foundDetails);
+    } else {
+      return res.status(404).json({ error: "Element not found" });
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return res.status(500).json({ error: "An error occurred while fetching data. Please try again." });
+  }
+});
+
+
+
+
+// Define Mongoose Schema for Criterion 3.7.2
+const Criterion372Schema = new mongoose.Schema({
+  _id: String,
+  organizationName: { type: String, required: true },
+  mouYear: { type: Number, required: true },
+  mouDuration: { type: Number, required: true },
+  facultyCoordinators: { type: String, required: true },
+  actualActivities: { type: String, required: true },
+  participants: { type: String, required: true },
+  filePath: { type: String }, // Path to the supporting document
+});
+
+const Criterion372Model = mongoose.model('Criterion372', Criterion372Schema);
+
+// Endpoint to upload data for Criterion 3.7.2
+app.post('/372upload', upload.single('file'), async (req, res) => {
+  try {
+    const {
+      organizationName,
+      mouYear,
+      mouDuration,
+      facultyCoordinators,
+      actualActivities,
+      participants,
+    } = req.body;
+
+    const filePath = req.file ? req.file.path : null; // Get the file path if a file is uploaded
+
+    const criterionNumber = '372';
+    let sequenceValue;
+
+    try {
+      sequenceValue = await getNextSequenceValue(criterionNumber);
+    } catch (error) {
+      console.error("Error getting sequence value:", error);
+      return res.status(500).json({ error: "Error getting sequence value. Please try again." });
+    }
+
+    const _id = `372${globalUserName}${sequenceValue}`;
+
+    const newDocument = new Criterion372Model({
+      _id,
+      organizationName,
+      mouYear,
+      mouDuration,
+      facultyCoordinators,
+      actualActivities,
+      participants,
+      filePath, // Can be null if no file is attached
+    });
+
+    await newDocument.save(); // Save the document to the database
+
+    return res.status(200).json({ message: 'Data submitted successfully' });
+  } catch (error) {
+    console.error("Error uploading data:", error);
+    return res.status(500).json({ error: "An error occurred while submitting data. Please try again." });
+  }
+});
+
+// Endpoint to retrieve data for Criterion 3.7.2
+app.get('/getFile372', async (req, res) => {
+  const _id = `372${globalUserName}`;
+
+  try {
+    const foundDetails = await Criterion372Model.findOne({ _id });
+    if (foundDetails) {
+      return res.status(200).json(foundDetails);
+    } else {
+      return res.status(404).json({ error: "Element not found" });
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return res.status(500).json({ error: "An error occurred while fetching data. Please try again." });
+  }
+});
+
+
+
+
+
 
 
 // Serve uploaded files statically
