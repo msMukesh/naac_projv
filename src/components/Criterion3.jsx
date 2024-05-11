@@ -14,15 +14,19 @@ const Criterion3 = () => {
   const [tableData315, setTableData315] = useState(null);
   const [tableData322, setTableData322] = useState(null);
   const [tableData323, setTableData323] = useState(null);
+  const [tableData331, setTableData331] = useState(null);
   const [tableData332, setTableData332] = useState(null);
   const [tableData333, setTableData333] = useState(null);
+  const [tableData341, setTableData341] = useState(null);
   const [tableData342, setTableData342] = useState(null);
   const [tableData343, setTableData343] = useState(null);
   const [tableData344, setTableData344] = useState(null);
   const [tableData345, setTableData345] = useState(null);
   const [tableData346, setTableData346] = useState(null);
+  const [tableData347, setTableData347] = useState(null);
   const [tableData348, setTableData348] = useState(null);
   const [tableData349, setTableData349] = useState(null);
+  const [tableData351, setTableData351] = useState(null);
   const [tableData352, setTableData352] = useState(null);
   const [tableData361, setTableData361] = useState(null);
   const [tableData362, setTableData362] = useState(null);
@@ -860,6 +864,83 @@ const [formData323, setFormData323] = useState(initialFormData323);
   };
 
 
+  const initialFormData331 = {
+    innovationEcosystem: '',
+    ecosystemLaboratory: '',
+    innovationCenter: '',
+    knowledgeIncubationCenter: '',
+    startupCenter: '',
+    otherSimilar: '',
+    description: '',
+    files: null, // File for supporting documents
+  };
+  
+    const [formData331, setFormData331] = useState(initialFormData331);
+    const [uploading331, setUploading331] = useState(false);
+    const [uploaded331, setUploaded331] = useState(false);
+    const [error331, setError331] = useState(null);
+    const [toggleForm331, setToggleForm331] = useState(false);
+  
+    const handleInputChange331 = (e) => {
+      const { name, value } = e.target;
+      setFormData331({ ...formData331, [name]: value });
+    };
+  
+    const handleFileChange331 = (e) => {
+      setFormData331({ ...formData331, files: e.target.files });
+    };
+  
+    const handleToggleForm331 = () => {
+      setToggleForm331((prevState) => !prevState);
+    };
+  
+    const handleSubmit331 = async (e) => {
+      e.preventDefault();
+      setUploading331(true);
+      setError331(null);
+  
+      const formData = new FormData();
+      const userName = Cookies.get("userName");
+      const id = `${userName}_331`; // Unique ID for data submission
+  
+      formData.append("id", id);
+      formData.append("innovationEcosystem", formData331.innovationEcosystem);
+      formData.append("ecosystemLaboratory", formData331.ecosystemLaboratory);
+      formData.append("innovationCenter", formData331.innovationCenter);
+      formData.append("knowledgeIncubationCenter", formData331.knowledgeIncubationCenter);
+      formData.append("startupCenter", formData331.startupCenter);
+      formData.append("otherSimilar", formData331.otherSimilar);
+      formData.append("description", formData331.description);
+  
+      if (formData331.files) {
+        formData.append("files", formData331.files[0]); // Supporting document upload
+      }
+  
+      try {
+        await axios.post("http://localhost:5000/331upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+  
+        setFormData331(initialFormData331); // Reset form data after submission
+        setUploaded331(true);
+  
+        setTimeout(() => {
+          setUploaded331(false); // Reset upload status after some time
+        }, 1000);
+  
+        setToggleForm331(false); // Hide form after submission
+      } catch (error) {
+        console.error("Error uploading files:", error);
+        setError331("Error uploading files. Please try again.");
+      } finally {
+        setUploading331(false); // Reset uploading status
+      }
+    };
+
+
+
 
   
 
@@ -1014,6 +1095,80 @@ const [formData323, setFormData323] = useState(initialFormData323);
       };
 
 
+
+// Initial state for Criterion 3.4.1
+const initialFormData341 = {
+  researchMethodology: '',
+  departmentalEthicsCommittees: '',
+  scientificResearchWriting: '',
+  plagiarismCheck: '',
+  researchAdvisoryCommittee: '',
+  otherRelatedItem: '',
+  files: null, // File for supporting documents
+};
+
+  const [formData341, setFormData341] = useState(initialFormData341);
+  const [uploading341, setUploading341] = useState(false);
+  const [uploaded341, setUploaded341] = useState(false);
+  const [error341, setError341] = useState(null);
+  const [toggleForm341, setToggleForm341] = useState(false);
+
+  const handleInputChange341 = (e) => {
+    const { name, value } = e.target;
+    setFormData341({ ...formData341, [name]: value });
+  };
+
+  const handleFileChange341 = (e) => {
+    setFormData341({ ...formData341, files: e.target.files });
+  };
+
+  const handleToggleForm341 = () => {
+    setToggleForm341((prevState) => !prevState);
+  };
+
+  const handleSubmit341 = async (e) => {
+    e.preventDefault();
+    setUploading341(true);
+    setError341(null);
+
+    const formData = new FormData();
+    const userName = Cookies.get("userName");
+    const id = userName + "_341"; // Unique ID for data submission
+
+    formData.append("id", id);
+    formData.append("researchMethodology", formData341.researchMethodology);
+    formData.append("departmentalEthicsCommittees", formData341.departmentalEthicsCommittees);
+    formData.append("scientificResearchWriting", formData341.scientificResearchWriting);
+    formData.append("plagiarismCheck", formData341.plagiarismCheck);
+    formData.append("researchAdvisoryCommittee", formData341.researchAdvisoryCommittee);
+    formData.append("otherRelatedItem", formData341.otherRelatedItem);
+
+    if (formData341.files) {
+      formData.append("file", formData341.files[0]); // Supporting document upload
+    }
+
+    try {
+      await axios.post("http://localhost:5000/341upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setFormData341(initialFormData341); // Reset form data after submission
+      setUploaded341(true);
+
+      setTimeout(() => {
+        setUploaded341(false); // Reset upload status after some time
+      }, 1000);
+
+      setToggleForm341(false); // Hide form after submission
+    } catch (error) {
+      console.error("Error uploading files:", error);
+      setError341("Error uploading files. Please try again.");
+    } finally {
+      setUploading341(false); // Reset uploading status
+    }
+  };
 
 
 
@@ -1402,6 +1557,173 @@ const [formData323, setFormData323] = useState(initialFormData323);
 
 
 
+
+                const initialFormData347 = {
+                  teacherName: '',
+                  moduleName: '',
+                  platform: '',
+                  launchDate: '',
+                  platformCount: '',
+                  files: null,
+                };
+                
+                  const [formData347, setFormData347] = useState(initialFormData347);
+                  const [uploading347, setUploading347] = useState(false);
+                  const [uploaded347, setUploaded347] = useState(false);
+                  const [error347, setError347] = useState(null);
+                  const [toggleForm347, setToggleForm347] = useState(false);
+                
+                  const handleInputChange347 = (e) => {
+                    const { name, value } = e.target;
+                    setFormData347({ ...formData347, [name]: value });
+                  };
+                
+                  const handleFileChange347 = (e) => {
+                    setFormData347({ ...formData347, files: e.target.files });
+                  };
+                
+                  const handleToggleForm347 = () => {
+                    setToggleForm347((prevState) => !prevState);
+                  };
+                
+                  const handleSubmit347 = async (e) => {
+                    e.preventDefault();
+                    setUploading347(true);
+                    setError347(null);
+                
+                    const formData = new FormData();
+                    const userName = Cookies.get("userName");
+                    const id = userName + "347"; // Unique ID for data submission
+                
+                    formData.append("id", id);
+                    formData.append("teacherName", formData347.teacherName);
+                    formData.append("moduleName", formData347.moduleName);
+                    formData.append("platform", formData347.platform);
+                    formData.append("launchDate", formData347.launchDate);
+                    formData.append("platformCount", formData347.platformCount);
+                
+                    if (formData347.files) {
+                      formData.append("file", formData347.files[0]); // Supporting document upload
+                    }
+                
+                    try {
+                      await axios.post("http://localhost:5000/347upload", formData, {
+                        headers: {
+                          "Content-Type": "multipart/form-data",
+                        },
+                      });
+                
+                      setFormData347(initialFormData347); // Reset form data after submission
+                      setUploaded347(true);
+                
+                      setTimeout(() => {
+                        setUploaded347(false); // Reset upload status after some time
+                      }, 1000);
+                
+                      setToggleForm347(false); // Hide form after submission
+                    } catch (error) {
+                      console.error("Error uploading files:", error);
+                      setError347("Error uploading files. Please try again.");
+                    } finally {
+                      setUploading347(false); // Reset uploading status
+                    }
+                  };
+
+                  
+
+
+
+
+                  const initialFormDataPlatforms = {
+                    ePgPathshala: { status: '', details: '' },
+                    cecUndergraduate: { status: '', details: '' },
+                    swayam: { status: '', details: '' },
+                    moocsPlatform: { status: '', details: '' },
+                    governmentInitiatives: { status: '', details: '' },
+                    institutionalLms: { status: '', details: '' },
+                    files: null,
+                  };
+                  
+                    const [formData, setFormData] = useState(initialFormDataPlatforms);
+                    const [uploading, setUploading] = useState(false);
+                    const [uploaded, setUploaded] = useState(false);
+                    const [error, setError] = useState(null);
+                    const [toggleForm, setToggleForm] = useState(false);
+                  
+                    const handleInputChange = (e) => {
+                      const { name, value } = e.target;
+                      const [key, subkey] = name.split('_'); // Split to get the platform and the subkey
+                      setFormData((prevData) => ({
+                        ...prevData,
+                        [key]: {
+                          ...prevData[key],
+                          [subkey]: value,
+                        },
+                      }));
+                    };
+                  
+                    const handleFileChange = (e) => {
+                      setFormData({ ...formData, files: e.target.files });
+                    };
+                  
+                    const handleToggleForm = () => {
+                      setToggleForm((prevState) => !prevState);
+                    };
+                  
+                    const handleSubmit3471 = async (e) => {
+                      e.preventDefault();
+                      setUploading(true);
+                      setError(null);
+                  
+                      const formDataToSend = new FormData();
+                      const userName = Cookies.get("userName");
+                      const id = `${userName}_platforms`;
+                  
+                      formDataToSend.append("id", id);
+                  
+                      Object.keys(formData).forEach((key) => {
+                        if (key !== 'files') {
+                          formDataToSend.append(`${key}_status`, formData[key].status);
+                          formDataToSend.append(`${key}_details`, formData[key].details);
+                        }
+                      });
+                  
+                      if (formData.files) {
+                        formDataToSend.append("files", formData.files[0]); // Supporting document upload
+                      }
+                  
+                      try {
+                        await axios.post("http://localhost:5000/platforms_upload", formDataToSend, {
+                          headers: {
+                            "Content-Type": "multipart/form-data",
+                          },
+                        });
+                  
+                        setFormData(initialFormDataPlatforms); // Reset form data after submission
+                        setUploaded(true);
+                  
+                        setTimeout(() => {
+                          setUploaded(false); // Reset upload status after some time
+                        }, 1000);
+                  
+                        setToggleForm(false); // Hide form after submission
+                      } catch (error) {
+                        console.error("Error uploading files:", error);
+                        setError("Error uploading files. Please try again.");
+                      } finally {
+                        setUploading(false); // Reset uploading status
+                      }
+                    };
+
+
+
+
+
+
+
+
+
+
                 const initialFormData348 = {
                   titleOfPaper: '',
                   authorName: '',
@@ -1550,6 +1872,81 @@ const [formData323, setFormData323] = useState(initialFormData323);
                         setUploading349(false); // Reset uploading status
                       }
                     };
+
+
+
+
+
+
+
+
+
+                    const initialFormData351 = {
+                      governingMinutes: null,
+                      consultancyPolicy: null,
+                      additionalInfo: null,
+                    };
+                    
+                      const [formData351, setFormData351] = useState(initialFormData351);
+                      const [uploading351, setUploading351] = useState(false);
+                      const [uploaded351, setUploaded351] = useState(false);
+                      const [error351, setError351] = useState(null);
+                      const [toggleForm351, setToggleForm351] = useState(false);
+                    
+                      const handleFileChange351 = (e) => {
+                        const { name, files } = e.target;
+                        setFormData351({ ...formData351, [name]: files });
+                      };
+                    
+                      const handleToggleForm351 = () => {
+                        setToggleForm351((prevState) => !prevState);
+                      };
+                    
+                      const handleSubmit351 = async (e) => {
+                        e.preventDefault();
+                        setUploading351(true);
+                        setError351(null);
+                    
+                        const formData = new FormData();
+                        const userName = Cookies.get("userName");
+                        const id = userName + "351"; // Unique ID for data submission
+                    
+                        formData.append("id", id);
+                    
+                        if (formData351.governingMinutes) {
+                          formData.append("governingMinutes", formData351.governingMinutes[0]); // Assuming single file for minutes
+                        }
+                        if (formData351.consultancyPolicy) {
+                          formData.append("consultancyPolicy", formData351.consultancyPolicy[0]); // Consultancy policy document
+                        }
+                        if (formData351.additionalInfo) {
+                          formData.append("additionalInfo", formData351.additionalInfo[0]); // Additional information, if any
+                        }
+                    
+                        try {
+                          await axios.post("http://localhost:5000/351upload", formData, {
+                            headers: {
+                              "Content-Type": "multipart/form-data",
+                            },
+                          });
+                    
+                          setFormData351(initialFormData351); // Reset form data after submission
+                          setUploaded351(true);
+                    
+                          setTimeout(() => {
+                            setUploaded351(false); // Reset upload status after some time
+                          }, 1000);
+                    
+                          setToggleForm351(false); // Hide form after submission
+                        } catch (error) {
+                          console.error("Error uploading files:", error);
+                          setError351("Error uploading files. Please try again.");
+                        } finally {
+                          setUploading351(false); // Reset uploading status
+                        }
+                      };
+
+
 
 
 
@@ -3623,6 +4020,211 @@ const handleDownloadFile = (fileName) => {
 
 <div className="formDiv">
       <h4>
+        3.3.1 Whether the department has created an ecosystem for innovations, including Incubation center and other initiatives for the creation and transfer of knowledge
+      </h4>
+      <button className="toggleFormbtn" onClick={handleToggleForm331}>
+        {toggleForm331 ? "Hide Form" : "Show Form"}
+      </button>
+
+      {toggleForm331 && (
+        <form onSubmit={handleSubmit331}>
+          <div>
+            <label>Innovation Ecosystem:</label>
+            <label>
+              <input
+                type="radio"
+                name="innovationEcosystem"
+                value="Yes"
+                checked={formData331.innovationEcosystem === 'Yes'}
+                onChange={handleInputChange331}
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="innovationEcosystem"
+                value="No"
+                checked={formData331.innovationEcosystem === 'No'}
+                onChange={handleInputChange331}
+              />
+              No
+            </label>
+          </div>
+
+          <div>
+            <label>Ecosystem Laboratory:</label>
+            <label>
+              <input
+                type="radio"
+                name="ecosystemLaboratory"
+                value="Yes"
+                checked={formData331.ecosystemLaboratory === 'Yes'}
+                onChange={handleInputChange331}
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="ecosystemLaboratory"
+                value="No"
+                checked={formData331.ecosystemLaboratory === 'No'}
+                onChange={handleInputChange331}
+              />
+              No
+            </label>
+          </div>
+
+          <div>
+            <label>Innovation Center:</label>
+            <label>
+              <input
+                type="radio"
+                name="innovationCenter"
+                value="Yes"
+                checked={formData331.innovationCenter === 'Yes'}
+                onChange={handleInputChange331}
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="innovationCenter"
+                value="No"
+                checked={formData331.innovationCenter === 'No'}
+                onChange={handleInputChange331}
+              />
+              No
+            </label>
+          </div>
+
+          <div>
+            <label>Knowledge Incubation Center:</label>
+            <label>
+              <input
+                type="radio"
+                name="knowledgeIncubationCenter"
+                value="Yes"
+                checked={formData331.knowledgeIncubationCenter === 'Yes'}
+                onChange={handleInputChange331}
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="knowledgeIncubationCenter"
+                value="No"
+                checked={formData331.knowledgeIncubationCenter === 'No'}
+                onChange={handleInputChange331}
+              />
+              No
+            </label>
+          </div>
+
+          <div>
+            <label>Startup/Entrepreneurship Center:</label>
+            <label>
+              <input
+                type="radio"
+                name="startupCenter"
+                value="Yes"
+                checked={formData331.startupCenter === 'Yes'}
+                onChange={handleInputChange331}
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="startupCenter"
+                value="No"
+                checked={formData331.startupCenter === 'No'}
+                onChange={handleInputChange331}
+              />
+              No
+            </label>
+          </div>
+
+          <div>
+            <label>Any other similar (if any):</label>
+            <input
+              type="text"
+              name="otherSimilar"
+              value={formData331.otherSimilar}
+              onChange={handleInputChange331}
+            />
+          </div>
+
+          <div>
+            <label>Description of available incubation center and evidence of its usage (max 500 words):</label>
+            <textarea
+              name="description"
+              placeholder="Describe here..."
+              value={formData331.description}
+              onChange={handleInputChange331}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="files">Supporting Document:</label>
+            <input type="file" id="files" name="files" onChange={handleFileChange331} />
+          </div>
+
+          <button
+            className="submitFormBtn"
+            type="submit"
+            disabled={uploading331 || uploaded331}
+          >
+            {uploading331 ? "Submitting..." : uploaded331 ? "Submitted" : "Submit"}
+          </button>
+
+          {error331 && <div className="error">{error331}</div>}
+        </form>
+      )}
+    </div>
+
+    {tableData331 && (
+      <div>
+      <h3>Innovation Ecosystem - Criterion 3.3.1</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Item Description</th>
+            <th>Status</th>
+            <th>Details</th>
+            <th>Download File</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tableData331.map((data, index) => (
+            <tr key={index}>
+              <td>Innovation Ecosystem</td>
+              <td>{data.innovationEcosystem}</td>
+              <td>{data.innovationEcosystemDetails}</td>
+              <td>
+                {data.filePath ? (
+                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                    Download File
+                  </button>
+                ) : (
+                  "No File Attached"
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    )}
+
+
+
+
+<div className="formDiv">
+      <h4>
         3.3.2 Workshops/seminars conducted on Research methodology, Intellectual Property Rights (IPR), Entrepreneurship, Skill development during the year
       </h4>
       <button className="toggleFormbtn" onClick={handleToggleForm332}>
@@ -3918,6 +4520,202 @@ const handleDownloadFile = (fileName) => {
 
 <div className="criterionCon34">
 <h3 className="subTitle">Key Indicators - 3.4 Research Publications and Awards</h3>
+
+
+<div className="formDiv">
+      <h4>
+        3.4.1 The department ensures implementation of its stated Code of Ethics for research
+      </h4>
+      <button className="toggleFormbtn" onClick={handleToggleForm341}>
+        {toggleForm341 ? "Hide Form" : "Show Form"}
+      </button>
+
+      {toggleForm341 && (
+        <form onSubmit={handleSubmit341}>
+          <div>
+            <label htmlFor="researchMethodology">Inclusion of Research ethics in Research Methodology course work:</label>
+            <label>
+              <input
+                type="radio"
+                name="researchMethodology"
+                value="YES"
+                checked={formData341.researchMethodology === 'YES'}
+                onChange={handleInputChange341}
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="researchMethodology"
+                value="NO"
+                checked={formData341.researchMethodology === 'NO'}
+                onChange={handleInputChange341}
+              />
+              No
+            </label>
+          </div>
+
+          <div>
+            <label htmlFor="departmentalEthicsCommittees">Presence of Departmental ethics committees (Animal, Chemical, Bio-Ethics, etc.):</label>
+            <label>
+              <input
+                type="radio"
+                name="departmentalEthicsCommittees"
+                value="YES"
+                checked={formData341.departmentalEthicsCommittees === 'YES'}
+                onChange={handleInputChange341}
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="departmentalEthicsCommittees"
+                value="NO"
+                checked={formData341.departmentalEthicsCommittees === 'NO'}
+                onChange={handleInputChange341}
+              />
+              No
+            </label>
+          </div>
+
+          <div>
+            <label htmlFor="scientificResearchWriting">Ethics of Scientific Research Writing:</label>
+            <label>
+              <input
+                type="radio"
+                name="scientificResearchWriting"
+                value="YES"
+                checked={formData341.scientificResearchWriting === 'YES'}
+                onChange={handleInputChange341}
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="scientificResearchWriting"
+                value="NO"
+                checked={formData341.scientificResearchWriting === 'NO'}
+                onChange={handleInputChange341}
+              />
+              No
+            </label>
+          </div>
+
+          <div>
+            <label htmlFor="plagiarismCheck">Check for Plagiarism and Unfair Means of Research:</label>
+            <label>
+              <input
+                type="radio"
+                name="plagiarismCheck"
+                value="YES"
+                checked={formData341.plagiarismCheck === 'YES'}
+                onChange={handleInputChange341}
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="plagiarismCheck"
+                value="NO"
+                checked={formData341.plagiarismCheck === 'NO'}
+                onChange={handleInputChange341}
+              />
+              No
+            </label>
+          </div>
+
+          <div>
+            <label htmlFor="researchAdvisoryCommittee">Research Advisory Committee:</label>
+            <label>
+              <input
+                type="radio"
+                name="researchAdvisoryCommittee"
+                value="YES"
+                checked={formData341.researchAdvisoryCommittee === 'YES'}
+                onChange={handleInputChange341}
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="researchAdvisoryCommittee"
+                value="NO"
+                checked={formData341.researchAdvisoryCommittee === 'NO'}
+                onChange={handleInputChange341}
+              />
+              No
+            </label>
+          </div>
+
+          <div>
+            <label htmlFor="otherRelatedItem">Other related items (if any):</label>
+            <input
+              type="text"
+              id="otherRelatedItem"
+              name="otherRelatedItem"
+              value={formData341.otherRelatedItem}
+              onChange={handleInputChange341}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="files">Supporting Documents:</label>
+            <input type="file" id="files" name="files" onChange={handleFileChange341} />
+          </div>
+
+          <button
+            className="submitFormBtn"
+            type="submit"
+            disabled={uploading341 || uploaded341}
+          >
+            {uploading341 ? "Submitting..." : uploaded341 ? "Submitted" : "Submit"}
+          </button>
+
+          {error341 && <div className="error">{error341}</div>}
+        </form>
+      )}
+    </div>
+
+    {tableData342 && (
+    <div>
+      <h3>Research Ethics - Criterion 3.4.1</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Research Ethics</th>
+            <th>Status</th>
+            <th>Details</th>
+            <th>Download File</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tableData341.map((data, index) => (
+            <tr key={index}>
+              <td>Inclusion of Research Ethics in Methodology Course Work</td>
+              <td>{data.researchMethodology}</td>
+              <td>{data.researchMethodologyDetails}</td>
+              <td>
+                {data.filePath ? (
+                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                    Download File
+                  </button>
+                ) : (
+                  "No File Attached"
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    )}
+
+
 
 
 <div className="formDiv">
@@ -4618,6 +5416,255 @@ const handleDownloadFile = (fileName) => {
         )}
 
 
+
+<div className="formDiv">
+      <h4>
+        3.4.7 E-content developed by teachers
+      </h4>
+      <button className="toggleFormbtn" onClick={handleToggleForm347}>
+        {toggleForm347 ? "Hide Form" : "Show Form"}
+      </button>
+
+      {toggleForm347 && (
+        <form onSubmit={handleSubmit347}>
+          <div>
+            <label htmlFor="teacherName">Name of the Teacher:</label>
+            <input
+              type="text"
+              id="teacherName"
+              name="teacherName"
+              value={formData347.teacherName}
+              onChange={handleInputChange347}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="moduleName">Name of the Module:</label>
+            <input
+              type="text"
+              id="moduleName"
+              name="moduleName"
+              value={formData347.moduleName}
+              onChange={handleInputChange347}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="platform">Platform on which the module is developed:</label>
+            <input
+              type="text"
+              id="platform"
+              name="platform"
+              value={formData347.platform}
+              onChange={handleInputChange347}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="launchDate">Date of Launching E-content:</label>
+            <input
+              type="date"
+              id="launchDate"
+              name="launchDate"
+              value={formData347.launchDate}
+              onChange={handleInputChange347}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="platformCount">Number of Platforms:</label>
+            <input
+              type="number"
+              id="platformCount"
+              name="platformCount"
+              value={formData347.platformCount}
+              onChange={handleInputChange347}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="files">Supporting Document:</label>
+            <input type="file" id="files" name="files" onChange={handleFileChange347} />
+          </div>
+
+          <button
+            className="submitFormBtn"
+            type="submit"
+            disabled={uploading347 || uploaded347}
+          >
+            {uploading347 ? "Submitting..." : uploaded347 ? "Submitted" : "Submit"}
+          </button>
+
+          {error347 && <div className="error">{error347}</div>}
+        </form>
+      )}
+    </div>
+
+    {tableData347 && (
+    <div>
+      <h3>E-content Developed by Teachers - Criterion 3.4.7</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Name of the Teacher</th>
+            <th>Name of the Module</th>
+            <th>Platform</th>
+            <th>Date of Launch</th>
+            <th>Number of Platforms</th>
+            <th>Download File</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tableData347.map((data, index) => (
+            <tr key={index}>
+              <td>{data.teacherName}</td>
+              <td>{data.moduleName}</td>
+              <td>{data.platform}</td>
+              <td>{data.launchDate}</td>
+              <td>{data.platformCount}</td>
+              <td>
+                {data.filePath ? (
+                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                    Download File
+                  </button>
+                ) : (
+                  "No File Attached"
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+        )}
+
+
+<div className="formDiv">
+      <h4>
+        Platforms for E-content Development
+      </h4>
+      <button className="toggleFormbtn" onClick={handleToggleForm}>
+        {toggleForm ? "Hide Form" : "Show Form"}
+      </button>
+
+      {toggleForm && (
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>For E-PG-Pathshala:</label>
+            <label>
+              <input
+                type="radio"
+                name="ePgPathshala_status"
+                value="Yes"
+                checked={formData.ePgPathshala.status === 'Yes'}
+                onChange={handleInputChange}
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="ePgPathshala_status"
+                value="No"
+                checked={formData.ePgPathshala.status === 'No'}
+                onChange={handleInputChange}
+              />
+              No
+            </label>
+            <input
+              type="text"
+              name="ePgPathshala_details"
+              placeholder="Content Details"
+              value={formData.ePgPathshala.details}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          {/* Similarly, add other platforms */}
+          <div>
+            <label>For CEC (Undergraduate):</label>
+            <label>
+              <input
+                type="radio"
+                name="cecUndergraduate_status"
+                value="Yes"
+                checked={formData.cecUndergraduate.status === 'Yes'}
+                onChange={handleInputChange}
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="cecUndergraduate_status"
+                value="No"
+                checked={formData.cecUndergraduate.status === 'No'}
+                onChange={handleInputChange}
+              />
+              No
+            </label>
+            <input
+              type="text"
+              name="cecUndergraduate_details"
+              placeholder="Content Details"
+              value={formData.cecUndergraduate.details}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          {/* Add other platform inputs similarly */}
+          <div>
+            <label>For SWAYAM:</label>
+            <label>
+              <input
+                type="radio"
+                name="swayam_status"
+                value="Yes"
+                checked={formData.swayam.status === 'Yes'}
+                onChange={handleInputChange}
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="swayam_status"
+                value="No"
+                checked={formData.swayam.status === 'No'}
+                onChange={handleInputChange}
+              />
+              No
+            </label>
+            <input
+              type="text"
+              name="swayam_details"
+              placeholder="Content Details"
+              value={formData.swayam.details}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="files">Supporting Document:</label>
+            <input type="file" id="files" name="files" onChange={handleFileChange} />
+          </div>
+
+          <button
+            className="submitFormBtn"
+            type="submit"
+            disabled={uploading || uploaded}
+          >
+            {uploading ? "Submitting..." : uploaded ? "Submitted" : "Submit"}
+          </button>
+
+          {error && <div className="error">{error}</div>}
+        </form>
+      )}
+    </div>
+
+
+
+
     <div className="formDiv">
       <h4>
         3.4.8 Bibliometric of the publications during the year based on average Citation Index in Scopus, Web of Science, or PubMed
@@ -4871,6 +5918,106 @@ const handleDownloadFile = (fileName) => {
 
 <div className="criterionCon35">
 <h3 className="subTitle">Key Indicators – 3.5 Consultancy</h3>
+
+
+<div className="formDiv">
+      <h4>
+        3.5.1 Institution's policy on consultancy including revenue sharing between the institution and the individual
+      </h4>
+      <button className="toggleFormbtn" onClick={handleToggleForm351}>
+        {toggleForm351 ? "Hide Form" : "Show Form"}
+      </button>
+
+      {toggleForm351 && (
+        <form onSubmit={handleSubmit351}>
+          <div>
+            <label htmlFor="governingMinutes">Minutes of the Governing Council:</label>
+            <input
+              type="file"
+              id="governingMinutes"
+              name="governingMinutes"
+              onChange={handleFileChange351}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="consultancyPolicy">Copy of the Consultancy Policy:</label>
+            <input
+              type="file"
+              id="consultancyPolicy"
+              name="consultancyPolicy"
+              onChange={handleFileChange351}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="additionalInfo">Additional Information (if any):</label>
+            <input
+              type="file"
+              id="additionalInfo"
+              name="additionalInfo"
+              onChange={handleFileChange351}
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={uploading351 || uploaded351}
+          >
+            {uploading351 ? "Submitting..." : uploaded351 ? "Submitted" : "Submit"}
+          </button>
+
+          {error351 && <div className="error">{error351}</div>}
+        </form>
+      )}
+    </div>
+{tableData351 && (
+<div>
+      <h3>Consultancy Policy - Criterion 3.5.1</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Minutes of the Governing Council</th>
+            <th>Consultancy Policy</th>
+            <th>Additional Information</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tableData351.map((data, index) => (
+            <tr key={index}>
+              <td>
+                {data.governingMinutes ? (
+                  <button onClick={() => handleDownloadFile(data.governingMinutes)}>
+                    Download Minutes
+                  </button>
+                ) : (
+                  "No File Attached"
+                )}
+              </td>
+              <td>
+                {data.consultancyPolicy ? (
+                  <button onClick={() => handleDownloadFile(data.consultancyPolicy)}>
+                    Download Policy
+                  </button>
+                ) : (
+                  "No File Attached"
+                )}
+              </td>
+              <td>
+                {data.additionalInfo ? (
+                  <button onClick={() => handleDownloadFile(data.additionalInfo)}>
+                    Download Additional Info
+                  </button>
+                ) : (
+                  "No File Attached"
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    )}
 
 
 <div className="formDiv">
