@@ -2556,52 +2556,91 @@ const initialFormData341 = {
 
 
 
-// useEffect(() => {
-//   const fetchData = async () => {
-//     try {
-//       const userName = Cookies.get("userName");
-//       const criterionNumbers = [311, 312, 313, 314, 316, 321];
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const userName = Cookies.get("userName");
+      const criterionNumbers = [311, 312, 313, 314,315, 316, 321, 322, 323, 331, 332, 333, 341, 342, 343, 344, 345, 346, 347, 348, 349, 351, 352, 361, 362, 363, 364, 371, 372];
 
-//       // Construct query parameters
-//       const params = {
-//         userName,
-//         criterionNumbers: criterionNumbers.join(','),
-//       };
+      // [311, 312, 313, 314, 315, 316, 321, 322, 323, 331, 332, 333, 341, 342, 343, 344, 345, 346, 347, 348, 349, 351, 352, 361, 362, 363, 364, 371, 372]
 
-//       // Send GET request with query parameters
-//       const response = await axios.get("http://localhost:5000/getFilesByCriteria", { params });
 
-//       if (response.status === 200) {
-//         const results = response.data.results; // Each element is an array of data for a criterion
+      // Construct query parameters
+      const params = {
+        userName,
+        criterionNumbers: criterionNumbers.join(','),
+      };
 
-//         // Validate the length of results and update table data
-//         setTableData311(results[0] || []); // Default to an empty array if not found
-//         setTableData312(results[1] || []);
-//         setTableData313(results[2] || []);
-//         setTableData314(results[3] || []);
-//         // setTableData315(results[4] || []);
-//         setTableData316(results[4] || []);
-//         setTableData321(results[5] || []);
+      // Send GET request with query parameters
+      const response = await axios.get("http://localhost:5000/getFilesByCriteria", { params });
 
-//       } else {
-//         console.error("Unexpected response status:", response.status);
-//       }
-//     } catch (error) {
-//       console.error("Error fetching table data:", error);
-//     }
-//   };
+      if (response.status === 200) {
+        const results = response.data.results; // Each element is an array of data for a criterion
 
-//   fetchData(); // Fetch data once when the component mounts
-// }, [
-//   uploaded311,
-//   uploaded312,
-//   uploaded313,
-//   uploaded314,
-//   uploaded315,
-//   uploaded316,
-//   uploaded321,
-//   handleDeleteFlag
-// ]);
+        // Validate the length of results and update table data
+        setTableData311(results[0] || []); // Default to an empty array if not found
+        setTableData312(results[1] || []);
+        setTableData313(results[2] || []);
+        setTableData314(results[3] || []);
+        setTableData315(results[4] || []);
+        setTableData316(results[5] || []);
+        setTableData321(results[6] || []);
+        setTableData322(results[7] || []);
+        setTableData323(results[8] || []);
+        setTableData331(results[9] || []);
+        setTableData332(results[10] || []);
+        setTableData333(results[11] || []);
+        setTableData341(results[12] || []);
+        setTableData342(results[13] || []);
+        setTableData343(results[14] || []);
+        setTableData344(results[15] || []);
+        setTableData345(results[16] || []);
+        setTableData346(results[17] || []);
+        setTableData347(results[18] || []);
+        setTableData348(results[19] || []);
+        setTableData349(results[20] || []);
+        setTableData351(results[21] || []);
+        setTableData352(results[22] || []);
+        setTableData361(results[23] || []);
+        setTableData362(results[24] || []);
+        setTableData363(results[25] || []);
+        setTableData364(results[26] || []);
+        setTableData371(results[27] || []);
+        setTableData372(results[28] || []);
+
+
+
+      } else {
+        console.error("Unexpected response status:", response.status);
+      }
+    } catch (error) {
+      console.error("Error fetching table data:", error);
+    }
+  };
+
+  fetchData(); // Fetch data once when the component mounts
+}, [
+  uploaded311,
+  uploaded312,
+  uploaded313,
+  uploaded314,
+  uploaded315,
+  uploaded316,
+  uploaded321,
+  uploaded322,
+  uploaded323,
+  uploaded331,
+  uploaded332,
+  uploaded333,
+  uploaded341,
+  uploaded342,
+  uploaded343,
+  uploaded344,
+
+
+
+  handleDeleteFlag
+]);
 
 
 const handleDownloadFile = (fileName) => {
@@ -4014,7 +4053,7 @@ const handleDownloadFile = (fileName) => {
               <td>{data.yearOfSanction}</td>
               <td>
                 {data.filePath ? (
-                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                  <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
                   </button>
                 ) : (
@@ -4209,25 +4248,32 @@ const handleDownloadFile = (fileName) => {
 
     {tableData331 && (
       <div>
-      <h3>Innovation Ecosystem - Criterion 3.3.1</h3>
       <table>
         <thead>
           <tr>
-            <th>Item Description</th>
-            <th>Status</th>
-            <th>Details</th>
+            <th>Innovation Ecosystem</th>
+            <th>Ecosystem laboratory</th>
+            <th>innovation Center</th>
+            <th>knowledg eIncubation Center</th>
+            <th>start-up Center</th>
+            <th>other Similar</th>
+            <th>Description</th>
             <th>Download File</th>
           </tr>
         </thead>
         <tbody>
           {tableData331.map((data, index) => (
             <tr key={index}>
-              <td>Innovation Ecosystem</td>
               <td>{data.innovationEcosystem}</td>
-              <td>{data.innovationEcosystemDetails}</td>
+              <td>{data.ecosystemLaboratory}</td>
+              <td>{data.innovationCenter}</td>
+              <td>{data.knowledgeIncubationCenter}</td>
+              <td>{data.startupCenter}</td>
+              <td>{data.otherSimilar}</td>
+              <td>{data.description}</td>
               <td>
                 {data.filePath ? (
-                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                  <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
                   </button>
                 ) : (
@@ -4378,7 +4424,7 @@ const handleDownloadFile = (fileName) => {
               <td>{data.eventOrganizer}</td>
               <td>
                 {data.filePath ? (
-                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                  <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
                   </button>
                 ) : (
@@ -4500,8 +4546,7 @@ const handleDownloadFile = (fileName) => {
             <th>Serial Number</th>
             <th>Academic Year</th>
             <th>Awardee Name</th>
-            <th>Awarding Agency</th>
-            <th>Contact Details</th>
+            <th>Awarding Agency Contact Details</th>
             <th>Date of Award</th>
             <th>Download File</th>
           </tr>
@@ -4513,11 +4558,10 @@ const handleDownloadFile = (fileName) => {
               <td>{data.academicYear}</td>
               <td>{data.awardeeName}</td>
               <td>{data.awardingAgency}</td>
-              <td>{data.contactDetails}</td>
               <td>{data.dateOfAward}</td>
               <td>
                 {data.filePath ? (
-                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                  <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
                   </button>
                 ) : (
@@ -4702,36 +4746,42 @@ const handleDownloadFile = (fileName) => {
       )}
     </div>
 
-    {tableData342 && (
+    {tableData341 && (
     <div>
       <h3>Research Ethics - Criterion 3.4.1</h3>
       <table>
-        <thead>
-          <tr>
-            <th>Research Ethics</th>
-            <th>Status</th>
-            <th>Details</th>
-            <th>Download File</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tableData341.map((data, index) => (
-            <tr key={index}>
-              <td>Inclusion of Research Ethics in Methodology Course Work</td>
-              <td>{data.researchMethodology}</td>
-              <td>{data.researchMethodologyDetails}</td>
-              <td>
-                {data.filePath ? (
-                  <button onClick={() => handleDownloadFile(data.filePath)}>
-                    Download File
-                  </button>
-                ) : (
-                  "No File Attached"
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
+      <thead>
+  <tr>
+    <th>Research Methodology</th>
+    <th>Departmental Ethics Committees</th>
+    <th>Scientific Research Writing</th>
+    <th>Plagiarism Check</th>
+    <th>Research Advisory Committee</th>
+    <th>Other Related Item</th>
+    <th>Download File</th>
+  </tr>
+</thead>
+<tbody>
+  {tableData341.map((data, index) => (
+    <tr key={index}>
+      <td>{data.researchMethodology}</td>
+      <td>{data.departmentalEthicsCommittees}</td>
+      <td>{data.scientificResearchWriting}</td>
+      <td>{data.plagiarismCheck}</td>
+      <td>{data.researchAdvisoryCommittee}</td>
+      <td>{data.otherRelatedItem}</td>
+      <td>
+        {data.filePath ? (
+          <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
+            Download File
+          </button>
+        ) : (
+          "No File Attached"
+        )}
+      </td>
+    </tr>
+  ))}
+</tbody>
       </table>
     </div>
     )}
@@ -4860,7 +4910,7 @@ const handleDownloadFile = (fileName) => {
               <td>{data.incentiveDetails}</td>
               <td>
                 {data.filePath ? (
-                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                  <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
                   </button>
                 ) : (
@@ -4985,7 +5035,7 @@ const handleDownloadFile = (fileName) => {
                <td>{data.yearOfAward}</td>
                <td>
                  {data.filePath ? (
-                   <button onClick={() => handleDownloadFile(data.filePath)}>
+                   <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                      Download File
                    </button>
                  ) : (
@@ -5120,7 +5170,7 @@ const handleDownloadFile = (fileName) => {
               <td>{data.awardYear}</td>
               <td>
                 {data.filePath ? (
-                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                  <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
                   </button>
                 ) : (
@@ -5257,7 +5307,7 @@ const handleDownloadFile = (fileName) => {
               <td>{data.issnNumber}</td>
               <td>
                 {data.filePath ? (
-                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                  <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
                   </button>
                 ) : (
@@ -5421,7 +5471,7 @@ const handleDownloadFile = (fileName) => {
               <td>{data.yearOfPublication}</td>
               <td>
                 {data.filePath ? (
-                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                  <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
                   </button>
                 ) : (
@@ -5545,7 +5595,7 @@ const handleDownloadFile = (fileName) => {
               <td>{data.platformCount}</td>
               <td>
                 {data.filePath ? (
-                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                  <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
                   </button>
                 ) : (
@@ -5793,7 +5843,7 @@ const handleDownloadFile = (fileName) => {
               <td>{data.citationIndex}</td>
               <td>
                 {data.filePath ? (
-                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                  <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
                   </button>
                 ) : (
@@ -5917,7 +5967,7 @@ const handleDownloadFile = (fileName) => {
               <td>{data.hIndex}</td>
               <td>
                 {data.filePath ? (
-                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                  <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
                   </button>
                 ) : (
@@ -6187,7 +6237,7 @@ const handleDownloadFile = (fileName) => {
           <td>{item.numberOfParticipants}</td>
           <td>
             {item.filePath ? (
-              <button onClick={() => handleDownloadFile(item.filePath)}>
+              <button className="Downloadbtn"  onClick={() => handleDownloadFile(item.filePath)}>
                 Download File
               </button>
             ) : (
@@ -6340,7 +6390,7 @@ const handleDownloadFile = (fileName) => {
               <td>{data.impactDescription}</td>
               <td>
                 {data.filePath ? (
-                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                  <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
                   </button>
                 ) : (
@@ -6441,7 +6491,6 @@ const handleDownloadFile = (fileName) => {
 
     {tableData362 && (
     <div>
-      <h3>Awards and Recognition - Criterion 3.6.2</h3>
       <table>
         <thead>
           <tr>
@@ -6463,7 +6512,7 @@ const handleDownloadFile = (fileName) => {
               <td>{data.yearOfAward}</td>
               <td>
                 {data.filePath ? (
-                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                  <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
                   </button>
                 ) : (
@@ -6585,7 +6634,7 @@ const handleDownloadFile = (fileName) => {
               <td>{data.issuesAddressed}</td>
               <td>
                 {data.filePath ? (
-                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                  <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
                   </button>
                 ) : (
@@ -6695,7 +6744,7 @@ const handleDownloadFile = (fileName) => {
               <td>{data.studentNames}</td>
               <td>
                 {data.filePath ? (
-                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                  <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
                   </button>
                 ) : (
@@ -6852,7 +6901,7 @@ const handleDownloadFile = (fileName) => {
               <td>{data.natureOfActivity}</td>
               <td>
                 {data.filePath ? (
-                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                  <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
                   </button>
                 ) : (
@@ -6983,7 +7032,7 @@ const handleDownloadFile = (fileName) => {
               <td>{data.participants}</td>
               <td>
                 {data.filePath ? (
-                  <button onClick={() => handleDownloadFile(data.filePath)}>
+                  <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
                   </button>
                 ) : (

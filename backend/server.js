@@ -149,6 +149,12 @@ const getNextSequenceValue = async (criterionNumber) => {
 
     console.log("criterionNumber:", criterionNumber);
     console.log("globalUserName:", globalUserName);
+    
+    if (!maxSequenceDoc) {
+      // If no documents found, return 1
+      return 1;
+    }
+  
     const slicedSubstring = maxSequenceDoc._id.slice(criterionNumber.length + globalUserName.length);
     console.log("Sliced Substring:", slicedSubstring);
     const maxExistingValue = maxSequenceDoc
@@ -175,7 +181,7 @@ for (let i = 1; i <= maxExistingValue; i++) {
 const getMaxExistingValue = async (criterionNumber) => {
   // Define a pattern to identify documents with the specified criterion number and user name
   const regexPattern = `^${criterionNumber}${globalUserName}`;
-  console.log("RegEx pattern:", regexPattern);
+  // console.log("RegEx pattern:", regexPattern);
 
   // Get the correct model based on the criterion number
   const CriterionModel = getModelByName(`Criterion${criterionNumber}`);
@@ -187,13 +193,82 @@ const getMaxExistingValue = async (criterionNumber) => {
     .sort({ _id: -1 }) // Sort in descending order to get the highest value
     .limit(1);
 
-  console.log("Max sequence document:", maxSequenceDoc);
+  // console.log("Max sequence document:", maxSequenceDoc);
 
   // If there's a document, extract the sequence number, otherwise, return 0
+
   return maxSequenceDoc
     ? parseInt(maxSequenceDoc._id.slice(criterionNumber.length + globalUserName.length), 10)
     : 0; // Return 0 if no document is found
 };
+
+
+
+
+app.get('/getFilesByCriteria', async (req, res) => {
+  try {
+    const { userName, criterionNumbers } = req.query;
+
+    if (!criterionNumbers) {
+      return res.status(400).json({ error: 'No criterion numbers provided.' });
+    }
+
+    // Convert the comma-separated string into an array
+    const criterionArray = criterionNumbers.split(',').map(num => num.trim());
+    const results = [];
+
+     console.log("criterionArray",criterionArray);
+
+    // Iterate over each criterion
+    for (const criterion of criterionArray) {
+      const foundDocuments = [];
+    //   console.log("criterion number::"+criterion);
+
+      const sequenceValue = await getMaxExistingValue(criterion);
+      console.log("sequenceValue of criterion "+criterion+"is: "+sequenceValue);
+
+      // Loop through all possible sequence numbers
+      for (let i = 1; i <= sequenceValue; i++) {
+        const CriterionModel = getModelByName(`Criterion${criterion}`);
+        const _id = `${criterion}${globalUserName}${i}`;
+        // const _id = new mongoose.Types.ObjectId(`${criterion}${globalUserName}${i}`);
+         
+        // console.log("Checking ID:", _id);
+
+        try {
+          const foundDetails = await CriterionModel.findOne({ _id });
+
+          if (foundDetails) {
+            foundDocuments.push(foundDetails); // Add found document to the array
+          } else {
+            console.log(`No document found for ID: ${_id}`); // Log and continue the loop
+          }
+        } catch (error) {
+          console.error(`Error finding document with ID: ${_id}:`, error); // Log error but continue
+        }
+      }
+
+      // Push the array of found documents for this criterion
+      // console.log("foundDounments:::::"+foundDocuments);
+      results.push(foundDocuments);
+    }
+console.log("results::"+results);
+    // Return the results array, which contains arrays for each criterion
+    res.status(200).json({ results });
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).json({ error: 'Error occurred while fetching data.' });
+  }
+});
+
+
+
+
+
+
+
+
+
 
 
 
@@ -251,141 +326,8 @@ const Criterion311Schema = new mongoose.Schema({
   userName: String,
   filePath: String,
 });
-
 // Define the model for Criterion311 collection
 const Criterion311Model = mongoose.model('Criterion311', Criterion311Schema);
-
-// app.get('/getFile311', async (req, res) => {
-//   // Initialize the criterion number
-//   const criterionNumber = 311;
-//   try {
-//     // Get the highest sequence value for the given criterion number
-//     const sequenceValue = await getNextSequenceValue(criterionNumber);
-//     // Initialize an array to hold all found documents
-//     const foundDocuments = [];
-//     // Loop from sequence 1 to sequenceValue to get all documents
-//     for (let i = 1; i <= sequenceValue; i++) {
-//       // Get the model for the current sequence
-//       const CriterionModel = getModelByName(`Criterion${criterionNumber}`);
-//       const _id = `${criterionNumber}${globalUserName}${i}`;
-//       console.log("test print id: " + _id);
-//       // Find the document with the given ID in the current model
-//       const foundDetails = await CriterionModel.findOne({ _id });
-//       // If a document is found, add it to the array
-//       if (foundDetails) {
-//         foundDocuments.push(foundDetails);
-//       }
-//     }
-//     console.log("found documents"+foundDocuments);
-//     // Check if any documents were found and return the appropriate response
-//     if (foundDocuments.length > 0) {
-//       console.log("Found documents:", foundDocuments);
-//       res.status(200).json({ data: foundDocuments });
-//     } else {
-//       console.log("No documents found for this ID");
-//       res.status(404).json({ error: "No documents found for this ID" });
-//     }
-//   } catch (e) {
-//     console.error("Error:", e);
-//     res.status(500).json({ error: "Error occurred while fetching data." });
-//   }
-// });
-
-// Endpoint that retrieves documents based on an array of criterion numbers
-// app.get('/getFilesByCriteria', async (req, res) => {
-//   try {
-//     // Retrieve the criterion numbers from the query parameters
-//     const criterionNumbers = req.query.criterionNumbers;
-
-//     if (!criterionNumbers) {
-//       return res.status(400).json({ error: 'No criterion numbers provided.' });
-//     }
-
-//     // Ensure criterionNumbers is an array
-//     const criterionArray = Array.isArray(criterionNumbers) ? criterionNumbers : [criterionNumbers];
-
-//     const globalUserName = 'yourUserName'; // Replace with your logic for obtaining the username
-//     const results = [];
-
-//     for (const criterion of criterionArray) {
-//       const foundDocuments = [];
-//       const sequenceValue = await getNextSequenceValue(criterion);
-
-//       for (let i = 1; i <= sequenceValue; i++) {
-//         const CriterionModel = getModelByName(`Criterion${criterion}`);
-//         const _id = `${criterion}${globalUserName}${i}`;
-
-//         const foundDetails = await CriterionModel.findOne({ _id });
-//         if (foundDetails) {
-//           foundDocuments.push(foundDetails);
-//         }
-//       }
-
-//       results.push(foundDocuments); // Add the found documents to the results array
-//     }
-
-//     res.status(200).json({ results }); // Return the results array
-//   } catch (e) {
-//     console.error('Error fetching data:', e);
-//     res.status(500).json({ error: 'Error occurred while fetching data.' });
-//   }
-// });
-
-
-app.get('/getFilesByCriteria', async (req, res) => {
-  try {
-    const { userName, criterionNumbers } = req.query;
-
-    if (!criterionNumbers) {
-      return res.status(400).json({ error: 'No criterion numbers provided.' });
-    }
-
-    // Convert the comma-separated string into an array
-    const criterionArray = criterionNumbers.split(',').map(num => num.trim());
-    const results = [];
-
-    // Iterate over each criterion
-    for (const criterion of criterionArray) {
-      const foundDocuments = [];
-    //   console.log("criterion number::"+criterion);
-    //  console.log(criterionArray);
-
-      const sequenceValue = await getMaxExistingValue(criterion);
-      console.log("sequenceValue"+sequenceValue);
-      // Loop through all possible sequence numbers
-      for (let i = 1; i <= sequenceValue; i++) {
-        const CriterionModel = getModelByName(`Criterion${criterion}`);
-        const _id = `${criterion}${globalUserName}${i}`;
-        // const _id = new mongoose.Types.ObjectId(`${criterion}${globalUserName}${i}`);
-         
-        // console.log("Checking ID:", _id);
-
-        try {
-          const foundDetails = await CriterionModel.findOne({ _id });
-
-          if (foundDetails) {
-            foundDocuments.push(foundDetails); // Add found document to the array
-          } else {
-            console.log(`No document found for ID: ${_id}`); // Log and continue the loop
-          }
-        } catch (error) {
-          console.error(`Error finding document with ID: ${_id}:`, error); // Log error but continue
-        }
-      }
-
-      // Push the array of found documents for this criterion
-      results.push(foundDocuments);
-    }
-// console.log("results::"+results);
-    // Return the results array, which contains arrays for each criterion
-    res.status(200).json({ results });
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    res.status(500).json({ error: 'Error occurred while fetching data.' });
-  }
-});
-
-
 
 app.post('/311upload', upload.single('file'), async (req, res) => { 
   const { userName } = req.body;
@@ -997,7 +939,7 @@ const Criterion322Schema = new mongoose.Schema({
   projectName: { type: String, required: true },
   principalInvestigator: { type: String, required: true },
   yearOfAward: { type: Number, required: true },
-  fundsProvided: { type: Number, required: true },
+  fundsProvided: { type: String, required: true },
   duration: { type: Number, required: true },
   fundingAgency: { type: String, required: true },
   totalAmountFundsReceived: { type: Number, required: true },
