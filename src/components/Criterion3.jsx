@@ -162,7 +162,6 @@ const [formData312, setFormData312] = useState(initialFormData312);
     });
   };
 
-
   const handleSubmit312 = async (e) => {
     e.preventDefault();
     setUploading312(true);
@@ -178,18 +177,15 @@ const [formData312, setFormData312] = useState(initialFormData312);
     formDataToSend.append("additionalInfo", formData312.additionalInfo);
     formDataToSend.append("file", formData312.file312);
 // Logging all data in formDataToSend
-for (const pair of formDataToSend.entries()) {
-  console.log(pair[0], pair[1]);
-} 
+// for (const pair of formDataToSend.entries()) {
+//   console.log(pair[0], pair[1]);
+// } 
 
   // Check if a file is uploaded before appending it to FormData
-  if (formData312.file312) {
-    formDataToSend.append("file", formData312.file312);
-  }
+  // if (formData312.file312) {
+  //   formDataToSend.append("file", formData312.file312);
+  // }
 
-const handleToggleForm312 = () => {
-    setToggleForm312(!toggleForm312);
-  };
     try {
       const response = await axios.post(
         "http://localhost:5000/312upload",
@@ -413,30 +409,29 @@ const [formData314, setFormData314] = useState(initialFormData314);
 
 
 
+
   const initialFormData315 = {
     facilityName: '',
     yearOfEstablishment: '',
-    geoTaggedPicture: null,
-    centralInstrumentationCentre: 'No',
-    animalHouseGreenHouse: 'No',
-    museum: 'No',
-    mediaLaboratory: 'No',
-    businessLab: 'No',
-    researchStatisticalDatabases: 'No',
-    mootCourt: 'No',
-    theatre: 'No',
-    artGallery: 'No',
-    otherFacility: 'No',
+    centralInstrumentationCentre: '',
+    animalHouseGreenHouse: '',
+    museum: '',
+    mediaLaboratory: '',
+    businessLab: '',
+    researchStatisticalDatabases: '',
+    mootCourt: '',
+    theatre: '',
+    artGallery: '',
+    otherFacility: '',
+    files: null, // File for supporting documents
+
   };
-
-
+  
   const [formData315, setFormData315] = useState(initialFormData315);
   const [toggleForm315, setToggleForm315] = useState(false);
   const [uploading315, setUploading315] = useState(false);
   const [error315, setError315] = useState(null);
   const [uploaded315, setUploaded315] = useState(false);
-
-
 
   const handleToggleForm315 = () => {
     setToggleForm315((prevState) => !prevState);
@@ -444,18 +439,13 @@ const [formData314, setFormData314] = useState(initialFormData314);
 
   const handleInputChange315 = (e) => {
     const { name, value } = e.target;
-    setFormData315((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setFormData315({ ...formData315, [name]: value });
+
   };
 
   const handleFileChange315 = (e) => {
-    const file = e.target.files[0];
-    setFormData315((prevState) => ({
-      ...prevState,
-      geoTaggedPicture: file,
-    }));
+    setFormData315({ ...formData315, files: e.target.files });
+
   };
 
 
@@ -465,26 +455,30 @@ const [formData314, setFormData314] = useState(initialFormData314);
     setError315(null);
 
     const formData = new FormData();
-    const userName = Cookies.get('userName') || 'default_user'; // Handle missing userName
+    // const userName = Cookies.get('userName') || 'default_user'; // Handle missing userName
 
-    formData.append('id', `315${userName}`); // Ensure consistent ID structure
+    const userName = Cookies.get("userName");
+    const id = userName + "315"; // Unique ID for data submission
+
+    formData.append("id", id);
     formData.append('facilityName', formData315.facilityName);
     formData.append('yearOfEstablishment', formData315.yearOfEstablishment);
+    formData.append('centralInstrumentationCentre', formData315.centralInstrumentationCentre);
+    formData.append('animalHouseGreenHouse', formData315.animalHouseGreenHouse);
+    formData.append('museum', formData315.museum );
+    formData.append('mediaLaboratory', formData315.mediaLaboratory );
+    formData.append('businessLab', formData315.businessLab );
+    formData.append('researchStatisticalDatabases', formData315.researchStatisticalDatabases);
+    formData.append('mootCourt', formData315.mootCourt );
+    formData.append('theatre', formData315.theatre );
+    formData.append('artGallery', formData315.artGallery);
+    formData.append('otherFacility', formData315.otherFacility );
 
-    if (formData315.geoTaggedPicture) {
-      formData.append('geoTaggedPicture', formData315.geoTaggedPicture);
+    if(formData315.files){
+      formData.append('file', formData315.files[0]);
+
     }
 
-    formData.append('centralInstrumentationCentre', formData315.centralInstrumentationCentre === 'Yes');
-    formData.append('animalHouseGreenHouse', formData315.animalHouseGreenHouse === 'Yes');
-    formData.append('museum', formData315.museum === 'Yes');
-    formData.append('mediaLaboratory', formData315.mediaLaboratory === 'Yes');
-    formData.append('businessLab', formData315.businessLab === 'Yes');
-    formData.append('researchStatisticalDatabases', formData315.researchStatisticalDatabases === 'Yes');
-    formData.append('mootCourt', formData315.mootCourt === 'Yes');
-    formData.append('theatre', formData315.theatre === 'Yes');
-    formData.append('artGallery', formData315.artGallery === 'Yes');
-    formData.append('otherFacility', formData315.otherFacility === 'Yes');
 
     try {
       await axios.post('http://localhost:5000/315upload', formData, {
@@ -495,10 +489,13 @@ const [formData314, setFormData314] = useState(initialFormData314);
 
       setFormData315(initialFormData315);
       setUploaded315(true);
+      
+      setTimeout(() => {
+        setUploaded315(false); // Reset upload status after some time
+      }, 1000);
 
-      if (onRefreshData) {
-        onRefreshData(); // Trigger refresh after submission
-      }
+      setToggleForm315(false); // Hide form after submission
+
     } catch (error) {
       console.error('Error uploading data:', error);
       setError315('Error uploading file. Please try again.');
@@ -511,9 +508,6 @@ const [formData314, setFormData314] = useState(initialFormData314);
 
 
 
-
-
-  
 
 // Initial state for Criterion 3.1.6
 const initialFormData316 = {
@@ -541,7 +535,7 @@ const handleInputChange316 = (e) => {
 };
 
 const handleFileChange316 = (e) => {
-  setFormData316({ ...formData316, files: e.target.files });
+  setFormData316({ ...formData316, files: e.target.files[0] });
 };
 
 const handleSubmit316 = async (e) => {
@@ -901,7 +895,7 @@ const [formData323, setFormData323] = useState(initialFormData323);
   
       const formData = new FormData();
       const userName = Cookies.get("userName");
-      const id = `${userName}_331`; // Unique ID for data submission
+      const id = userName + "_331"; // Unique ID for data submission
   
       formData.append("id", id);
       formData.append("innovationEcosystem", formData331.innovationEcosystem);
@@ -913,7 +907,7 @@ const [formData323, setFormData323] = useState(initialFormData323);
       formData.append("description", formData331.description);
   
       if (formData331.files) {
-        formData.append("files", formData331.files[0]); // Supporting document upload
+        formData.append("file", formData331.files[0]); // Supporting document upload
       }
   
       try {
@@ -2558,52 +2552,56 @@ const initialFormData341 = {
 
 //   fetchData();
 // }, [ uploaded311,uploaded312,uploaded313,uploaded314,uploaded316,uploaded321]); // Fetch data on component mount
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const userName = Cookies.get("userName");
-      const criterionNumbers = [311, 312, 313, 314, 316, 321];
 
-      // Construct query parameters
-      const params = {
-        userName,
-        criterionNumbers: criterionNumbers.join(','),
-      };
 
-      // Send GET request with query parameters
-      const response = await axios.get("http://localhost:5000/getFilesByCriteria", { params });
 
-      if (response.status === 200) {
-        const results = response.data.results; // Each element is an array of data for a criterion
 
-        // Validate the length of results and update table data
-        setTableData311(results[0] || []); // Default to an empty array if not found
-        setTableData312(results[1] || []);
-        setTableData313(results[2] || []);
-        setTableData314(results[3] || []);
-        // setTableData315(results[4] || []);
-        setTableData316(results[4] || []);
-        setTableData321(results[5] || []);
+// useEffect(() => {
+//   const fetchData = async () => {
+//     try {
+//       const userName = Cookies.get("userName");
+//       const criterionNumbers = [311, 312, 313, 314, 316, 321];
 
-      } else {
-        console.error("Unexpected response status:", response.status);
-      }
-    } catch (error) {
-      console.error("Error fetching table data:", error);
-    }
-  };
+//       // Construct query parameters
+//       const params = {
+//         userName,
+//         criterionNumbers: criterionNumbers.join(','),
+//       };
 
-  fetchData(); // Fetch data once when the component mounts
-}, [
-  uploaded311,
-  uploaded312,
-  uploaded313,
-  uploaded314,
-  uploaded315,
-  uploaded316,
-  uploaded321,
-  handleDeleteFlag
-]);
+//       // Send GET request with query parameters
+//       const response = await axios.get("http://localhost:5000/getFilesByCriteria", { params });
+
+//       if (response.status === 200) {
+//         const results = response.data.results; // Each element is an array of data for a criterion
+
+//         // Validate the length of results and update table data
+//         setTableData311(results[0] || []); // Default to an empty array if not found
+//         setTableData312(results[1] || []);
+//         setTableData313(results[2] || []);
+//         setTableData314(results[3] || []);
+//         // setTableData315(results[4] || []);
+//         setTableData316(results[4] || []);
+//         setTableData321(results[5] || []);
+
+//       } else {
+//         console.error("Unexpected response status:", response.status);
+//       }
+//     } catch (error) {
+//       console.error("Error fetching table data:", error);
+//     }
+//   };
+
+//   fetchData(); // Fetch data once when the component mounts
+// }, [
+//   uploaded311,
+//   uploaded312,
+//   uploaded313,
+//   uploaded314,
+//   uploaded315,
+//   uploaded316,
+//   uploaded321,
+//   handleDeleteFlag
+// ]);
 
 
 const handleDownloadFile = (fileName) => {
@@ -2793,12 +2791,7 @@ const handleDownloadFile = (fileName) => {
               >
                 Delete
               </button>
-              <button
-                className="Editbtn"
-                onClick={() => console.log(`Edit item with ID: ${data._id}`)}
-              >
-                Edit
-              </button>
+              
             </td>
           </tr>
         ))}
@@ -2915,7 +2908,7 @@ const handleDownloadFile = (fileName) => {
                 <th>fellowshipName</th>
                 <th>sponsoringAgency</th>
                 <th>File</th>
-
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -2933,6 +2926,16 @@ const handleDownloadFile = (fileName) => {
                   </button>
                 </td>
                 {/* <td>{tableData313.filePath}</td> */}
+
+                <td> {/* Actions column */}
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+              
+            </td>
               </tr>
             ))}
             </tbody>
@@ -3028,7 +3031,7 @@ const handleDownloadFile = (fileName) => {
                 <th>fellowshipType</th>
                 <th>grantingAgency</th>
                 <th>File</th>
-
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -3049,7 +3052,15 @@ const handleDownloadFile = (fileName) => {
                 </td>
                 {/* <td>{tableData314.filePath}</td> */}
 
-
+                <td> {/* Actions column */}
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+              
+            </td>
               </tr>
             ))}
             </tbody>
@@ -3091,11 +3102,11 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="geoTaggedPicture">Geo-Tagged Picture:</label>
+            <label htmlFor="files">Geo-Tagged Picture:</label>
             <input
               type="file"
-              id="geoTaggedPicture"
-              name="geoTaggedPicture"
+              id="files"
+              name="files"
               onChange={handleFileChange315}
             />
           </div>
@@ -3107,8 +3118,8 @@ const handleDownloadFile = (fileName) => {
               <input
                 type="radio"
                 name="centralInstrumentationCentre"
-                value="Yes"
-                checked={formData315.centralInstrumentationCentre === 'Yes'}
+                value="YES"
+                checked={formData315.centralInstrumentationCentre === 'YES'}
                 onChange={handleInputChange315}
               />
               Yes
@@ -3117,8 +3128,8 @@ const handleDownloadFile = (fileName) => {
               <input
                 type="radio"
                 name="centralInstrumentationCentre"
-                value="No"
-                checked={formData315.centralInstrumentationCentre === 'No'}
+                value="NO"
+                checked={formData315.centralInstrumentationCentre === 'NO'}
                 onChange={handleInputChange315}
               />
               No
@@ -3132,8 +3143,8 @@ const handleDownloadFile = (fileName) => {
               <input
                 type="radio"
                 name="animalHouseGreenHouse"
-                value="Yes"
-                checked={formData315.animalHouseGreenHouse === 'Yes'}
+                value="YES"
+                checked={formData315.animalHouseGreenHouse === 'YES'}
                 onChange={handleInputChange315}
               />
               Yes
@@ -3142,8 +3153,8 @@ const handleDownloadFile = (fileName) => {
               <input
                 type="radio"
                   name="animalHouseGreenHouse"
-                  value="No"
-                  checked={formData315.animalHouseGreenHouse === 'No'}
+                  value="NO"
+                  checked={formData315.animalHouseGreenHouse === 'NO'}
                   onChange={handleInputChange315}
               />
               No
@@ -3157,8 +3168,8 @@ const handleDownloadFile = (fileName) => {
               <input
                 type="radio"
                 name="museum"
-                value="Yes"
-                checked={formData315.museum === 'Yes'}
+                value="YES"
+                checked={formData315.museum === 'YES'}
                 onChange={handleInputChange315}
               />
               Yes
@@ -3167,8 +3178,8 @@ const handleDownloadFile = (fileName) => {
               <input
                   type="radio"
                   name="museum"
-                  value="No"
-                  checked={formData315.museum === 'No'}
+                  value="NO"
+                  checked={formData315.museum === 'NO'}
                   onChange={handleInputChange315}
               />
               No
@@ -3182,8 +3193,8 @@ const handleDownloadFile = (fileName) => {
               <input
                 type="radio"
                 name="mediaLaboratory"
-                value="Yes"
-                checked={formData315.mediaLaboratory === 'Yes'}
+                value="YES"
+                checked={formData315.mediaLaboratory === 'YES'}
                 onChange={handleInputChange315}
               />
               Yes
@@ -3192,8 +3203,8 @@ const handleDownloadFile = (fileName) => {
               <input
                 type="radio"
                 name="mediaLaboratory"
-                value="No"
-                checked={formData315.mediaLaboratory === 'No'}
+                value="NO"
+                checked={formData315.mediaLaboratory === 'NO'}
                 onChange={handleInputChange315}
               />
               No
@@ -3207,8 +3218,8 @@ const handleDownloadFile = (fileName) => {
               <input
                 type="radio"
                   name="businessLab"
-                  value="Yes"
-                  checked={formData315.businessLab === 'Yes'}
+                  value="YES"
+                  checked={formData315.businessLab === 'YES'}
                   onChange={handleInputChange315}
               />
               Yes
@@ -3217,8 +3228,8 @@ const handleDownloadFile = (fileName) => {
               <input
                 type="radio"
                   name="businessLab"
-                  value="No"
-                  checked={formData315.businessLab === 'No'}
+                  value="NO"
+                  checked={formData315.businessLab === 'NO'}
                   onChange={handleInputChange315}
               />
               No
@@ -3232,8 +3243,8 @@ const handleDownloadFile = (fileName) => {
               <input
                 type="radio"
                 name="researchStatisticalDatabases"
-                value="Yes"
-                checked={formData315.researchStatisticalDatabases === 'Yes'}
+                value="YES"
+                checked={formData315.researchStatisticalDatabases === 'YES'}
                 onChange={handleInputChange315}
               />
               Yes
@@ -3242,8 +3253,8 @@ const handleDownloadFile = (fileName) => {
               <input
                   type="radio"
                   name="researchStatisticalDatabases"
-                  value="No"
-                  checked={formData315.researchStatisticalDatabases === 'No'}
+                  value="NO"
+                  checked={formData315.researchStatisticalDatabases === 'NO'}
                 onChange={handleInputChange315}
               />
               No
@@ -3257,8 +3268,8 @@ const handleDownloadFile = (fileName) => {
               <input
                 type="radio"
                 name="mootCourt"
-                value="Yes"
-                checked={formData315.mootCourt === 'Yes'}
+                value="YES"
+                checked={formData315.mootCourt === 'YES'}
                 onChange={handleInputChange315}
               />
               Yes
@@ -3267,8 +3278,8 @@ const handleDownloadFile = (fileName) => {
               <input
                 type="radio"
                   name="mootCourt"
-                  value="No"
-                  checked={formData315.mootCourt === 'No'}
+                  value="NO"
+                  checked={formData315.mootCourt === 'NO'}
                   onChange={handleInputChange315}
               />
               No
@@ -3282,8 +3293,8 @@ const handleDownloadFile = (fileName) => {
               <input
                   type="radio"
                   name="theatre"
-                  value="Yes"
-                  checked={formData315.theatre === 'Yes'}
+                  value="YES"
+                  checked={formData315.theatre === 'YES'}
                 onChange={handleInputChange315}
               />
               Yes
@@ -3292,8 +3303,8 @@ const handleDownloadFile = (fileName) => {
               <input
                   type="radio"
                   name="theatre"
-                  value="No"
-                  checked={formData315.theatre === 'No'}
+                  value="NO"
+                  checked={formData315.theatre === 'NO'}
                   onChange={handleInputChange315}
               />
               No
@@ -3307,8 +3318,8 @@ const handleDownloadFile = (fileName) => {
               <input
                   type="radio"
                   name="artGallery"
-                  value="Yes"
-                  checked={formData315.artGallery === 'Yes'}
+                  value="YES"
+                  checked={formData315.artGallery === 'YES'}
                 onChange={handleInputChange315}
               />
               Yes
@@ -3317,8 +3328,8 @@ const handleDownloadFile = (fileName) => {
               <input
                   type="radio"
                   name="artGallery"
-                  value="No"
-                  checked={formData315.artGallery === 'No'}
+                  value="NO"
+                  checked={formData315.artGallery === 'NO'}
                 onChange={handleInputChange315}
               />
               No
@@ -3332,8 +3343,8 @@ const handleDownloadFile = (fileName) => {
               <input
                 type="radio"
                 name="otherFacility"
-                value="Yes"
-                checked={formData315.otherFacility === 'Yes'}
+                value="YES"
+                checked={formData315.otherFacility === 'YES'}
                 onChange={handleInputChange315}
               />
               Yes
@@ -3342,8 +3353,8 @@ const handleDownloadFile = (fileName) => {
               <input
                 type="radio"
                 name="otherFacility"
-                value="No"
-                checked={formData315.otherFacility === 'No'}
+                value="NO"
+                checked={formData315.otherFacility === 'NO'}
                 onChange={handleInputChange315}
               />
               No
@@ -3351,13 +3362,13 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           {/* Submit Button */}
-          <button type="submit" disabled={uploading315}>
+          <button type="submit" disabled={uploading315 }>
             {uploading315 ? 'Submitting...' : 'Submit'}
           </button>
+          {uploaded315 && <div>Submission successful!</div>}
 
           {/* Error Message */}
           {error315 && <div style={{ color: 'red' }}>{error315}</div>}
-          {uploaded315 && <div>Submission successful!</div>}
         </form>
       )}
     </div>
@@ -3382,6 +3393,7 @@ const handleDownloadFile = (fileName) => {
             <th>Art Gallery</th>
             <th>Other Facility</th>
             <th>Geo-Tagged Picture</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -3408,6 +3420,15 @@ const handleDownloadFile = (fileName) => {
                   'No Picture'
                 )}
               </td>
+              <td> {/* Actions column */}
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+              
+            </td>
             </tr>
           ))}
         </tbody>
@@ -4160,9 +4181,9 @@ const handleDownloadFile = (fileName) => {
 
           <div>
             <label>Description of available incubation center and evidence of its usage (max 500 words):</label>
-            <textarea
+            <input
+              type="text"
               name="description"
-              placeholder="Describe here..."
               value={formData331.description}
               onChange={handleInputChange331}
             />
