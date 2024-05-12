@@ -95,7 +95,7 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
       formData.append("userName", userName);
       console.log("311 frontend"+userName);
       const response = await axios.post(
-        "https://naac-projv.onrender.com/311upload",
+        "https://localhost:5000/311upload",
         formData,
         {
           headers: {
@@ -188,7 +188,7 @@ const [formData312, setFormData312] = useState(initialFormData312);
 
     try {
       const response = await axios.post(
-        "https://naac-projv.onrender.com/312upload",
+        "https://localhost:5000/312upload",
         formDataToSend,
         {
           headers: {
@@ -276,7 +276,7 @@ const [formData313, setFormData313] = useState(initialFormData313);
 console.log(formDataToSend);
     try {
       const response = await axios.post(
-        "https://naac-projv.onrender.com/313upload",
+        "https://localhost:5000/313upload",
         formDataToSend,
         {
           headers: {
@@ -315,7 +315,7 @@ console.log(formDataToSend);
 
   async function getDetails() {
     try {
-      const response = await axios.get("https://naac-projv.onrender.com/getFile311");
+      const response = await axios.get("https://localhost:5000/getFile311");
       console.log(response.data);
       // Handle the response data as needed
     } catch (error) {
@@ -375,7 +375,7 @@ const [formData314, setFormData314] = useState(initialFormData314);
     }
     
     try {
-      const response = await axios.post("https://naac-projv.onrender.com/314upload", formData, {
+      const response = await axios.post("https://localhost:5000/314upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -562,7 +562,7 @@ const handleSubmit316 = async (e) => {
   }
 
   try {
-    const response = await axios.post("https://naac-projv.onrender.com/316upload", dataToSend, {
+    const response = await axios.post("https://localhost:5000/316upload", dataToSend, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -647,7 +647,7 @@ const handleSubmit321 = async (e) => {
   }
 
   try {
-    const response = await axios.post("https://naac-projv.onrender.com/321upload", dataToSend, {
+    const response = await axios.post("https://localhost:5000/321upload", dataToSend, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
