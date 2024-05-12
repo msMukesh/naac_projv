@@ -20,6 +20,8 @@ const Signin = () => {
         navigate("/dashboard");
       } catch (error) {
         console.error("Error signing in:", error.message);
+        navigate("/Signin");
+
       }
     }
   };

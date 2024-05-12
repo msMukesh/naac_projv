@@ -2660,7 +2660,27 @@ const handleDownloadFile = (fileName) => {
   window.open(`http://localhost:5000/downloadFile?fileName=${encodeURIComponent(fileName)}`, "_blank");
 };
 
+function getFileNameFromPath(filePath1) {
+  if (!filePath1) {
+    // Return null or any default value if filePath1 is null or undefined
+    return null;
+  }
 
+  // Split the file path by the directory separator ("/" or "\")
+  const separatorIndex = Math.max(filePath1.lastIndexOf('/'), filePath1.lastIndexOf('\\'));
+  
+  // Check if the separatorIndex is -1, meaning no directory separator was found
+  if (separatorIndex === -1) {
+    // If no separator was found, return the whole filePath1
+    return filePath1;
+  }
+  
+  // Extract the filename by slicing the path from the last directory separator
+  const fileName1 = filePath1.slice(separatorIndex + 1);
+  console.log("fileName: " + fileName1);
+
+  return fileName1;
+}
 
 
   return (
@@ -2671,7 +2691,7 @@ const handleDownloadFile = (fileName) => {
       <div className="criterionCon31">
 
           <h2 class="criterionMainTitle">Criterion III - Research, Innovations and Extension</h2>
-          <h3 className="subTitle">Key Indicator - 3.1 Promotion of Research and Facilities</h3>
+          <h3 className="subTitle1">Key Indicator - 3.1 Promotion of Research and Facilities</h3>
 
           {/* Criterion 3.1.1 Form */}
           <div className="formDiv">
@@ -2707,6 +2727,9 @@ const handleDownloadFile = (fileName) => {
           <tr key={index}>
             <td>{data._id}</td> {/* ID column */}
             <td>
+
+            <div>{getFileNameFromPath(data.filePath)}</div>
+
               <button
                 className="Downloadbtn"
                 onClick={() => handleDownloadFile(data.filePath)}
@@ -2714,6 +2737,7 @@ const handleDownloadFile = (fileName) => {
                 Download File
               </button>
             </td>
+            
             <td> {/* Actions column */}
               <button
                 className="Deletebtn"
@@ -2829,6 +2853,9 @@ const handleDownloadFile = (fileName) => {
             <td>{data.year}</td>
             <td>{data.additionalInfo}</td>
             <td>
+
+              <div>{getFileNameFromPath(data.filePath)}</div>
+
               <button
                 className="Downloadbtn"
                 onClick={() => handleDownloadFile(data.filePath)}
@@ -2973,6 +3000,8 @@ const handleDownloadFile = (fileName) => {
                 <td>{data.fellowshipName}</td>
                 <td>{data.sponsoringAgency}</td>
                 <td>
+                <div>{getFileNameFromPath(data.filePath)}</div>
+
                   <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                   Download File
                   </button>
@@ -2997,7 +3026,7 @@ const handleDownloadFile = (fileName) => {
 
 
 <div className="formDiv">
-    <h4>Criterion 3.1.4 - JRFs, SRFs, Post-Doctoral Fellows, Research Associates, and other research fellows enrolled in the institution during the year</h4>
+    <h4>3.1.4 - JRFs, SRFs, Post-Doctoral Fellows, Research Associates, and other research fellows enrolled in the institution during the year</h4>
     <button className="toggleFormbtn"  onClick={handleToggleForm314}>
       {toggleForm314 ? "Hide Form" : "Show Form"}
     </button>
@@ -3098,6 +3127,8 @@ const handleDownloadFile = (fileName) => {
                 <td>{data.fellowshipType}</td>
                 <td>{data.grantingAgency}</td>
                 <td>
+                <div>{getFileNameFromPath(data.filePath)}</div>
+
                   <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                   Download File
                   </button>
@@ -3124,7 +3155,7 @@ const handleDownloadFile = (fileName) => {
 
 
 <div className="formDiv">
-      <h4>3.1.5. Criterion - Facility Submission</h4>
+      <h4>3.1.5.	Your department is having the following facilities to support research:</h4>
       <button onClick={handleToggleForm315}>
         {toggleForm315 ? 'Hide Form' : 'Show Form'}
       </button>
@@ -3240,7 +3271,7 @@ const handleDownloadFile = (fileName) => {
 
           {/* Media Laboratory */}
           <div>
-            <label>Media Laboratory:</label>
+            <label>Media laboratory/Studios:</label>
             <label>
               <input
                 type="radio"
@@ -3290,7 +3321,7 @@ const handleDownloadFile = (fileName) => {
 
           {/* Research Statistical Databases */}
           <div>
-            <label>Research Statistical Databases:</label>
+            <label>Research/Statistical Databases:</label>
             <label>
               <input
                 type="radio"
@@ -3390,7 +3421,7 @@ const handleDownloadFile = (fileName) => {
 
           {/* Other Facility */}
           <div>
-            <label>Other Facility:</label>
+            <label>Any other facility to support research :</label>
             <label>
               <input
                 type="radio"
@@ -3428,7 +3459,6 @@ const handleDownloadFile = (fileName) => {
     {tableData315 && (
 
     <div>
-      <h3>Data for Criterion 3.1.5</h3>
       <table>
         <thead>
           <tr>
@@ -3608,15 +3638,17 @@ const handleDownloadFile = (fileName) => {
           <table>
             <thead>
               <tr>
-                <th>schemeName</th>
-                <th>principalInvestigator</th>
-                <th>fundingAgency</th>
-                <th>type</th>
+                <th>Name of the Scheme</th>
+                <th>Principal Investigator / Co-principal investigator</th>
+                <th>Name of the Funding Agency</th>
+                <th>Type Govt. / Non Govt.</th>
                 <th>department</th>
-                <th>yearOfAward</th>
-                <th>fundLayoutAmount</th>
-                <th>duration</th>
+                <th>Year of Award</th>
+                <th>Fund Layout amount Provided</th>
+                <th>Duration</th>
                 <th>File</th>
+                <th>Actions</th>
+
               </tr>
             </thead>
             <tbody>
@@ -3630,12 +3662,24 @@ const handleDownloadFile = (fileName) => {
                 <td>{data.yearOfAward}</td>
                 <td>{data.fundLayoutAmount}</td>
                 <td>{data.duration}</td>
+
                 <td>
+                <div>{getFileNameFromPath(data.filePath)}</div>
+
                   <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                   Download File
                   </button>
                 </td>
                 {/* <td>{tableData316.filePath}</td> */}
+
+                <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
 
               </tr>
             ))}
@@ -3699,7 +3743,7 @@ const handleDownloadFile = (fileName) => {
           />
         </div>
         <div>
-          <label htmlFor="department">department.:</label>
+          <label htmlFor="department">Department.:</label>
           <input
             type="text"
             id="department"
@@ -3763,11 +3807,13 @@ const handleDownloadFile = (fileName) => {
             <th>Name of the Principal Investigator / Co-principal investigator</th>
             <th>Name of the Funding Agency</th>
             <th>Type of funding agency Govt. / Non Govt.</th>
-            <th>department.</th>
+            <th>Department.</th>
             <th>Year of Award</th>
             <th>Funds (Amount) Provided</th>
             <th>Duration</th>
             <th>File </th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
@@ -3781,11 +3827,24 @@ const handleDownloadFile = (fileName) => {
             <td>{data.fundsProvided}</td>
             <td>{data.duration}</td>
             <td>
+            <div>{getFileNameFromPath(data.filePath)}</div>
+
                     <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
                     </button>
                   </td>
             {/* <td>{tableData321.filePath}</td> */}
+
+
+            <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
+
           </tr>
         ))}
         </tbody>
@@ -3805,7 +3864,7 @@ const handleDownloadFile = (fileName) => {
       {toggleForm322 && (
         <form onSubmit={handleSubmit322}>
           <div>
-            <label htmlFor="projectName">Project Name:</label>
+            <label htmlFor="projectName">Name of the Project:</label>
             <input
               type="text"
               id="projectName"
@@ -3907,7 +3966,7 @@ const handleDownloadFile = (fileName) => {
       <table>
         <thead>
           <tr>
-            <th>Project Name</th>
+            <th>Name of the Project</th>
             <th>Principal Investigator / Co-principal Investigator</th>
             <th>Year of Award</th>
             <th>Funds Provided</th>
@@ -3915,6 +3974,8 @@ const handleDownloadFile = (fileName) => {
             <th>Funding Agency</th>
             <th>Total Amount Funds Received</th>
             <th>File</th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
@@ -3928,6 +3989,8 @@ const handleDownloadFile = (fileName) => {
               <td>{data.fundingAgency}</td>
               <td>{data.totalAmountFundsReceived}</td>
               <td>
+              <div>{getFileNameFromPath(data.filePath)}</div>
+
                 {data.filePath ? (
                   <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
@@ -3936,6 +3999,16 @@ const handleDownloadFile = (fileName) => {
                   'No File Attached'
                 )}
               </td>
+
+              <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
+
             </tr>
           ))}
         </tbody>
@@ -4042,17 +4115,18 @@ const handleDownloadFile = (fileName) => {
     {tableData323 && (
 
     <div>
-      <h3>Research Projects - Criterion 3.2.3</h3>
       <table>
         <thead>
           <tr>
-            <th>Project Name</th>
-            <th>Principal Investigator & Department</th>
-            <th>Research Project Name</th>
-            <th>Funds Received</th>
-            <th>Funding Agency</th>
+            <th>Name of the Project</th>
+            <th>Name of the Principal Investigator & Department</th>
+            <th>Name of the Research Project Name</th>
+            <th>Amount/Funds Received</th>
+            <th>Name of Funding Agency</th>
             <th>Year of Sanction</th>
             <th>Download File</th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
@@ -4065,6 +4139,8 @@ const handleDownloadFile = (fileName) => {
               <td>{data.fundingAgency}</td>
               <td>{data.yearOfSanction}</td>
               <td>
+              <div>{getFileNameFromPath(data.filePath)}</div>
+
                 {data.filePath ? (
                   <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
@@ -4073,6 +4149,14 @@ const handleDownloadFile = (fileName) => {
                   "No File Attached"
                 )}
               </td>
+              <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
             </tr>
           ))}
         </tbody>
@@ -4222,7 +4306,10 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label>Any other similar (if any):</label>
+            <label>Any other similar (mention if any):</label>
+            <div>AI and ML LAB with 2 workstations,
+IOT lab
+</div>
             <input
               type="text"
               name="otherSimilar"
@@ -4232,7 +4319,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label>Description of available incubation center and evidence of its usage (max 500 words):</label>
+            <label>Describe available incubation center and evidence of its usage (activity) within a maximum of 500 words):</label>
             <input
               type="text"
               name="description"
@@ -4242,7 +4329,13 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="files">Supporting Document:</label>
+            <label htmlFor="files">File description :</label>
+            <div>
+              <ul>• Upload any additional information</ul>
+              <ul>• 
+Provide the link for additional information
+</ul>
+            </div>
             <input type="file" id="files" name="files" onChange={handleFileChange331} />
           </div>
 
@@ -4266,12 +4359,15 @@ const handleDownloadFile = (fileName) => {
           <tr>
             <th>Innovation Ecosystem</th>
             <th>Ecosystem laboratory</th>
-            <th>innovation Center</th>
-            <th>knowledg eIncubation Center</th>
-            <th>start-up Center</th>
+            <th>Innovation Center</th>
+            <th>knowledg Incubation Center</th>
+            <th>Startup/Entrepreneurship Center:
+</th>
             <th>other Similar</th>
             <th>Description</th>
             <th>Download File</th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
@@ -4285,6 +4381,8 @@ const handleDownloadFile = (fileName) => {
               <td>{data.otherSimilar}</td>
               <td>{data.description}</td>
               <td>
+              <div>{getFileNameFromPath(data.filePath)}</div>
+
                 {data.filePath ? (
                   <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
@@ -4293,6 +4391,14 @@ const handleDownloadFile = (fileName) => {
                   "No File Attached"
                 )}
               </td>
+              <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
             </tr>
           ))}
         </tbody>
@@ -4307,6 +4413,9 @@ const handleDownloadFile = (fileName) => {
       <h4>
         3.3.2 Workshops/seminars conducted on Research methodology, Intellectual Property Rights (IPR), Entrepreneurship, Skill development during the year
       </h4>
+      <h5>
+3.3.2.1: Total number of workshops/seminars conducted on Research methodology, Intellectual Property Rights (IPR),Entrepreneurship, Skill development year wise during  the year 
+</h5>
       <button className="toggleFormbtn" onClick={handleToggleForm332}>
         {toggleForm332 ? "Hide Form" : "Show Form"}
       </button>
@@ -4336,7 +4445,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="seminarName">Name of the Seminars/Workshops:</label>
+            <label htmlFor="seminarName">Name of the Seminars/Workshops ect:</label>
             <input
               type="text"
               id="seminarName"
@@ -4347,7 +4456,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="startDate">From:</label>
+            <label htmlFor="startDate">From Date:</label>
             <input
               type="date"
               id="startDate"
@@ -4358,7 +4467,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="endDate">To:</label>
+            <label htmlFor="endDate">To Date:</label>
             <input
               type="date"
               id="endDate"
@@ -4411,18 +4520,19 @@ const handleDownloadFile = (fileName) => {
 
     {tableData332 && (
     <div>
-      <h3>Workshops/Seminars - Criterion 3.3.2</h3>
       <table>
         <thead>
           <tr>
             <th>Academic Year</th>
             <th>Department</th>
-            <th>Name of Seminars/Workshops</th>
+            <th>Name of the Seminars/Workshops etc.</th>
             <th>From</th>
             <th>To</th>
             <th>Number of Participants</th>
             <th>Event Organizer</th>
             <th>Download File</th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
@@ -4436,6 +4546,8 @@ const handleDownloadFile = (fileName) => {
               <td>{data.participantsCount}</td>
               <td>{data.eventOrganizer}</td>
               <td>
+              <div>{getFileNameFromPath(data.filePath)}</div>
+
                 {data.filePath ? (
                   <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
@@ -4444,6 +4556,14 @@ const handleDownloadFile = (fileName) => {
                   "No File Attached"
                 )}
               </td>
+              <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
             </tr>
           ))}
         </tbody>
@@ -4458,6 +4578,9 @@ const handleDownloadFile = (fileName) => {
       <h4>
         3.3.3. Awards/recognitions received for research/innovations by the institution/teachers/research scholars/students during the year
       </h4>
+      <h5>
+3.3.3.1: Total number of awards / recognitions received for research/innovations won by institution/teachers/research scholars/students year wise during the year
+</h5>
       <button className="toggleFormbtn" onClick={handleToggleForm333}>
         {toggleForm333 ? "Hide Form" : "Show Form"}
       </button>
@@ -4498,7 +4621,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="awardingAgency">Name of the Awarding Agency:</label>
+            <label htmlFor="awardingAgency">Name of the Awarding Agency with Contact Details:</label>
             <input
               type="text"
               id="awardingAgency"
@@ -4507,7 +4630,7 @@ const handleDownloadFile = (fileName) => {
               onChange={handleInputChange333}
             />
           </div>
-
+{/* 
           <div>
             <label htmlFor="contactDetails">Contact Details:</label>
             <input
@@ -4517,7 +4640,7 @@ const handleDownloadFile = (fileName) => {
               value={formData333.contactDetails}
               onChange={handleInputChange333}
             />
-          </div>
+          </div> */}
 
           <div>
             <label htmlFor="dateOfAward">Date of Award:</label>
@@ -4552,16 +4675,17 @@ const handleDownloadFile = (fileName) => {
 
     {tableData333 && (
       <div>
-      <h3>Research Awards - Criterion 3.3.3</h3>
       <table>
         <thead>
           <tr>
             <th>Serial Number</th>
             <th>Academic Year</th>
-            <th>Awardee Name</th>
-            <th>Awarding Agency Contact Details</th>
+            <th>Name of the Awardee</th>
+            <th>Name of the Awarding Agency with Contact Details</th>
             <th>Date of Award</th>
             <th>Download File</th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
@@ -4573,6 +4697,8 @@ const handleDownloadFile = (fileName) => {
               <td>{data.awardingAgency}</td>
               <td>{data.dateOfAward}</td>
               <td>
+              <div>{getFileNameFromPath(data.filePath)}</div>
+
                 {data.filePath ? (
                   <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
@@ -4581,6 +4707,16 @@ const handleDownloadFile = (fileName) => {
                   "No File Attached"
                 )}
               </td>
+
+              <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
+
             </tr>
           ))}
         </tbody>
@@ -4602,7 +4738,7 @@ const handleDownloadFile = (fileName) => {
 
 <div className="formDiv">
       <h4>
-        3.4.1 The department ensures implementation of its stated Code of Ethics for research
+        3.4.1 The department ensures implementation of its stated Code of Ethics for research  as in the following 
       </h4>
       <button className="toggleFormbtn" onClick={handleToggleForm341}>
         {toggleForm341 ? "Hide Form" : "Show Form"}
@@ -4761,17 +4897,20 @@ const handleDownloadFile = (fileName) => {
 
     {tableData341 && (
     <div>
-      <h3>Research Ethics - Criterion 3.4.1</h3>
       <table>
       <thead>
   <tr>
-    <th>Research Methodology</th>
-    <th>Departmental Ethics Committees</th>
-    <th>Scientific Research Writing</th>
-    <th>Plagiarism Check</th>
+    <th>Inclusion of Research ethics in Research Methodology course work</th>
+    <th>Presence of Departmental ethics committees  
+(Animal, Chemical, Bio-Ethics, etc.)
+</th>
+    <th>Ethics of scientific research writing</th>
+    <th>check for Plagiarism and Unfair means of research </th>
     <th>Research Advisory Committee</th>
-    <th>Other Related Item</th>
+    <th>Other related item (if any)</th>
     <th>Download File</th>
+    <th>Actions</th>
+
   </tr>
 </thead>
 <tbody>
@@ -4784,6 +4923,8 @@ const handleDownloadFile = (fileName) => {
       <td>{data.researchAdvisoryCommittee}</td>
       <td>{data.otherRelatedItem}</td>
       <td>
+      <div>{getFileNameFromPath(data.filePath)}</div>
+
         {data.filePath ? (
           <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
             Download File
@@ -4792,6 +4933,15 @@ const handleDownloadFile = (fileName) => {
           "No File Attached"
         )}
       </td>
+
+      <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
     </tr>
   ))}
 </tbody>
@@ -4806,6 +4956,13 @@ const handleDownloadFile = (fileName) => {
       <h4>
         3.4.2 The institution provides incentives to teachers who receive state, national, and international recognitions/awards
       </h4>
+      <div>
+              <ul>1.Commendation and monetary incentive at a University function</ul>
+              <ul>2.Commendation and medal at a University function</ul>
+              <ul>3. Certificate of honor</ul>
+              <ul>4.Announcement in the Newsletter / website</ul>
+
+            </div>
       <button className="toggleFormbtn" onClick={handleToggleForm342}>
         {toggleForm342 ? "Hide Form" : "Show Form"}
       </button>
@@ -4834,6 +4991,18 @@ const handleDownloadFile = (fileName) => {
             />
           </div>
 
+
+          <div>
+            <label htmlFor="contactDetails">Contact Details of the Awardee:</label>
+            <input
+              type="text"
+              id="contactDetails"
+              name="contactDetails"
+              value={formData342.contactDetails}
+              onChange={handleInputChange342}
+            />
+          </div>
+          
           <div>
             <label htmlFor="awardingAgency">Name of the Awarding Agency:</label>
             <input
@@ -4845,16 +5014,6 @@ const handleDownloadFile = (fileName) => {
             />
           </div>
 
-          <div>
-            <label htmlFor="contactDetails">Contact Details:</label>
-            <input
-              type="text"
-              id="contactDetails"
-              name="contactDetails"
-              value={formData342.contactDetails}
-              onChange={handleInputChange342}
-            />
-          </div>
 
           <div>
             <label htmlFor="yearOfAward">Year of Award:</label>
@@ -4881,8 +5040,7 @@ const handleDownloadFile = (fileName) => {
           <div>
             <label htmlFor="files">Document to Attach:</label>
             <div>
-              <ul>• Relevant Supporting Document</ul>
-              <ul>• E-copies of Award Letter</ul>
+              <ul>• Upload relevant supporting document</ul>
               <ul>• Any Additional Information</ul>
             </div>
             <input type="file" id="files" name="files" onChange={handleFileChange342} />
@@ -4899,17 +5057,18 @@ const handleDownloadFile = (fileName) => {
 
     {tableData342 && (
       <div>
-      <h3>Incentives for Awards - Criterion 3.4.2</h3>
       <table>
         <thead>
           <tr>
             <th>Academic Year</th>
-            <th>Awardee Name</th>
-            <th>Awarding Agency</th>
-            <th>Contact Details</th>
+            <th>Name of the Awardee </th>
+            <th>Contact Details of the Awardee</th>
+            <th>Name of the Awarding Agency</th>
             <th>Year of Award</th>
             <th>Incentive Details</th>
             <th>Download File</th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
@@ -4917,11 +5076,13 @@ const handleDownloadFile = (fileName) => {
             <tr key={index}>
               <td>{data.academicYear}</td>
               <td>{data.awardeeName}</td>
-              <td>{data.awardingAgency}</td>
               <td>{data.contactDetails}</td>
+              <td>{data.awardingAgency}</td>
               <td>{data.yearOfAward}</td>
               <td>{data.incentiveDetails}</td>
               <td>
+              <div>{getFileNameFromPath(data.filePath)}</div>
+
                 {data.filePath ? (
                   <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
@@ -4930,6 +5091,14 @@ const handleDownloadFile = (fileName) => {
                   "No File Attached"
                 )}
               </td>
+              <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
             </tr>
           ))}
         </tbody>
@@ -5026,16 +5195,17 @@ const handleDownloadFile = (fileName) => {
 
     {tableData343 && (
        <div>
-       <h3>Patents - Criterion 3.4.3</h3>
        <table>
          <thead>
            <tr>
              <th>Academic Year</th>
-             <th>Name of Patent</th>
+             <th>Name of the Patent Published Awarded</th>
              <th>Patent Number</th>
-             <th>Status</th>
+             <th>Published / Awarded / Granted</th>
              <th>Year of Award</th>
              <th>Download File</th>
+             <th>Actions</th>
+
            </tr>
          </thead>
          <tbody>
@@ -5047,6 +5217,8 @@ const handleDownloadFile = (fileName) => {
                <td>{data.status}</td>
                <td>{data.yearOfAward}</td>
                <td>
+               <div>{getFileNameFromPath(data.filePath)}</div>
+
                  {data.filePath ? (
                    <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                      Download File
@@ -5055,6 +5227,14 @@ const handleDownloadFile = (fileName) => {
                    "No File Attached"
                  )}
                </td>
+               <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
              </tr>
            ))}
          </tbody>
@@ -5096,7 +5276,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="department">Department:</label>
+            <label htmlFor="department">Name of the Department:</label>
             <input
               type="text"
               id="department"
@@ -5107,7 +5287,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="guideName">Guide Name:</label>
+            <label htmlFor="guideName">Name of the Guide:</label>
             <input
               type="text"
               id="guideName"
@@ -5159,17 +5339,18 @@ const handleDownloadFile = (fileName) => {
 
     {tableData344 && (
     <div>
-      <h3>Ph.D.s Awarded - Criterion 3.4.4</h3>
       <table>
         <thead>
           <tr>
             <th>Serial Number</th>
             <th>Name of PhD Scholar</th>
-            <th>Department</th>
-            <th>Guide Name</th>
+            <th>Name of the Department</th>
+            <th>Name of the Guide</th>
             <th>Year of Registration</th>
-            <th>Year of Award</th>
+            <th>Year of award of PhD</th>
             <th>Download File</th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
@@ -5182,6 +5363,8 @@ const handleDownloadFile = (fileName) => {
               <td>{data.registrationYear}</td>
               <td>{data.awardYear}</td>
               <td>
+              <div>{getFileNameFromPath(data.filePath)}</div>
+
                 {data.filePath ? (
                   <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
@@ -5190,6 +5373,14 @@ const handleDownloadFile = (fileName) => {
                   "No File Attached"
                 )}
               </td>
+              <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
             </tr>
           ))}
         </tbody>
@@ -5295,17 +5486,18 @@ const handleDownloadFile = (fileName) => {
     {tableData345 && (
 
     <div>
-      <h3>Research Papers - Criterion 3.4.5</h3>
       <table>
         <thead>
           <tr>
             <th>Title of Paper</th>
             <th>Name of Authors</th>
-            <th>Department</th>
+            <th>Department of the teacher</th>
             <th>Name of Journal</th>
             <th>Year of Publication</th>
             <th>ISSN Number</th>
             <th>Download File</th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
@@ -5319,6 +5511,8 @@ const handleDownloadFile = (fileName) => {
               <td>{data.yearOfPublication}</td>
               <td>{data.issnNumber}</td>
               <td>
+              <div>{getFileNameFromPath(data.filePath)}</div>
+
                 {data.filePath ? (
                   <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
@@ -5327,6 +5521,14 @@ const handleDownloadFile = (fileName) => {
                   "No File Attached"
                 )}
               </td>
+              <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
             </tr>
           ))}
         </tbody>
@@ -5371,7 +5573,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="titleOfBookOrChapter">Title of the Book/Chapter:</label>
+            <label htmlFor="titleOfBookOrChapter">Title of the Book/chapter published:</label>
             <input
               type="text"
               id="titleOfBookOrChapter"
@@ -5382,7 +5584,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="authorNames">Name of the Authors:</label>
+            <label htmlFor="authorNames">Name of the author (s):</label>
             <input
               type="text"
               id="authorNames"
@@ -5393,7 +5595,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="titleOfProceedings">Title of the Conference Proceedings:</label>
+            <label htmlFor="titleOfProceedings">Title of the Proceedings of the Conference:</label>
             <input
               type="text"
               id="titleOfProceedings"
@@ -5404,7 +5606,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="publisher">Publisher (National/International):</label>
+            <label htmlFor="publisher">Name of the Publisher National / International:</label>
             <input
               type="text"
               id="publisher"
@@ -5415,7 +5617,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="isbnNumber">ISBN Number:</label>
+            <label htmlFor="isbnNumber">ISBN  Number of the Proceeding:</label>
             <input
               type="number"
               id="isbnNumber"
@@ -5426,7 +5628,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="yearOfPublication">Year of Publication:</label>
+            <label htmlFor="yearOfPublication">Year of Publications:</label>
             <input
               type="number"
               id="yearOfPublication"
@@ -5456,19 +5658,20 @@ const handleDownloadFile = (fileName) => {
 
     {tableData346 && (
     <div>
-      <h3>Books and Chapters - Criterion 3.4.6</h3>
       <table>
         <thead>
           <tr>
-            <th>Teacher Name</th>
+            <th>Name of the Teacher</th>
             <th>Title of the Paper</th>
-            <th>Title of the Book/Chapter</th>
-            <th>Author(s)</th>
-            <th>Conference Proceedings</th>
-            <th>Publisher (National/International)</th>
-            <th>ISBN Number</th>
-            <th>Year of Publication</th>
+            <th>Title of the Book/chapter published</th>
+            <th>Name of the author (s)</th>
+            <th>Title of the Proceedings of the Conference</th>
+            <th>Name of the Publisher National / International</th>
+            <th>ISBN  Number of the Proceeding</th>
+            <th>Year of Publications</th>
             <th>Download File</th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
@@ -5483,6 +5686,8 @@ const handleDownloadFile = (fileName) => {
               <td>{data.isbnNumber}</td>
               <td>{data.yearOfPublication}</td>
               <td>
+              <div>{getFileNameFromPath(data.filePath)}</div>
+
                 {data.filePath ? (
                   <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
@@ -5491,6 +5696,14 @@ const handleDownloadFile = (fileName) => {
                   "No File Attached"
                 )}
               </td>
+              <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
             </tr>
           ))}
         </tbody>
@@ -5545,7 +5758,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="launchDate">Date of Launching E-content:</label>
+            <label htmlFor="launchDate">Date of Launching e-content:</label>
             <input
               type="date"
               id="launchDate"
@@ -5556,7 +5769,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="platformCount">Number of Platforms:</label>
+            <label htmlFor="platformCount">Number of platform on which e-content has been developed by teacher:</label>
             <input
               type="number"
               id="platformCount"
@@ -5586,16 +5799,17 @@ const handleDownloadFile = (fileName) => {
 
     {tableData347 && (
     <div>
-      <h3>E-content Developed by Teachers - Criterion 3.4.7</h3>
       <table>
         <thead>
           <tr>
             <th>Name of the Teacher</th>
             <th>Name of the Module</th>
-            <th>Platform</th>
-            <th>Date of Launch</th>
-            <th>Number of Platforms</th>
+            <th>Platform on which module is developed</th>
+            <th>Date of launching e-content</th>
+            <th>Number of platform on which e-content has been developed by teacher</th>
             <th>Download File</th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
@@ -5607,6 +5821,8 @@ const handleDownloadFile = (fileName) => {
               <td>{data.launchDate}</td>
               <td>{data.platformCount}</td>
               <td>
+              <div>{getFileNameFromPath(data.filePath)}</div>
+
                 {data.filePath ? (
                   <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
@@ -5615,6 +5831,14 @@ const handleDownloadFile = (fileName) => {
                   "No File Attached"
                 )}
               </td>
+              <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
             </tr>
           ))}
         </tbody>
@@ -5751,8 +5975,7 @@ const handleDownloadFile = (fileName) => {
 
     <div className="formDiv">
       <h4>
-        3.4.8 Bibliometric of the publications during the year based on average Citation Index in Scopus, Web of Science, or PubMed
-      </h4>
+      3.4.8 Bibliometric of the publications during the year based on average Citation Index in Scopus/ Web of Science/PubMed      </h4>
       <button className="toggleFormbtn" onClick={handleToggleForm348}>
         {toggleForm348 ? "Hide Form" : "Show Form"}
       </button>
@@ -5818,6 +6041,7 @@ const handleDownloadFile = (fileName) => {
             <label htmlFor="files">Document to Attach:</label>
             <div>
               <ul>• Relevant Supporting Document</ul>
+              <ul>• Give links or upload document of e-content developed</ul>
               <ul>• Any Additional Information</ul>
             </div>
             <input type="file" id="files" name="files" onChange={handleFileChange348} />
@@ -5834,7 +6058,6 @@ const handleDownloadFile = (fileName) => {
 
     {tableData348 && (
       <div>
-      <h3>Bibliometric - Criterion 3.4.8</h3>
       <table>
         <thead>
           <tr>
@@ -5844,6 +6067,14 @@ const handleDownloadFile = (fileName) => {
             <th>Year of Publication</th>
             <th>Citation Index</th>
             <th>Download File</th>
+            <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
           </tr>
         </thead>
         <tbody>
@@ -5855,6 +6086,8 @@ const handleDownloadFile = (fileName) => {
               <td>{data.yearOfPublication}</td>
               <td>{data.citationIndex}</td>
               <td>
+              <div>{getFileNameFromPath(data.filePath)}</div>
+
                 {data.filePath ? (
                   <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
@@ -5863,6 +6096,14 @@ const handleDownloadFile = (fileName) => {
                   "No File Attached"
                 )}
               </td>
+              <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
             </tr>
           ))}
         </tbody>
@@ -5958,7 +6199,6 @@ const handleDownloadFile = (fileName) => {
     </div>
     {tableData349 && (
     <div>
-      <h3>Bibliometric - Criterion 3.4.9</h3>
       <table>
         <thead>
           <tr>
@@ -5968,6 +6208,8 @@ const handleDownloadFile = (fileName) => {
             <th>Year of Publication</th>
             <th>H Index</th>
             <th>Download File</th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
@@ -5979,6 +6221,8 @@ const handleDownloadFile = (fileName) => {
               <td>{data.yearOfPublication}</td>
               <td>{data.hIndex}</td>
               <td>
+              <div>{getFileNameFromPath(data.filePath)}</div>
+
                 {data.filePath ? (
                   <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
@@ -5987,6 +6231,14 @@ const handleDownloadFile = (fileName) => {
                   "No File Attached"
                 )}
               </td>
+              <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
             </tr>
           ))}
         </tbody>
@@ -6006,8 +6258,7 @@ const handleDownloadFile = (fileName) => {
 
 <div className="formDiv">
       <h4>
-        3.5.1 Institution's policy on consultancy including revenue sharing between the institution and the individual
-      </h4>
+      3.5.1 Institution has a policy on consultancy including revenue sharing between the institution and the individual and encourages its faculty to undertake consultancy      </h4>
       <button className="toggleFormbtn" onClick={handleToggleForm351}>
         {toggleForm351 ? "Hide Form" : "Show Form"}
       </button>
@@ -6015,7 +6266,7 @@ const handleDownloadFile = (fileName) => {
       {toggleForm351 && (
         <form onSubmit={handleSubmit351}>
           <div>
-            <label htmlFor="governingMinutes">Minutes of the Governing Council:</label>
+            <label htmlFor="governingMinutes">Minutes of the Governing Council/ Syndicate/Board of Management related to the Consultancy policy:</label>
             <input
               type="file"
               id="governingMinutes"
@@ -6035,7 +6286,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="additionalInfo">Additional Information (if any):</label>
+            <label htmlFor="additionalInfo">Additional Information (if any), Upload relevant supporting document:</label>
             <input
               type="file"
               id="additionalInfo"
@@ -6057,21 +6308,25 @@ const handleDownloadFile = (fileName) => {
     </div>
 {tableData351 && (
 <div>
-      <h3>Consultancy Policy - Criterion 3.5.1</h3>
       <table>
         <thead>
           <tr>
             <th>Minutes of the Governing Council</th>
             <th>Consultancy Policy</th>
-            <th>Additional Information</th>
+            <th>Supporting document</th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
           {tableData351.map((data, index) => (
             <tr key={index}>
               <td>
+              <div>{getFileNameFromPath(data.governingMinutes)}</div>
+
                 {data.governingMinutes ? (
-                  <button onClick={() => handleDownloadFile(data.governingMinutes)}>
+                  <button                 className="Downloadbtn"
+                  onClick={() => handleDownloadFile(data.governingMinutes)}>
                     Download Minutes
                   </button>
                 ) : (
@@ -6079,8 +6334,10 @@ const handleDownloadFile = (fileName) => {
                 )}
               </td>
               <td>
+              <div>{getFileNameFromPath(data.consultancyPolicy)}</div>
+
                 {data.consultancyPolicy ? (
-                  <button onClick={() => handleDownloadFile(data.consultancyPolicy)}>
+                  <button className="Downloadbtn" onClick={() => handleDownloadFile(data.consultancyPolicy)}>
                     Download Policy
                   </button>
                 ) : (
@@ -6088,14 +6345,24 @@ const handleDownloadFile = (fileName) => {
                 )}
               </td>
               <td>
+              <div>{getFileNameFromPath(data.additionalInfo)}</div>
+
                 {data.additionalInfo ? (
-                  <button onClick={() => handleDownloadFile(data.additionalInfo)}>
+                  <button className="Downloadbtn" onClick={() => handleDownloadFile(data.additionalInfo)}>
                     Download Additional Info
                   </button>
                 ) : (
                   "No File Attached"
                 )}
               </td>
+              <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
             </tr>
           ))}
         </tbody>
@@ -6137,7 +6404,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="consultingAgency">Consulting/Sponsoring Agency:</label>
+            <label htmlFor="consultingAgency">Consulting/Sponsoring agency with contact details:</label>
             <input
               type="text"
               id="consultingAgency"
@@ -6222,19 +6489,20 @@ const handleDownloadFile = (fileName) => {
     {tableData352 && (
 
     <div>
-  <h3>Revenue Generated - Criterion 3.5.2</h3>
   <table>
     <thead>
       <tr>
-        <th>Name of Consultants</th>
+        <th>Name of the Consultants</th>
         <th>Name of Consultancy Projects</th>
-        <th>Consulting/Sponsoring Agency</th>
-        <th>Revenue Generated</th>
+        <th>Consulting/Sponsoring agency with contact details</th>
+        <th>Revenue generated (amount in rupees)</th>
         <th>Total Revenue Generated</th>
-        <th>Corporate Training Details</th>
+        <th>Details of Corporate training provided</th>
         <th>Title of the Training</th>
         <th>Number of Participants Benefitted</th>
         <th>Download File</th>
+        <th>Actions</th>
+
       </tr>
     </thead>
     <tbody>
@@ -6249,6 +6517,8 @@ const handleDownloadFile = (fileName) => {
           <td>{item.titleOfTraining}</td>
           <td>{item.numberOfParticipants}</td>
           <td>
+          <div>{getFileNameFromPath(item.filePath)}</div>
+
             {item.filePath ? (
               <button className="Downloadbtn"  onClick={() => handleDownloadFile(item.filePath)}>
                 Download File
@@ -6257,6 +6527,15 @@ const handleDownloadFile = (fileName) => {
               "No File Attached"
             )}
           </td>
+
+          <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
         </tr>
       ))}
     </tbody>
@@ -6360,8 +6639,8 @@ const handleDownloadFile = (fileName) => {
           <div>
             <label htmlFor="files">Document to Attach:</label>
             <div>
-              <ul>• Relevant Supporting Document</ul>
-              <ul>• Any Additional Information</ul>
+              <ul>• Provide the link for additional information</ul>
+              <ul>• Upload any additional information</ul>
             </div>
             <input type="file" id="files" name="files" onChange={handleFileChange361} />
           </div>
@@ -6377,7 +6656,6 @@ const handleDownloadFile = (fileName) => {
 
     {tableData361 && (
     <div>
-      <h3>Extension Activities - Criterion 3.6.1</h3>
       <table>
         <thead>
           <tr>
@@ -6389,6 +6667,8 @@ const handleDownloadFile = (fileName) => {
             <th>Outcome</th>
             <th>Impact Description</th>
             <th>Download File</th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
@@ -6402,6 +6682,8 @@ const handleDownloadFile = (fileName) => {
               <td>{data.outcome}</td>
               <td>{data.impactDescription}</td>
               <td>
+              <div>{getFileNameFromPath(data.filePath)}</div>
+
                 {data.filePath ? (
                   <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
@@ -6410,6 +6692,14 @@ const handleDownloadFile = (fileName) => {
                   "No File Attached"
                 )}
               </td>
+              <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
             </tr>
           ))}
         </tbody>
@@ -6420,8 +6710,7 @@ const handleDownloadFile = (fileName) => {
 
 <div className="formDiv">
       <h4>
-        3.6.2 Awards received by the Institution, its teachers, and students from Government/Government-recognized bodies in recognition of extension activities during the year
-      </h4>
+      3.6.2 Awards received by the Institution, its teachers and students from Government /Government recognized bodies in recognition of the extension activities carried out  during the year      </h4>
       <button className="toggleFormbtn" onClick={handleToggleForm362}>
         {toggleForm362 ? "Hide Form" : "Show Form"}
       </button>
@@ -6429,7 +6718,7 @@ const handleDownloadFile = (fileName) => {
       {toggleForm362 && (
         <form onSubmit={handleSubmit362}>
           <div>
-            <label htmlFor="teacherName">Name of the Teacher:</label>
+            <label htmlFor="teacherName">Name of the teacher received the recognition :</label>
             <input
               type="text"
               id="teacherName"
@@ -6462,7 +6751,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="awardingBody">Name of the Awarding Body:</label>
+            <label htmlFor="awardingBody">Name of the Awarding Government/Government recognized bodies:</label>
             <input
               type="text"
               id="awardingBody"
@@ -6507,12 +6796,14 @@ const handleDownloadFile = (fileName) => {
       <table>
         <thead>
           <tr>
-            <th>Name of the Teacher</th>
+            <th>Name of the teacher received the recognition </th>
             <th>Name of the Activity</th>
             <th>Name of the Award/Recognition</th>
-            <th>Name of the Awarding Body</th>
+            <th>Name of the Awarding Government/Government recognized bodies</th>
             <th>Year of the Award</th>
             <th>Download File</th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
@@ -6524,6 +6815,8 @@ const handleDownloadFile = (fileName) => {
               <td>{data.awardingBody}</td>
               <td>{data.yearOfAward}</td>
               <td>
+              <div>{getFileNameFromPath(data.filePath)}</div>
+
                 {data.filePath ? (
                   <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
@@ -6532,6 +6825,14 @@ const handleDownloadFile = (fileName) => {
                   "No File Attached"
                 )}
               </td>
+              <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
             </tr>
           ))}
         </tbody>
@@ -6543,8 +6844,7 @@ const handleDownloadFile = (fileName) => {
 
 <div className="formDiv">
       <h4>
-        3.6.3 Extension and outreach programs conducted by the institution through NSS/NCC, Government, and Government-recognized bodies during the year
-      </h4>
+      3.6.3 Extension and outreach programs conducted  by the institution including those through  NSS/NCC, Government and Government recognized bodies  during the year      </h4>
       <button className="toggleFormbtn" onClick={handleToggleForm363}>
         {toggleForm363 ? "Hide Form" : "Show Form"}
       </button>
@@ -6563,7 +6863,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="organizingUnit">Organizing Unit/Agency:</label>
+            <label htmlFor="organizingUnit">Organizing unit/ agency/ collaborating agency:</label>
             <input
               type="text"
               id="organizingUnit"
@@ -6585,7 +6885,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="numberOfStudents">Number of Students Participated:</label>
+            <label htmlFor="numberOfStudents">Number of students participated in such activities:</label>
             <input
               type="number"
               id="numberOfStudents"
@@ -6596,7 +6896,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="issuesAddressed">Issues Addressed:</label>
+            <label htmlFor="issuesAddressed">Issues addressed if any:</label>
             <textarea
               id="issuesAddressed"
               name="issuesAddressed"
@@ -6625,7 +6925,6 @@ const handleDownloadFile = (fileName) => {
 
     {tableData363 && (
     <div>
-      <h3>Extension and Outreach Programs - Criterion 3.6.3</h3>
       <table>
         <thead>
           <tr>
@@ -6635,6 +6934,8 @@ const handleDownloadFile = (fileName) => {
             <th>Number of Students Participated</th>
             <th>Issues Addressed</th>
             <th>Download File</th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
@@ -6646,6 +6947,8 @@ const handleDownloadFile = (fileName) => {
               <td>{data.numberOfStudents}</td>
               <td>{data.issuesAddressed}</td>
               <td>
+              <div>{getFileNameFromPath(data.filePath)}</div>
+
                 {data.filePath ? (
                   <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
@@ -6654,6 +6957,14 @@ const handleDownloadFile = (fileName) => {
                   "No File Attached"
                 )}
               </td>
+              <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
             </tr>
           ))}
         </tbody>
@@ -6737,15 +7048,16 @@ const handleDownloadFile = (fileName) => {
 
     {tableData364 && (
     <div>
-      <h3>Students Participating in Extension Activities - Criterion 3.6.4</h3>
       <table>
         <thead>
           <tr>
             <th>Name of the Activity</th>
             <th>Name of the Scheme</th>
             <th>Year of the Activity</th>
-            <th>Names of the Students</th>
+            <th>Names of the Students Participating in Such activities</th>
             <th>Download File</th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
@@ -6756,6 +7068,8 @@ const handleDownloadFile = (fileName) => {
               <td>{data.yearOfActivity}</td>
               <td>{data.studentNames}</td>
               <td>
+              <div>{getFileNameFromPath(data.filePath)}</div>
+
                 {data.filePath ? (
                   <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
@@ -6764,6 +7078,14 @@ const handleDownloadFile = (fileName) => {
                   "No File Attached"
                 )}
               </td>
+              <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
             </tr>
           ))}
         </tbody>
@@ -6888,7 +7210,6 @@ const handleDownloadFile = (fileName) => {
 
     {tableData371 && (
     <div>
-      <h3>Collaborative Activities - Criterion 3.7.1</h3>
       <table>
         <thead>
           <tr>
@@ -6900,6 +7221,8 @@ const handleDownloadFile = (fileName) => {
             <th>Names of the Faculty Members Involved</th>
             <th>Nature of the Activity</th>
             <th>Download File</th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
@@ -6913,6 +7236,8 @@ const handleDownloadFile = (fileName) => {
               <td>{data.facultyInvolved}</td>
               <td>{data.natureOfActivity}</td>
               <td>
+              <div>{getFileNameFromPath(data.filePath)}</div>
+
                 {data.filePath ? (
                   <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
@@ -6921,6 +7246,14 @@ const handleDownloadFile = (fileName) => {
                   "No File Attached"
                 )}
               </td>
+              <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
             </tr>
           ))}
         </tbody>
@@ -6931,8 +7264,7 @@ const handleDownloadFile = (fileName) => {
 
 <div className="formDiv">
       <h4>
-        3.7.2 Functional MoUs with institutions/industries in India and abroad for various collaborative purposes during the year
-      </h4>
+      3.7.2 Functional MoUs with institutions/ industries  in India and abroad for internship, on-the-job training, project work, student / faculty exchange and  collaborative research  during the year      </h4>
       <button className="toggleFormbtn" onClick={handleToggleForm372}>
         {toggleForm372 ? "Hide Form" : "Show Form"}
       </button>
@@ -6951,7 +7283,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="mouYear">Year of Signing:</label>
+            <label htmlFor="mouYear">Year of signing & Duration of the MoU:</label>
             <input
               type="number"
               id="mouYear"
@@ -6973,7 +7305,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="facultyCoordinators">Names of the Faculty Coordinators:</label>
+            <label htmlFor="facultyCoordinators">Names(s) of the Faculty Coordinators:</label>
             <textarea
               id="facultyCoordinators"
               name="facultyCoordinators"
@@ -6993,7 +7325,7 @@ const handleDownloadFile = (fileName) => {
           </div>
 
           <div>
-            <label htmlFor="participants">Year-wise Number of Students/Teachers Who Participated:</label>
+            <label htmlFor="participants">Year-wise Number of students/teachers who participated under MoUs:</label>
             <textarea
               id="participants"
               name="participants"
@@ -7021,17 +7353,18 @@ const handleDownloadFile = (fileName) => {
 
 {tableData372 && (
  <div>
-      <h3>Functional MoUs - Criterion 3.7.2</h3>
       <table>
         <thead>
           <tr>
-            <th>Name of the Organization</th>
-            <th>Year of Signing</th>
+            <th>Name of the Organisation with which MoU is signed</th>
+            <th>Year of Signing of the MoU</th>
             <th>Duration of the MoU</th>
-            <th>Faculty Coordinators</th>
-            <th>Actual Activities</th>
-            <th>Number of Participants</th>
+            <th>Names(s) of the Faculty Coordinators</th>
+            <th>Actual Activities under each MoU</th>
+            <th>Year-wise Number of students/teachers who participated under MoUs</th>
             <th>Download File</th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
@@ -7044,6 +7377,8 @@ const handleDownloadFile = (fileName) => {
               <td>{data.actualActivities}</td>
               <td>{data.participants}</td>
               <td>
+              <div>{getFileNameFromPath(data.filePath)}</div>
+
                 {data.filePath ? (
                   <button className="Downloadbtn"  onClick={() => handleDownloadFile(data.filePath)}>
                     Download File
@@ -7052,6 +7387,16 @@ const handleDownloadFile = (fileName) => {
                   "No File Attached"
                 )}
               </td>
+
+              <td> 
+              <button
+                className="Deletebtn"
+                onClick={() => handleDelete(data._id)} // Use handleDelete
+              >
+                Delete
+              </button>
+            </td>
+
             </tr>
           ))}
         </tbody>

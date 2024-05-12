@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Signin from "./signin";
 import Signup from "./signup";
-import GoogleButton from "./googleButton";
+// import GoogleButton from "./googleButton";
 import { useUserContext } from "../context/userContext";
 
 const Auth = () => {

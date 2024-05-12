@@ -186,7 +186,7 @@ input {
 
 
 h3 {
-    margin-top: 32px;
+    margin-top: 64px;
 }
 
 table {
@@ -231,7 +231,7 @@ table {
     margin-top: 64px;
   }
   .subTitle {
-    margin-top: 32px;
+    margin-top: 128px;
     position: relative; /* Ensure proper positioning for pseudo-element */
   }
   
@@ -244,7 +244,7 @@ table {
     height: 1px; /* Thickness of the line */
     background-color: #999999; /* Color of the line */
   }
-  
+
 
 h4{
     margin-top: 62px;

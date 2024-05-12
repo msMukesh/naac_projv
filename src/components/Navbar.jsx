@@ -44,6 +44,8 @@ const NavBar = ({ logoutUser }) => {
 
   const handleLogout = () => {
     Cookies.remove("userName");
+    logoutUser();
+
     if (logoutUser) {
       logoutUser();
     }
