@@ -37,7 +37,7 @@ const Criterion1 = () => {
       <textarea placeholder='Enter your text here'/>
       <h3>1.1.2 Programmes where syllabus revision was carried out during the academic year </h3>
       <div>
-      <h2>Dynamic Table</h2>
+     
       <table>
         <thead>
           <tr>

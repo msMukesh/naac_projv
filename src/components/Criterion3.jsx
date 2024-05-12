@@ -95,7 +95,7 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
       formData.append("userName", userName);
       console.log("311 frontend"+userName);
       const response = await axios.post(
-        "http://localhost:5000/311upload",
+        "https://naac-projv.onrender.com/311upload",
         formData,
         {
           headers: {
@@ -188,7 +188,7 @@ const [formData312, setFormData312] = useState(initialFormData312);
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/312upload",
+        "https://naac-projv.onrender.com/312upload",
         formDataToSend,
         {
           headers: {
@@ -276,7 +276,7 @@ const [formData313, setFormData313] = useState(initialFormData313);
 console.log(formDataToSend);
     try {
       const response = await axios.post(
-        "http://localhost:5000/313upload",
+        "https://naac-projv.onrender.com/313upload",
         formDataToSend,
         {
           headers: {
@@ -315,7 +315,7 @@ console.log(formDataToSend);
 
   async function getDetails() {
     try {
-      const response = await axios.get("http://localhost:5000/getFile311");
+      const response = await axios.get("https://naac-projv.onrender.com/getFile311");
       console.log(response.data);
       // Handle the response data as needed
     } catch (error) {
@@ -375,7 +375,7 @@ const [formData314, setFormData314] = useState(initialFormData314);
     }
     
     try {
-      const response = await axios.post("http://localhost:5000/314upload", formData, {
+      const response = await axios.post("https://naac-projv.onrender.com/314upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -562,7 +562,7 @@ const handleSubmit316 = async (e) => {
   }
 
   try {
-    const response = await axios.post("http://localhost:5000/316upload", dataToSend, {
+    const response = await axios.post("https://naac-projv.onrender.com/316upload", dataToSend, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -647,7 +647,7 @@ const handleSubmit321 = async (e) => {
   }
 
   try {
-    const response = await axios.post("http://localhost:5000/321upload", dataToSend, {
+    const response = await axios.post("https://naac-projv.onrender.com/321upload", dataToSend, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -709,11 +709,13 @@ const initialFormData322 = {
   files: null, // Field for file uploads
 };
 
+
 const [formData322, setFormData322] = useState(initialFormData322);
 const [uploading322, setUploading322] = useState(false);
 const [uploaded322, setUploaded322] = useState(false);
 const [error322, setError322] = useState(null);
 const [toggleForm322, setToggleForm322] = useState(false);
+
 
 const handleInputChange322 = (e) => {
   const { name, value } = e.target;
@@ -724,9 +726,10 @@ const handleFileChange322 = (e) => {
   setFormData322({ ...formData322, files: e.target.files });
 };
 
+
 const handleToggleForm322 = () => {
   setToggleForm322((prevState) => !prevState);
-};
+
 
 const handleSubmit322 = async (e) => {
   e.preventDefault();
