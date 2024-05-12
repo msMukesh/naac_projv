@@ -10,7 +10,7 @@ const NavBar = ({ logoutUser }) => {
 
   const sendUserNameToServer = async (userName) => {
     try {
-      const response = await axios.post("https://naac-projv.onrender.com/storeUsername", {
+      const response = await axios.post("http://localhost:5000/storeUsername", {
         userName: userName
       });
   
