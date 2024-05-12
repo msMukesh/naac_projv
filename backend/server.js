@@ -78,6 +78,8 @@ app.post("/storeUsername", (req, res) => {
   }
 });
 
+
+
 const createDirectoryIfNotExists = (directory) => {
   if (!fs.existsSync(directory)) {
     fs.mkdirSync(directory, { recursive: true });
@@ -100,6 +102,10 @@ const upload = multer({
   storage,
   fileField: 'file'
 });
+
+
+
+
 
 const filesDirectory = path.join(__dirname, "path/to/files");
 
@@ -150,6 +156,7 @@ const getNextSequenceValue = async (criterionNumber) => {
     console.log("criterionNumber:", criterionNumber);
     console.log("globalUserName:", globalUserName);
     
+
     if (!maxSequenceDoc) {
       // If no documents found, return 1
       return 1;

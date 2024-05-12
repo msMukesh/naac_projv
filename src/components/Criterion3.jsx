@@ -2636,12 +2636,25 @@ useEffect(() => {
   uploaded342,
   uploaded343,
   uploaded344,
-
-
+  uploaded345,
+  uploaded346,
+  uploaded347,
+  uploaded348,
+  uploaded349,
+  uploaded351,
+  uploaded352,
+  uploaded361,
+  uploaded362,
+  uploaded363,
+  uploaded364,
+  uploaded371,
+  uploaded372,
 
   handleDeleteFlag
 ]);
 
+// [311, 312, 313, 314, 315, 316, 321, 322, 323, 331, 332, 333, 341, 342, 343, 344, 
+//345, 346, 347, 348, 349, 351, 352, 361, 362, 363, 364, 371, 372]
 
 const handleDownloadFile = (fileName) => {
   window.open(`http://localhost:5000/downloadFile?fileName=${encodeURIComponent(fileName)}`, "_blank");

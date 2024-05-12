@@ -18,9 +18,9 @@ const Auth = () => {
   return (
     <div className="authcontainer">
       {!index ? <Signin  /> : <Signup />}
-      <GoogleButton onClick={signInWithGoogle}>
+      {/* <GoogleButton onClick={signInWithGoogle}>
         Continue with Google
-      </GoogleButton>
+      </GoogleButton> */}
       <p onClick={toggleIndex}>
         {!index ? "New user? Click here " : "Already have an account?"}
       </p>
