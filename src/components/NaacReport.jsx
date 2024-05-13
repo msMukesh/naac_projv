@@ -45,7 +45,7 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
   const handleDelete = async (id) => {
     sethandleDeleteFlag(!handleDeleteFlag);
     try {
-      const response = await axios.delete(`https://naac-projv.onrender.com/deleteFile/${id}`);
+      const response = await axios.delete(`https://naac-server.onrender.com/deleteFile/${id}`);
       if (response.status === 200) {
         console.log(`Successfully deleted item with ID: ${id}`);
         
@@ -98,7 +98,7 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
       formData.append("userName", userName);
       console.log("311 frontend"+userName);
       const response = await axios.post(
-        "https://naac-projv.onrender.com/311upload",
+        "https://naac-server.onrender.com/311upload",
         formData,
         {
           headers: {
@@ -191,7 +191,7 @@ const [formData312, setFormData312] = useState(initialFormData312);
 
     try {
       const response = await axios.post(
-        "https://naac-projv.onrender.com/312upload",
+        "https://naac-server.onrender.com/312upload",
         formDataToSend,
         {
           headers: {
@@ -279,7 +279,7 @@ const [formData313, setFormData313] = useState(initialFormData313);
 console.log(formDataToSend);
     try {
       const response = await axios.post(
-        "https://naac-projv.onrender.com/313upload",
+        "https://naac-server.onrender.com/313upload",
         formDataToSend,
         {
           headers: {
@@ -319,7 +319,7 @@ console.log(formDataToSend);
   // async function getDetails() {
   //   try {
 
-  //     const response = await axios.get("https://naac-projv.onrender.com/getFile313");
+  //     const response = await axios.get("https://naac-server.onrender.com/getFile313");
   //     console.log(response.data);
   //     // Handle the response data as needed
   //   } catch (error) {
@@ -379,7 +379,7 @@ const [formData314, setFormData314] = useState(initialFormData314);
     }
     
     try {
-      const response = await axios.post("https://naac-projv.onrender.com/314upload", formData, {
+      const response = await axios.post("https://naac-server.onrender.com/314upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -485,7 +485,7 @@ const [formData314, setFormData314] = useState(initialFormData314);
 
 
     try {
-      await axios.post('https://naac-projv.onrender.com/315upload', formData, {
+      await axios.post('https://naac-server.onrender.com/315upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -566,7 +566,7 @@ const handleSubmit316 = async (e) => {
   }
 
   try {
-    const response = await axios.post("https://naac-projv.onrender.com/316upload", dataToSend, {
+    const response = await axios.post("https://naac-server.onrender.com/316upload", dataToSend, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -651,7 +651,7 @@ const handleSubmit321 = async (e) => {
   }
 
   try {
-    const response = await axios.post("https://naac-projv.onrender.com/321upload", dataToSend, {
+    const response = await axios.post("https://naac-server.onrender.com/321upload", dataToSend, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -755,7 +755,7 @@ const handleSubmit322 = async (e) => {
   }
 
   try {
-    await axios.post("https://naac-projv.onrender.com/322upload", formData, {
+    await axios.post("https://naac-server.onrender.com/322upload", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -837,7 +837,7 @@ const [formData323, setFormData323] = useState(initialFormData323);
     }
 
     try {
-      await axios.post("https://naac-projv.onrender.com/323upload", formData, {
+      await axios.post("https://naac-server.onrender.com/323upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -915,7 +915,7 @@ const [formData323, setFormData323] = useState(initialFormData323);
       }
   
       try {
-        await axios.post("https://naac-projv.onrender.com/331upload", formData, {
+        await axios.post("https://naac-server.onrender.com/331upload", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -995,7 +995,7 @@ const [formData323, setFormData323] = useState(initialFormData323);
       }
   
       try {
-        await axios.post("https://naac-projv.onrender.com/332upload", formData, {
+        await axios.post("https://naac-server.onrender.com/332upload", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -1070,7 +1070,7 @@ const [formData323, setFormData323] = useState(initialFormData323);
         }
     
         try {
-          await axios.post("https://naac-projv.onrender.com/333upload", formData, {
+          await axios.post("https://naac-server.onrender.com/333upload", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -1146,7 +1146,7 @@ const initialFormData341 = {
     }
 
     try {
-      await axios.post("https://naac-projv.onrender.com/341upload", formData, {
+      await axios.post("https://naac-server.onrender.com/341upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -1222,7 +1222,7 @@ const initialFormData341 = {
           }
       
           try {
-            await axios.post("https://naac-projv.onrender.com/342upload", formData, {
+            await axios.post("https://naac-server.onrender.com/342upload", formData, {
               headers: {
                 "Content-Type": "multipart/form-data",
               },
@@ -1297,7 +1297,7 @@ const initialFormData341 = {
             }
         
             try {
-              await axios.post("https://naac-projv.onrender.com/343upload", formData, {
+              await axios.post("https://naac-server.onrender.com/343upload", formData, {
                 headers: {
                   "Content-Type": "multipart/form-data",
                 },
@@ -1373,7 +1373,7 @@ const initialFormData341 = {
               }
           
               try {
-                await axios.post("https://naac-projv.onrender.com/344upload", formData, {
+                await axios.post("https://naac-server.onrender.com/344upload", formData, {
                   headers: {
                     "Content-Type": "multipart/form-data",
                   },
@@ -1448,7 +1448,7 @@ const initialFormData341 = {
                 }
             
                 try {
-                  await axios.post("https://naac-projv.onrender.com/345upload", formData, {
+                  await axios.post("https://naac-server.onrender.com/345upload", formData, {
                     headers: {
                       "Content-Type": "multipart/form-data",
                     },
@@ -1530,7 +1530,7 @@ const initialFormData341 = {
                   }
               
                   try {
-                    await axios.post("https://naac-projv.onrender.com/346upload", formData, {
+                    await axios.post("https://naac-server.onrender.com/346upload", formData, {
                       headers: {
                         "Content-Type": "multipart/form-data",
                       },
@@ -1605,7 +1605,7 @@ const initialFormData341 = {
                     }
                 
                     try {
-                      await axios.post("https://naac-projv.onrender.com/347upload", formData, {
+                      await axios.post("https://naac-server.onrender.com/347upload", formData, {
                         headers: {
                           "Content-Type": "multipart/form-data",
                         },
@@ -1691,7 +1691,7 @@ const initialFormData341 = {
                       }
                   
                       try {
-                        await axios.post("https://naac-projv.onrender.com/platforms_upload", formDataToSend, {
+                        await axios.post("https://naac-server.onrender.com/platforms_upload", formDataToSend, {
                           headers: {
                             "Content-Type": "multipart/form-data",
                           },
@@ -1771,7 +1771,7 @@ const initialFormData341 = {
                     }
                 
                     try {
-                      await axios.post("https://naac-projv.onrender.com/348upload", formData, {
+                      await axios.post("https://naac-server.onrender.com/348upload", formData, {
                         headers: {
                           "Content-Type": "multipart/form-data",
                         },
@@ -1849,7 +1849,7 @@ const initialFormData341 = {
                       }
                   
                       try {
-                        await axios.post("https://naac-projv.onrender.com/349upload", formData, {
+                        await axios.post("https://naac-server.onrender.com/349upload", formData, {
                           headers: {
                             "Content-Type": "multipart/form-data",
                           },
@@ -1922,7 +1922,7 @@ const initialFormData341 = {
                         }
                     
                         try {
-                          await axios.post("https://naac-projv.onrender.com/351upload", formData, {
+                          await axios.post("https://naac-server.onrender.com/351upload", formData, {
                             headers: {
                               "Content-Type": "multipart/form-data",
                             },
@@ -2006,7 +2006,7 @@ const initialFormData341 = {
                         }
                     
                         try {
-                          await axios.post("https://naac-projv.onrender.com/352upload", formData, {
+                          await axios.post("https://naac-server.onrender.com/352upload", formData, {
                             headers: {
                               "Content-Type": "multipart/form-data",
                             },
@@ -2084,7 +2084,7 @@ const initialFormData341 = {
                           }
                       
                           try {
-                            await axios.post("https://naac-projv.onrender.com/361upload", formData, {
+                            await axios.post("https://naac-server.onrender.com/361upload", formData, {
                               headers: {
                                 "Content-Type": "multipart/form-data",
                               },
@@ -2162,7 +2162,7 @@ const initialFormData341 = {
                             }
                         
                             try {
-                              await axios.post("https://naac-projv.onrender.com/362upload", formData, {
+                              await axios.post("https://naac-server.onrender.com/362upload", formData, {
                                 headers: {
                                   "Content-Type": "multipart/form-data",
                                 },
@@ -2236,7 +2236,7 @@ const initialFormData341 = {
                               }
                           
                               try {
-                                await axios.post("https://naac-projv.onrender.com/363upload", formData, {
+                                await axios.post("https://naac-server.onrender.com/363upload", formData, {
                                   headers: {
                                     "Content-Type": "multipart/form-data",
                                   },
@@ -2306,7 +2306,7 @@ const initialFormData341 = {
                                 }
                             
                                 try {
-                                  await axios.post("https://naac-projv.onrender.com/364upload", formData, {
+                                  await axios.post("https://naac-server.onrender.com/364upload", formData, {
                                     headers: {
                                       "Content-Type": "multipart/form-data",
                                     },
@@ -2387,7 +2387,7 @@ const initialFormData341 = {
                                   }
                               
                                   try {
-                                    await axios.post("https://naac-projv.onrender.com/371upload", formData, {
+                                    await axios.post("https://naac-server.onrender.com/371upload", formData, {
                                       headers: {
                                         "Content-Type": "multipart/form-data",
                                       },
@@ -2466,7 +2466,7 @@ const initialFormData341 = {
                                     }
                                 
                                     try {
-                                      await axios.post("https://naac-projv.onrender.com/372upload", formData, {
+                                      await axios.post("https://naac-server.onrender.com/372upload", formData, {
                                         headers: {
                                           "Content-Type": "multipart/form-data",
                                         },
@@ -2530,7 +2530,7 @@ const initialFormData341 = {
 //       const criterionNumbers = [311, 312, 313, 314, 316, 321];
 //       const promises = criterionNumbers.map(async (number) => {
 //         try {
-//           const response = await axios.get(`https://naac-projv.onrender.com/getFile${number}`);
+//           const response = await axios.get(`https://naac-server.onrender.com/getFile${number}`);
 //           return response.data.data;
 //         } catch (error) {
 //           // If the error is 404, return null, indicating data not found
@@ -2576,7 +2576,7 @@ useEffect(() => {
       };
 
       // Send GET request with query parameters
-      const response = await axios.get("https://naac-projv.onrender.com/getAll", { params });
+      const response = await axios.get("https://naac-server.onrender.com/getAll", { params });
 
       if (response.status === 200) {
         const results = response.data.results; // Each element is an array of data for a criterion
@@ -2661,7 +2661,7 @@ useEffect(() => {
 //345, 346, 347, 348, 349, 351, 352, 361, 362, 363, 364, 371, 372]
 
 const handleDownloadFile = (fileName) => {
-  window.open(`https://naac-projv.onrender.com/downloadFile?fileName=${encodeURIComponent(fileName)}`, "_blank");
+  window.open(`https://naac-server.onrender.com/downloadFile?fileName=${encodeURIComponent(fileName)}`, "_blank");
 };
 
 function getFileNameFromPath(filePath1) {
