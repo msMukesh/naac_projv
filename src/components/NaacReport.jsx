@@ -3,9 +3,6 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import NavBar from "./Navbar";
 import "./Criterion3.css";
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import ReactToPrint from 'react-to-print';
 
 
 

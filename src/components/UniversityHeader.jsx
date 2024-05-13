@@ -1,19 +1,19 @@
-import React from 'react'
+import React from 'react';
+import pulogo from "../assets/pulogo.png";
 
 function UniversityHeader() {
   return (
     <>
-        <center>
-        <h2>Pondicherry University</h2>
-        <p>{`(A Central University)`}</p>
-        <center>
-        <h3>INTERNAL QUALITY ASSURANCE CELL</h3>
-        <h3>INTERNAL ACADEMIC & ADMINISTRATIVE AUDITING FORMAT FOR THE ACADEMIC YEAR 2022-23</h3>
-        <h3>SOURCE: NAAC INSTITUNAL ACCREDITATION MANUAL FOR SSR OF UNIVERSITY</h3>
-        </center>
-        </center>
+      <center>
+        <img src={pulogo} alt="Pondicherry University Logo" style={{ width: '200px', height: '150px' }} />
+        <h4 style={{ marginTop: '16px', color: 'white' }}>Pondicherry University</h4>
+        <p style={{ color: 'white' }}>{`(A Central University)`}</p>
+        <h4 style={{ marginTop: '16px', color: 'white' }}>INTERNAL QUALITY ASSURANCE CELL</h4>
+        <h4 style={{ marginTop: '16px', color: 'white' }}>INTERNAL ACADEMIC & ADMINISTRATIVE AUDITING FORMAT FOR THE ACADEMIC YEAR 2022-23</h4>
+        <h4 style={{ marginTop: '16px', color: 'white' }}>SOURCE: NAAC INSTITUTIONAL ACCREDITATION MANUAL FOR SSR OF UNIVERSITY</h4>
+      </center>
     </>
-  )
+  );
 }
 
-export default UniversityHeader
+export default UniversityHeader;

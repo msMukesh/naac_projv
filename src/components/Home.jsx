@@ -8,7 +8,7 @@ function Home() {
   return (
     <>
       <UniversityHeader />
-      <button>
+      <button className="contLoginbBtn">
   <Link to="/Login" style={{ color: "white", textDecoration: "none" }}>Continue Login</Link>
 </button>
 

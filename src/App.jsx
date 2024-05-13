@@ -10,6 +10,8 @@ import Criterion2 from './components/Criterion2';
 import Criterion1 from './components/Criterion1';
 import NaacReport from './components/NaacReport';
 import './App.css'; // Import the CSS file
+import backgroundImage from './assets/bgimage.jpg'; // Import the image file
+
 //
 function App() {
   const { user, loading, error } = useUserContext();
