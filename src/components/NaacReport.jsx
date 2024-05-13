@@ -3,9 +3,12 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import NavBar from "./Navbar";
 import "./Criterion3.css";
-import html2pdf from 'html2pdf.js';
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import ReactToPrint from 'react-to-print';
+
+
+
 const NaacReport = () => {
 
   const [tableData311, setTableData311] = useState(null);
@@ -313,24 +316,25 @@ console.log(formDataToSend);
     }
 
     // resetFormAndErrors();
-
   };
 
-  async function getDetails() {
-    try {
-      const response = await axios.get("http://localhost:5000/getFile311");
-      console.log(response.data);
-      // Handle the response data as needed
-    } catch (error) {
-      console.error("Error fetching details:", error);
-      // Handle errors
-    }
-  }
 
-  useEffect(()=>{
-    getDetails()
+  // async function getDetails() {
+  //   try {
 
-  },[])
+  //     const response = await axios.get("http://localhost:5000/getFile313");
+  //     console.log(response.data);
+  //     // Handle the response data as needed
+  //   } catch (error) {
+  //     console.error("Error fetching details:", error);
+  //     // Handle errors
+  //   }
+  // }
+
+  // useEffect(()=>{
+  //   getDetails()
+
+  // },[])
   
 
   // Initial state for Criterion 3.1.3
@@ -2680,7 +2684,7 @@ function getFileNameFromPath(filePath1) {
   
   // Extract the filename by slicing the path from the last directory separator
   const fileName1 = filePath1.slice(separatorIndex + 1);
-  console.log("fileName: " + fileName1);
+  // console.log("fileName: " + fileName1);
 
   return fileName1;
 }
@@ -2697,59 +2701,49 @@ const handleGenerateReport = () => {
 
 
 
-const [loader, setLoader]=useState(false);
-const handleDownloadReport = () => {
-  const capture = document.querySelector('.displayContainer');
-  const options = {
-    scale: 2 // Increase scale for better resolution
-  };
+ const containerRef = React.useRef(null);
 
-  // Function to capture content and scroll down
-  const captureAndScroll = (scrollY) => {
-    // Scroll down the page
-    window.scrollTo(0, scrollY);
 
-    // Wait for scrolling to complete
-    setTimeout(() => {
-      // Capture the current section
-      html2canvas(capture, options).then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
-        const imgWidth = canvas.width;
-        const imgHeight = canvas.height * (pdfWidth / imgWidth); // Adjust height for aspect ratio
-
-        // Add image to PDF
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, imgHeight);
-
-        // If there's more content, continue capturing and scrolling
-        if (scrollY + window.innerHeight < document.body.scrollHeight) {
-          pdf.addPage(); // Add new page
-          captureAndScroll(scrollY + window.innerHeight); // Capture next section
-        } else {
-          // Save PDF when all content is captured
-          pdf.save('nacc.pdf');
-        }
-      });
-    }, 500); // Adjust delay as needed for scrolling to complete
-  };
-
-  // Start capturing and scrolling from the top of the page
-  captureAndScroll(0);
+ const handleClickPrint = () => {
+  if (containerRef.current) {
+    const containerContent = containerRef.current.innerHTML;
+    const printWindow = window.open(); // Open a new print window
+    printWindow.document.write(`
+      <html>
+      <head>
+        <style>
+          /* Add styles for table borders */
+          table {
+            border-collapse: collapse;
+          }
+          th, td {
+            border: 1px solid black;
+            padding: 8px;
+          }
+          .downloadReport, .navbar {
+            display: none !important;
+          }
+        </style>
+      </head>
+      <body>${containerContent}</body>
+      </html>
+    `); // Write content to print window
+    printWindow.document.close(); // Close the document for printing
+    printWindow.focus(); // Focus the window for printing
+    printWindow.print(); // Trigger printing
+  }
 };
 
 
-
-
-
   return (
-    <div className="displayContainer"  >
-      <NavBar />
-      <div className="criterion-container">
-      <button onClick={handleGenerateReport}>Generate Report</button>
 
-      <button className="downloadReport" onClick={handleDownloadReport}>Download Report</button>
+    <div className="displayContainer" ref={containerRef} >
+      <NavBar />
+
+      <div className="criterion-container">
+      <button className="downloadReport"  onClick={handleGenerateReport}>Generate Report</button>
+
+      <button className="downloadReport" onClick={handleClickPrint}>Print Container</button>
 
       <div className="criterionCon31">
 

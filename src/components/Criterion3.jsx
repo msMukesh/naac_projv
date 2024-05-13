@@ -3,6 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import NavBar from "./Navbar";
 import "./Criterion3.css";
+
 const Criterion3 = () => {
 
   const [tableData311, setTableData311] = useState(null);
@@ -313,21 +314,21 @@ console.log(formDataToSend);
 
   };
 
-  async function getDetails() {
-    try {
-      const response = await axios.get("http://localhost:5000/getFile311");
-      console.log(response.data);
-      // Handle the response data as needed
-    } catch (error) {
-      console.error("Error fetching details:", error);
-      // Handle errors
-    }
-  }
+  // async function getDetails() {
+  //   try {
+  //     const response = await axios.get("http://localhost:5000/getFile311");
+  //     console.log(response.data);
+  //     // Handle the response data as needed
+  //   } catch (error) {
+  //     console.error("Error fetching details:", error);
+  //     // Handle errors
+  //   }
+  // }
 
-  useEffect(()=>{
-    getDetails()
+  // useEffect(()=>{
+  //   getDetails()
 
-  },[])
+  // },[])
   
 
   // Initial state for Criterion 3.1.3
