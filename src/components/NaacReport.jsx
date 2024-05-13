@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import NavBar from "./Navbar";
 import "./Criterion3.css";
+import html2pdf from 'html2pdf.js';
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 const NaacReport = () => {
 
   const [tableData311, setTableData311] = useState(null);
@@ -2683,10 +2686,70 @@ function getFileNameFromPath(filePath1) {
 }
 
 
+const [showForm, setShowForm] = useState(true);
+const [hideActions, setHideActions] = useState(false); // State to control visibility of actions
+
+const handleGenerateReport = () => {
+  setShowForm(!showForm);
+  setHideActions(!hideActions); // Toggle the visibility of actions
+};
+
+
+
+
+const [loader, setLoader]=useState(false);
+const handleDownloadReport = () => {
+  const capture = document.querySelector('.displayContainer');
+  const options = {
+    scale: 2 // Increase scale for better resolution
+  };
+
+  // Function to capture content and scroll down
+  const captureAndScroll = (scrollY) => {
+    // Scroll down the page
+    window.scrollTo(0, scrollY);
+
+    // Wait for scrolling to complete
+    setTimeout(() => {
+      // Capture the current section
+      html2canvas(capture, options).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const imgWidth = canvas.width;
+        const imgHeight = canvas.height * (pdfWidth / imgWidth); // Adjust height for aspect ratio
+
+        // Add image to PDF
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, imgHeight);
+
+        // If there's more content, continue capturing and scrolling
+        if (scrollY + window.innerHeight < document.body.scrollHeight) {
+          pdf.addPage(); // Add new page
+          captureAndScroll(scrollY + window.innerHeight); // Capture next section
+        } else {
+          // Save PDF when all content is captured
+          pdf.save('nacc.pdf');
+        }
+      });
+    }, 500); // Adjust delay as needed for scrolling to complete
+  };
+
+  // Start capturing and scrolling from the top of the page
+  captureAndScroll(0);
+};
+
+
+
+
+
   return (
-    <div className="displayContainer" >
+    <div className="displayContainer"  >
       <NavBar />
       <div className="criterion-container">
+      <button onClick={handleGenerateReport}>Generate Report</button>
+
+      <button className="downloadReport" onClick={handleDownloadReport}>Download Report</button>
 
       <div className="criterionCon31">
 
@@ -2699,17 +2762,23 @@ function getFileNameFromPath(filePath1) {
                   promotion of research which is uploaded on the institutional website and implemented 
               </h4>
 
-              <p>Upload relevant supporting document </p>
- <input
-        type="file"
-        onChange={handleFile311Change}
-        
-      />
-                            <button className="submitFormBtn" onClick={handleUpload311} disabled={uploading311 || uploaded311}>
-                        {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
-                      </button>
-                      {error311 && <div className="error">{error311}</div>}
+
+
+              {showForm && (
+          <div>
+            <p>Upload relevant supporting document</p>
+            <input type="file" onChange={handleFile311Change} />
+            <button className="submitFormBtn" onClick={handleUpload311} disabled={uploading311 || uploaded311}>
+              {uploading311 ? 'Uploading...' : uploaded311 ? 'Uploaded' : 'Upload'}
+            </button>
+            {error311 && <div className="error">{error311}</div>}
           </div>
+        )}
+
+
+          </div>
+
+
 
           {tableData311 && (
   <div>
@@ -2718,7 +2787,8 @@ function getFileNameFromPath(filePath1) {
         <tr>
           <th>User Name</th>
           <th>File</th>
-          <th>Actions</th> {/* New column for the action buttons */}
+          {!hideActions && (
+          <th className={hideActions ? 'Deltd hidden' : 'Deltd'}>Actions</th>)}
         </tr>
       </thead>
       <tbody>
@@ -2737,16 +2807,13 @@ function getFileNameFromPath(filePath1) {
                 Download File
               </button>
             </td>
-            
-            <td> {/* Actions column */}
-              <button
-                className="Deletebtn"
-                onClick={() => handleDelete(data._id)}
-              >
-                Delete
-              </button>
-            
-            </td>
+            {!hideActions && (
+            <td className={hideActions ? 'Deltd hidden' : 'Deltd'}>
+                    {/* Conditional rendering of delete button based on hideActions state */}
+                    
+                      <button className="Deletebtn" onClick={() => handleDelete(data._id)}>Delete</button>
+                   
+                  </td> )}
           </tr>
         ))}
       </tbody>
@@ -2759,7 +2826,12 @@ function getFileNameFromPath(filePath1) {
           {/* Criterion 3.1.2 Form */}
           <div className="formDiv">
           <h4>3.1.2 The institution provides seed money to its teachers for research (amount INR in Lakhs)
-          </h4>            <button className="toggleFormbtn" onClick={handleToggleForm312}>
+          </h4>           
+          
+          
+          {showForm && (
+<div>
+           <button className="toggleFormbtn" onClick={handleToggleForm312}>
               {toggleForm312 ? "Hide Form" : "Show Form"}
             </button>
 
@@ -2830,6 +2902,9 @@ function getFileNameFromPath(filePath1) {
                 {error312 && <div className="error">{error312}</div>}
               </form>
             )}
+</div>
+          )}
+
           </div>
  {/* Display table if data is available */}
  {tableData312 && (
@@ -2841,8 +2916,9 @@ function getFileNameFromPath(filePath1) {
           <th>Amount</th>
           <th>Year</th>
           <th>Additional Info</th>
-          <th>File</th>
-          <th>Actions</th> {/* New column for delete/edit buttons */}
+          <th>File</th>          {!hideActions && (
+
+          <th>Actions</th> )}
         </tr>
       </thead>
       <tbody>
@@ -2863,6 +2939,7 @@ function getFileNameFromPath(filePath1) {
                 Download File
               </button>
             </td>
+            {!hideActions && (
             <td> {/* Actions column */}
               <button
                 className="Deletebtn"
@@ -2871,7 +2948,7 @@ function getFileNameFromPath(filePath1) {
                 Delete
               </button>
               
-            </td>
+            </td>)}
           </tr>
         ))}
       </tbody>
@@ -2885,6 +2962,9 @@ function getFileNameFromPath(filePath1) {
           <div className="formDiv">
           <h4>3.1.3 Teachers receiving national/ international fellowship/financial support by various agencies for advanced studies/ research during the year
             </h4>              
+
+            {showForm && (
+<div>
             <button className="toggleFormbtn" onClick={handleToggleForm313}>
               {toggleForm313 ? "Hide Form" : "Show Form"}
             </button>
@@ -2974,6 +3054,9 @@ function getFileNameFromPath(filePath1) {
               {error313 && <div className="error">{error313}</div>}
             </form>
             )}
+
+</div>
+          )}
           </div>
 
           {tableData313 && (
@@ -2987,7 +3070,10 @@ function getFileNameFromPath(filePath1) {
                 <th>fellowshipName</th>
                 <th>sponsoringAgency</th>
                 <th>File</th>
-                <th>Actions</th>
+                {!hideActions && (
+
+                <th>Actions</th>          )}
+
               </tr>
             </thead>
             <tbody>
@@ -3007,6 +3093,7 @@ function getFileNameFromPath(filePath1) {
                   </button>
                 </td>
                 {/* <td>{tableData313.filePath}</td> */}
+                {!hideActions && (
 
                 <td> {/* Actions column */}
               <button
@@ -3016,7 +3103,8 @@ function getFileNameFromPath(filePath1) {
                 Delete
               </button>
               
-            </td>
+            </td>          )}
+
               </tr>
             ))}
             </tbody>
@@ -3027,6 +3115,8 @@ function getFileNameFromPath(filePath1) {
 
 <div className="formDiv">
     <h4>3.1.4 - JRFs, SRFs, Post-Doctoral Fellows, Research Associates, and other research fellows enrolled in the institution during the year</h4>
+    {showForm && (
+<div>
     <button className="toggleFormbtn"  onClick={handleToggleForm314}>
       {toggleForm314 ? "Hide Form" : "Show Form"}
     </button>
@@ -3099,6 +3189,9 @@ function getFileNameFromPath(filePath1) {
     {error314 && <div className="error">{error314}</div>}
   </form>
   )}
+
+</div>
+          )}
 </div>
 
 {tableData314 && (
@@ -3112,14 +3205,17 @@ function getFileNameFromPath(filePath1) {
                 <th>fellowshipType</th>
                 <th>grantingAgency</th>
                 <th>File</th>
+                {!hideActions && (
+
                 <th>Actions</th>
+              )}
               </tr>
             </thead>
             <tbody>
 
             {tableData314.map((data, index) => (
 
-<tr key={index}>
+             <tr key={index}>
 
                 <td>{data.fellowName}</td>
                 <td>{data.yearOfEnrollment}</td>
@@ -3135,6 +3231,8 @@ function getFileNameFromPath(filePath1) {
                 </td>
                 {/* <td>{tableData314.filePath}</td> */}
 
+                {!hideActions && (
+
                 <td> {/* Actions column */}
               <button
                 className="Deletebtn"
@@ -3144,6 +3242,7 @@ function getFileNameFromPath(filePath1) {
               </button>
               
             </td>
+            )}
               </tr>
             ))}
             </tbody>
@@ -3156,10 +3255,13 @@ function getFileNameFromPath(filePath1) {
 
 <div className="formDiv">
       <h4>3.1.5.	Your department is having the following facilities to support research:</h4>
-      <button onClick={handleToggleForm315}>
+     
+
+      {showForm && (
+<div>
+      <button className="toggleFormbtn" onClick={handleToggleForm315}>
         {toggleForm315 ? 'Hide Form' : 'Show Form'}
       </button>
-
       {toggleForm315 && (
         <form onSubmit={handleSubmit315}>
           <div>
@@ -3454,7 +3556,12 @@ function getFileNameFromPath(filePath1) {
           {error315 && <div style={{ color: 'red' }}>{error315}</div>}
         </form>
       )}
+</div>
+          )}
     </div>
+
+
+
 
     {tableData315 && (
 
@@ -3475,7 +3582,10 @@ function getFileNameFromPath(filePath1) {
             <th>Art Gallery</th>
             <th>Other Facility</th>
             <th>Geo-Tagged Picture</th>
+            {!hideActions && (
+
             <th>Actions</th>
+          )}
           </tr>
         </thead>
         <tbody>
@@ -3502,6 +3612,8 @@ function getFileNameFromPath(filePath1) {
                   'No Picture'
                 )}
               </td>
+              {!hideActions && (
+
               <td> {/* Actions column */}
               <button
                 className="Deletebtn"
@@ -3511,6 +3623,7 @@ function getFileNameFromPath(filePath1) {
               </button>
               
             </td>
+            )}
             </tr>
           ))}
         </tbody>
@@ -3523,6 +3636,10 @@ function getFileNameFromPath(filePath1) {
 {/* Criterion 3.1.6 Form */}
   <div className="formDiv">
   <h4>Criterion 3.1.6 - Departments with UGC-SAP, CAS, DST-FIST, DBT, ICSSR, and other recognitions by national and international agencies during the year</h4>
+  
+  
+  {showForm && (
+<div>
   <button className="toggleFormbtn" onClick={handleToggleForm316}>
     {toggleForm316 ? "Hide Form" : "Show Form"}
   </button>
@@ -3631,6 +3748,11 @@ function getFileNameFromPath(filePath1) {
             {error316 && <div className="error">{error316}</div>}
           </form>
           )}
+
+</div>
+          )}
+
+
         </div>
 
         {tableData316 && (
@@ -3647,8 +3769,10 @@ function getFileNameFromPath(filePath1) {
                 <th>Fund Layout amount Provided</th>
                 <th>Duration</th>
                 <th>File</th>
-                <th>Actions</th>
+                {!hideActions && (
 
+                <th>Actions</th>
+              )}
               </tr>
             </thead>
             <tbody>
@@ -3671,6 +3795,7 @@ function getFileNameFromPath(filePath1) {
                   </button>
                 </td>
                 {/* <td>{tableData316.filePath}</td> */}
+                {!hideActions && (
 
                 <td> 
               <button
@@ -3680,7 +3805,7 @@ function getFileNameFromPath(filePath1) {
                 Delete
               </button>
             </td>
-
+)}
               </tr>
             ))}
             </tbody>
@@ -3697,6 +3822,11 @@ function getFileNameFromPath(filePath1) {
 
     <div className="formDiv">
     <h4>3.2.1 Extramural funding for Research (Grants sponsored by non-government sources such as industry, corporate houses, international bodies for research projects), endowments, Chairs in the University during the year (INR in Lakhs)</h4>
+   
+   
+
+    {showForm && (
+<div>
     <button className="toggleFormbtn" onClick={handleToggleForm321}>
       {toggleForm321 ? "Hide Form" : "Show Form"}
     </button>
@@ -3797,6 +3927,11 @@ function getFileNameFromPath(filePath1) {
         {error321 && <div className="error">{error321}</div>}
       </form>
     )}
+</div>
+          )}
+
+
+
   </div>
   {tableData321 && (
     <div>
@@ -3812,8 +3947,10 @@ function getFileNameFromPath(filePath1) {
             <th>Funds (Amount) Provided</th>
             <th>Duration</th>
             <th>File </th>
-            <th>Actions</th>
+            {!hideActions && (
 
+            <th>Actions</th>
+          )}
           </tr>
         </thead>
         <tbody>
@@ -3835,6 +3972,7 @@ function getFileNameFromPath(filePath1) {
                   </td>
             {/* <td>{tableData321.filePath}</td> */}
 
+            {!hideActions && (
 
             <td> 
               <button
@@ -3844,7 +3982,7 @@ function getFileNameFromPath(filePath1) {
                 Delete
               </button>
             </td>
-
+)}
           </tr>
         ))}
         </tbody>
@@ -3857,6 +3995,10 @@ function getFileNameFromPath(filePath1) {
       <h4>
         3.2.2 Grants for research projects sponsored by government agencies during the year (INR in Lakhs)
       </h4>
+
+      {showForm && (
+<div>
+
       <button className="toggleFormbtn" onClick={handleToggleForm322}>
         {toggleForm322 ? "Hide Form" : "Show Form"}
       </button>
@@ -3957,6 +4099,10 @@ function getFileNameFromPath(filePath1) {
           {error322 && <div className="error">{error322}</div>}
         </form>
       )}
+</div>
+          )}
+
+
     </div>
 
 
@@ -3974,8 +4120,10 @@ function getFileNameFromPath(filePath1) {
             <th>Funding Agency</th>
             <th>Total Amount Funds Received</th>
             <th>File</th>
-            <th>Actions</th>
+            {!hideActions && (
 
+            <th>Actions</th>
+          )}
           </tr>
         </thead>
         <tbody>
@@ -3999,6 +4147,7 @@ function getFileNameFromPath(filePath1) {
                   'No File Attached'
                 )}
               </td>
+              {!hideActions && (
 
               <td> 
               <button
@@ -4008,7 +4157,7 @@ function getFileNameFromPath(filePath1) {
                 Delete
               </button>
             </td>
-
+)}
             </tr>
           ))}
         </tbody>
@@ -4020,6 +4169,11 @@ function getFileNameFromPath(filePath1) {
 
 <div className="formDiv">
       <h4>3.2.3 Research projects funded by government and non-government agencies during the year</h4>
+      
+      
+      
+      {showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm323}>
         {toggleForm323 ? "Hide Form" : "Show Form"}
       </button>
@@ -4109,6 +4263,10 @@ function getFileNameFromPath(filePath1) {
           {error323 && <div className="error">{error323}</div>}
         </form>
       )}
+</div>
+          )}
+
+
     </div>
 
 
@@ -4125,8 +4283,10 @@ function getFileNameFromPath(filePath1) {
             <th>Name of Funding Agency</th>
             <th>Year of Sanction</th>
             <th>Download File</th>
-            <th>Actions</th>
+            {!hideActions && (
 
+            <th>Actions</th>
+          )}
           </tr>
         </thead>
         <tbody>
@@ -4149,6 +4309,8 @@ function getFileNameFromPath(filePath1) {
                   "No File Attached"
                 )}
               </td>
+              {!hideActions && (
+
               <td> 
               <button
                 className="Deletebtn"
@@ -4156,7 +4318,8 @@ function getFileNameFromPath(filePath1) {
               >
                 Delete
               </button>
-            </td>
+            </td>)}
+
             </tr>
           ))}
         </tbody>
@@ -4179,6 +4342,9 @@ function getFileNameFromPath(filePath1) {
       <h4>
         3.3.1 Whether the department has created an ecosystem for innovations, including Incubation center and other initiatives for the creation and transfer of knowledge
       </h4>
+
+      {showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm331}>
         {toggleForm331 ? "Hide Form" : "Show Form"}
       </button>
@@ -4350,6 +4516,11 @@ Provide the link for additional information
           {error331 && <div className="error">{error331}</div>}
         </form>
       )}
+
+</div>
+          )}
+
+
     </div>
 
     {tableData331 && (
@@ -4366,8 +4537,10 @@ Provide the link for additional information
             <th>other Similar</th>
             <th>Description</th>
             <th>Download File</th>
-            <th>Actions</th>
+            {!hideActions && (
 
+            <th>Actions</th>
+          )}
           </tr>
         </thead>
         <tbody>
@@ -4391,6 +4564,8 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
+              {!hideActions && (
+
               <td> 
               <button
                 className="Deletebtn"
@@ -4399,6 +4574,7 @@ Provide the link for additional information
                 Delete
               </button>
             </td>
+            )}
             </tr>
           ))}
         </tbody>
@@ -4416,6 +4592,9 @@ Provide the link for additional information
       <h5>
 3.3.2.1: Total number of workshops/seminars conducted on Research methodology, Intellectual Property Rights (IPR),Entrepreneurship, Skill development year wise during  the year 
 </h5>
+
+{showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm332}>
         {toggleForm332 ? "Hide Form" : "Show Form"}
       </button>
@@ -4516,6 +4695,8 @@ Provide the link for additional information
           {error332 && <div className="error">{error332}</div>}
         </form>
       )}
+      </div>
+          )}
     </div>
 
     {tableData332 && (
@@ -4531,8 +4712,10 @@ Provide the link for additional information
             <th>Number of Participants</th>
             <th>Event Organizer</th>
             <th>Download File</th>
-            <th>Actions</th>
+            {!hideActions && (
 
+            <th>Actions</th>
+          )}
           </tr>
         </thead>
         <tbody>
@@ -4556,6 +4739,8 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
+              {!hideActions && (
+
               <td> 
               <button
                 className="Deletebtn"
@@ -4564,6 +4749,7 @@ Provide the link for additional information
                 Delete
               </button>
             </td>
+            )}
             </tr>
           ))}
         </tbody>
@@ -4581,6 +4767,9 @@ Provide the link for additional information
       <h5>
 3.3.3.1: Total number of awards / recognitions received for research/innovations won by institution/teachers/research scholars/students year wise during the year
 </h5>
+
+{showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm333}>
         {toggleForm333 ? "Hide Form" : "Show Form"}
       </button>
@@ -4670,6 +4859,9 @@ Provide the link for additional information
           {error333 && <div className="error">{error333}</div>}
         </form>
       )}
+
+</div>
+          )}
     </div>
 
 
@@ -4684,8 +4876,10 @@ Provide the link for additional information
             <th>Name of the Awarding Agency with Contact Details</th>
             <th>Date of Award</th>
             <th>Download File</th>
-            <th>Actions</th>
+            {!hideActions && (
 
+            <th>Actions</th>
+          )}
           </tr>
         </thead>
         <tbody>
@@ -4707,6 +4901,7 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
+              {!hideActions && (
 
               <td> 
               <button
@@ -4716,7 +4911,7 @@ Provide the link for additional information
                 Delete
               </button>
             </td>
-
+)}
             </tr>
           ))}
         </tbody>
@@ -4740,6 +4935,9 @@ Provide the link for additional information
       <h4>
         3.4.1 The department ensures implementation of its stated Code of Ethics for research  as in the following 
       </h4>
+
+      {showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm341}>
         {toggleForm341 ? "Hide Form" : "Show Form"}
       </button>
@@ -4893,6 +5091,11 @@ Provide the link for additional information
           {error341 && <div className="error">{error341}</div>}
         </form>
       )}
+
+</div>
+          )}
+
+
     </div>
 
     {tableData341 && (
@@ -4909,8 +5112,10 @@ Provide the link for additional information
     <th>Research Advisory Committee</th>
     <th>Other related item (if any)</th>
     <th>Download File</th>
-    <th>Actions</th>
+    {!hideActions && (
 
+    <th>Actions</th>
+  )}
   </tr>
 </thead>
 <tbody>
@@ -4933,6 +5138,7 @@ Provide the link for additional information
           "No File Attached"
         )}
       </td>
+      {!hideActions && (
 
       <td> 
               <button
@@ -4941,7 +5147,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>
+            </td>)}
     </tr>
   ))}
 </tbody>
@@ -4963,6 +5169,9 @@ Provide the link for additional information
               <ul>4.Announcement in the Newsletter / website</ul>
 
             </div>
+
+            {showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm342}>
         {toggleForm342 ? "Hide Form" : "Show Form"}
       </button>
@@ -5053,6 +5262,8 @@ Provide the link for additional information
           {error342 && <div className="error">{error342}</div>}
         </form>
       )}
+      </div>
+          )}
     </div>
 
     {tableData342 && (
@@ -5067,8 +5278,10 @@ Provide the link for additional information
             <th>Year of Award</th>
             <th>Incentive Details</th>
             <th>Download File</th>
-            <th>Actions</th>
+            {!hideActions && (
 
+            <th>Actions</th>
+          )}
           </tr>
         </thead>
         <tbody>
@@ -5091,6 +5304,8 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
+              {!hideActions && (
+
               <td> 
               <button
                 className="Deletebtn"
@@ -5098,7 +5313,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>
+            </td>)}
             </tr>
           ))}
         </tbody>
@@ -5110,6 +5325,9 @@ Provide the link for additional information
 
 <div className="formDiv">
       <h4>3.4.3 Patents published/awarded during the year</h4>
+
+      {showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm343}>
         {toggleForm343 ? "Hide Form" : "Show Form"}
       </button>
@@ -5191,6 +5409,11 @@ Provide the link for additional information
           {error343 && <div className="error">{error343}</div>}
         </form>
       )}
+
+</div>
+          )}
+
+
     </div>
 
     {tableData343 && (
@@ -5204,8 +5427,10 @@ Provide the link for additional information
              <th>Published / Awarded / Granted</th>
              <th>Year of Award</th>
              <th>Download File</th>
-             <th>Actions</th>
+             {!hideActions && (
 
+             <th>Actions</th>
+            )}
            </tr>
          </thead>
          <tbody>
@@ -5227,6 +5452,7 @@ Provide the link for additional information
                    "No File Attached"
                  )}
                </td>
+               {!hideActions && (
                <td> 
               <button
                 className="Deletebtn"
@@ -5234,7 +5460,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>
+            </td>)}
              </tr>
            ))}
          </tbody>
@@ -5247,6 +5473,10 @@ Provide the link for additional information
 
 <div className="formDiv">
       <h4>3.4.4 Ph.D.s awarded during the year</h4>
+
+
+      {showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm344}>
         {toggleForm344 ? "Hide Form" : "Show Form"}
       </button>
@@ -5335,6 +5565,9 @@ Provide the link for additional information
           {error344 && <div className="error">{error344}</div>}
         </form>
       )}
+
+</div>
+          )}
     </div>
 
     {tableData344 && (
@@ -5349,8 +5582,10 @@ Provide the link for additional information
             <th>Year of Registration</th>
             <th>Year of award of PhD</th>
             <th>Download File</th>
-            <th>Actions</th>
+            {!hideActions && (
 
+            <th>Actions</th>
+          )}
           </tr>
         </thead>
         <tbody>
@@ -5373,6 +5608,8 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
+              {!hideActions && (
+
               <td> 
               <button
                 className="Deletebtn"
@@ -5380,7 +5617,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>
+            </td>)}
             </tr>
           ))}
         </tbody>
@@ -5393,6 +5630,9 @@ Provide the link for additional information
 
 <div className="formDiv">
       <h4>3.4.5 Research papers in the Journals notified on UGC website during the year</h4>
+      
+      {showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm345}>
         {toggleForm345 ? "Hide Form" : "Show Form"}
       </button>
@@ -5481,6 +5721,8 @@ Provide the link for additional information
           {error345 && <div className="error">{error345}</div>}
         </form>
       )}
+      </div>
+          )}
     </div>
 
     {tableData345 && (
@@ -5496,8 +5738,10 @@ Provide the link for additional information
             <th>Year of Publication</th>
             <th>ISSN Number</th>
             <th>Download File</th>
-            <th>Actions</th>
+            {!hideActions && (
 
+            <th>Actions</th>
+          )}
           </tr>
         </thead>
         <tbody>
@@ -5521,6 +5765,8 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
+              {!hideActions && (
+
               <td> 
               <button
                 className="Deletebtn"
@@ -5528,7 +5774,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>
+            </td>)}
             </tr>
           ))}
         </tbody>
@@ -5544,6 +5790,8 @@ Provide the link for additional information
       <h4>
         3.4.6 Books and chapters in edited volumes published during the year
       </h4>
+      {showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm346}>
         {toggleForm346 ? "Hide Form" : "Show Form"}
       </button>
@@ -5654,6 +5902,8 @@ Provide the link for additional information
           {error346 && <div className="error">{error346}</div>}
         </form>
       )}
+      </div>
+          )}
     </div>
 
     {tableData346 && (
@@ -5670,8 +5920,10 @@ Provide the link for additional information
             <th>ISBN  Number of the Proceeding</th>
             <th>Year of Publications</th>
             <th>Download File</th>
-            <th>Actions</th>
+            {!hideActions && (
 
+            <th>Actions</th>
+          )}
           </tr>
         </thead>
         <tbody>
@@ -5696,6 +5948,8 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
+              {!hideActions && (
+
               <td> 
               <button
                 className="Deletebtn"
@@ -5703,7 +5957,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>
+            </td>)}
             </tr>
           ))}
         </tbody>
@@ -5718,6 +5972,9 @@ Provide the link for additional information
       <h4>
         3.4.7 E-content developed by teachers
       </h4>
+
+      {showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm347}>
         {toggleForm347 ? "Hide Form" : "Show Form"}
       </button>
@@ -5795,6 +6052,8 @@ Provide the link for additional information
           {error347 && <div className="error">{error347}</div>}
         </form>
       )}
+      </div>
+          )}
     </div>
 
     {tableData347 && (
@@ -5808,8 +6067,10 @@ Provide the link for additional information
             <th>Date of launching e-content</th>
             <th>Number of platform on which e-content has been developed by teacher</th>
             <th>Download File</th>
-            <th>Actions</th>
+            {!hideActions && (
 
+            <th>Actions</th>
+          )}
           </tr>
         </thead>
         <tbody>
@@ -5831,6 +6092,8 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
+              {!hideActions && (
+
               <td> 
               <button
                 className="Deletebtn"
@@ -5838,7 +6101,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>
+            </td>)}
             </tr>
           ))}
         </tbody>
@@ -5976,6 +6239,10 @@ Provide the link for additional information
     <div className="formDiv">
       <h4>
       3.4.8 Bibliometric of the publications during the year based on average Citation Index in Scopus/ Web of Science/PubMed      </h4>
+     
+     
+      {showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm348}>
         {toggleForm348 ? "Hide Form" : "Show Form"}
       </button>
@@ -6054,6 +6321,9 @@ Provide the link for additional information
           {error348 && <div className="error">{error348}</div>}
         </form>
       )}
+
+</div>
+          )}
     </div>
 
     {tableData348 && (
@@ -6066,15 +6336,11 @@ Provide the link for additional information
             <th>Title of the Journal</th>
             <th>Year of Publication</th>
             <th>Citation Index</th>
-            <th>Download File</th>
-            <td> 
-              <button
-                className="Deletebtn"
-                onClick={() => handleDelete(data._id)} // Use handleDelete
-              >
-                Delete
-              </button>
-            </td>
+            <th>Download File</th>    
+            {!hideActions && (
+        
+            <th>Action</th>
+          )}
           </tr>
         </thead>
         <tbody>
@@ -6096,6 +6362,8 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
+              {!hideActions && (
+
               <td> 
               <button
                 className="Deletebtn"
@@ -6104,6 +6372,8 @@ Provide the link for additional information
                 Delete
               </button>
             </td>
+                      )}
+
             </tr>
           ))}
         </tbody>
@@ -6119,6 +6389,9 @@ Provide the link for additional information
       <h4>
         3.4.9 Bibliometrics of the publications during the year based on Scopus/Web of Science h-Index of the University
       </h4>
+
+      {showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm349}>
         {toggleForm349 ? "Hide Form" : "Show Form"}
       </button>
@@ -6196,6 +6469,8 @@ Provide the link for additional information
           {error349 && <div className="error">{error349}</div>}
         </form>
       )}
+      </div>
+          )}
     </div>
     {tableData349 && (
     <div>
@@ -6208,7 +6483,10 @@ Provide the link for additional information
             <th>Year of Publication</th>
             <th>H Index</th>
             <th>Download File</th>
+            {!hideActions && (
+
             <th>Actions</th>
+          )}
 
           </tr>
         </thead>
@@ -6231,6 +6509,8 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
+              {!hideActions && (
+
               <td> 
               <button
                 className="Deletebtn"
@@ -6239,6 +6519,8 @@ Provide the link for additional information
                 Delete
               </button>
             </td>
+                      )}
+
             </tr>
           ))}
         </tbody>
@@ -6259,6 +6541,9 @@ Provide the link for additional information
 <div className="formDiv">
       <h4>
       3.5.1 Institution has a policy on consultancy including revenue sharing between the institution and the individual and encourages its faculty to undertake consultancy      </h4>
+      
+      {showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm351}>
         {toggleForm351 ? "Hide Form" : "Show Form"}
       </button>
@@ -6305,6 +6590,8 @@ Provide the link for additional information
           {error351 && <div className="error">{error351}</div>}
         </form>
       )}
+      </div>
+          )}
     </div>
 {tableData351 && (
 <div>
@@ -6314,7 +6601,10 @@ Provide the link for additional information
             <th>Minutes of the Governing Council</th>
             <th>Consultancy Policy</th>
             <th>Supporting document</th>
+            {!hideActions && (
+
             <th>Actions</th>
+          )}
 
           </tr>
         </thead>
@@ -6355,6 +6645,8 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
+              {!hideActions && (
+
               <td> 
               <button
                 className="Deletebtn"
@@ -6363,6 +6655,8 @@ Provide the link for additional information
                 Delete
               </button>
             </td>
+                      )}
+
             </tr>
           ))}
         </tbody>
@@ -6375,6 +6669,9 @@ Provide the link for additional information
       <h4>
         3.5.2 Revenue generated from consultancy and corporate training during the year (INR in Lakhs)
       </h4>
+     
+      {showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm352}>
         {toggleForm352 ? "Hide Form" : "Show Form"}
       </button>
@@ -6485,6 +6782,9 @@ Provide the link for additional information
           {error352 && <div className="error">{error352}</div>}
         </form>
       )}
+
+</div>
+          )}
     </div>
     {tableData352 && (
 
@@ -6501,7 +6801,10 @@ Provide the link for additional information
         <th>Title of the Training</th>
         <th>Number of Participants Benefitted</th>
         <th>Download File</th>
+        {!hideActions && (
+
         <th>Actions</th>
+      )}
 
       </tr>
     </thead>
@@ -6527,6 +6830,7 @@ Provide the link for additional information
               "No File Attached"
             )}
           </td>
+          {!hideActions && (
 
           <td> 
               <button
@@ -6536,6 +6840,8 @@ Provide the link for additional information
                 Delete
               </button>
             </td>
+                      )}
+
         </tr>
       ))}
     </tbody>
@@ -6556,6 +6862,9 @@ Provide the link for additional information
       <h4>
         3.6.1 Extension activities in the neighborhood community in terms of impact and sensitizing the students to social issues and holistic development during the year
       </h4>
+
+      {showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm361}>
         {toggleForm361 ? "Hide Form" : "Show Form"}
       </button>
@@ -6652,6 +6961,9 @@ Provide the link for additional information
           {error361 && <div className="error">{error361}</div>}
         </form>
       )}
+
+</div>
+          )}
     </div>
 
     {tableData361 && (
@@ -6667,7 +6979,10 @@ Provide the link for additional information
             <th>Outcome</th>
             <th>Impact Description</th>
             <th>Download File</th>
+            {!hideActions && (
+
             <th>Actions</th>
+          )}
 
           </tr>
         </thead>
@@ -6692,6 +7007,8 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
+              {!hideActions && (
+
               <td> 
               <button
                 className="Deletebtn"
@@ -6700,6 +7017,8 @@ Provide the link for additional information
                 Delete
               </button>
             </td>
+                      )}
+
             </tr>
           ))}
         </tbody>
@@ -6711,6 +7030,9 @@ Provide the link for additional information
 <div className="formDiv">
       <h4>
       3.6.2 Awards received by the Institution, its teachers and students from Government /Government recognized bodies in recognition of the extension activities carried out  during the year      </h4>
+      
+      {showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm362}>
         {toggleForm362 ? "Hide Form" : "Show Form"}
       </button>
@@ -6788,6 +7110,9 @@ Provide the link for additional information
           {error362 && <div className="error">{error362}</div>}
         </form>
       )}
+
+</div>
+          )}
     </div>
 
 
@@ -6802,7 +7127,10 @@ Provide the link for additional information
             <th>Name of the Awarding Government/Government recognized bodies</th>
             <th>Year of the Award</th>
             <th>Download File</th>
+            {!hideActions && (
+
             <th>Actions</th>
+          )}
 
           </tr>
         </thead>
@@ -6825,6 +7153,8 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
+              {!hideActions && (
+
               <td> 
               <button
                 className="Deletebtn"
@@ -6833,6 +7163,8 @@ Provide the link for additional information
                 Delete
               </button>
             </td>
+                      )}
+
             </tr>
           ))}
         </tbody>
@@ -6845,6 +7177,9 @@ Provide the link for additional information
 <div className="formDiv">
       <h4>
       3.6.3 Extension and outreach programs conducted  by the institution including those through  NSS/NCC, Government and Government recognized bodies  during the year      </h4>
+      
+      {showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm363}>
         {toggleForm363 ? "Hide Form" : "Show Form"}
       </button>
@@ -6921,6 +7256,8 @@ Provide the link for additional information
           {error363 && <div className="error">{error363}</div>}
         </form>
       )}
+      </div>
+          )}
     </div>
 
     {tableData363 && (
@@ -6934,7 +7271,10 @@ Provide the link for additional information
             <th>Number of Students Participated</th>
             <th>Issues Addressed</th>
             <th>Download File</th>
+            {!hideActions && (
+
             <th>Actions</th>
+          )}
 
           </tr>
         </thead>
@@ -6957,6 +7297,8 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
+              {!hideActions && (
+
               <td> 
               <button
                 className="Deletebtn"
@@ -6964,7 +7306,8 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>
+            </td>          )}
+
             </tr>
           ))}
         </tbody>
@@ -6979,6 +7322,8 @@ Provide the link for additional information
       <h4>
         3.6.4 Students participating in extension activities listed at 3.6.3 above during the year
       </h4>
+      {showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm364}>
         {toggleForm364 ? "Hide Form" : "Show Form"}
       </button>
@@ -7044,6 +7389,8 @@ Provide the link for additional information
           {error364 && <div className="error">{error364}</div>}
         </form>
       )}
+      </div>
+          )}
     </div>
 
     {tableData364 && (
@@ -7056,7 +7403,10 @@ Provide the link for additional information
             <th>Year of the Activity</th>
             <th>Names of the Students Participating in Such activities</th>
             <th>Download File</th>
+            {!hideActions && (
+
             <th>Actions</th>
+          )}
 
           </tr>
         </thead>
@@ -7078,6 +7428,8 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
+              {!hideActions && (
+
               <td> 
               <button
                 className="Deletebtn"
@@ -7085,7 +7437,8 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>
+            </td>          )}
+
             </tr>
           ))}
         </tbody>
@@ -7107,6 +7460,8 @@ Provide the link for additional information
       <h4>
         3.7.1 Collaborative activities with other institutions/research establishment/industry for research and academic development of faculty and students per year
       </h4>
+      {showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm371}>
         {toggleForm371 ? "Hide Form" : "Show Form"}
       </button>
@@ -7206,6 +7561,8 @@ Provide the link for additional information
           {error371 && <div className="error">{error371}</div>}
         </form>
       )}
+      </div>
+          )}
     </div>
 
     {tableData371 && (
@@ -7221,7 +7578,10 @@ Provide the link for additional information
             <th>Names of the Faculty Members Involved</th>
             <th>Nature of the Activity</th>
             <th>Download File</th>
+            {!hideActions && (
+
             <th>Actions</th>
+          )}
 
           </tr>
         </thead>
@@ -7246,6 +7606,8 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
+              {!hideActions && (
+
               <td> 
               <button
                 className="Deletebtn"
@@ -7253,7 +7615,8 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>
+            </td>          )}
+
             </tr>
           ))}
         </tbody>
@@ -7265,6 +7628,8 @@ Provide the link for additional information
 <div className="formDiv">
       <h4>
       3.7.2 Functional MoUs with institutions/ industries  in India and abroad for internship, on-the-job training, project work, student / faculty exchange and  collaborative research  during the year      </h4>
+      {showForm && (
+<div>
       <button className="toggleFormbtn" onClick={handleToggleForm372}>
         {toggleForm372 ? "Hide Form" : "Show Form"}
       </button>
@@ -7350,7 +7715,8 @@ Provide the link for additional information
           {error372 && <div className="error">{error372}</div>}
         </form>
       )}
-
+</div>
+          )}
 {tableData372 && (
  <div>
       <table>
@@ -7363,7 +7729,10 @@ Provide the link for additional information
             <th>Actual Activities under each MoU</th>
             <th>Year-wise Number of students/teachers who participated under MoUs</th>
             <th>Download File</th>
+            {!hideActions && (
+
             <th>Actions</th>
+          )}
 
           </tr>
         </thead>
@@ -7387,6 +7756,7 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
+              {!hideActions && (
 
               <td> 
               <button
@@ -7395,7 +7765,8 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>
+            </td>          )}
+
 
             </tr>
           ))}
