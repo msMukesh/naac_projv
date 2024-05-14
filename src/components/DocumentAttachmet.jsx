@@ -19,7 +19,7 @@ const DocumentAttachment = ({ documents }) => {
 
   return (
     <div>
-      <label htmlFor="document">Select Document:</label>
+      <label htmlFor="document">Documents to Attach</label>
       <div>
         {documents.map((document, index) => (
           <div key={index}>
