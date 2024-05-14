@@ -1,5 +1,7 @@
 import React, { useState} from 'react'
 import NavBar from './Navbar'
+import DynamicTable from './DynamicTable';
+import DocumentAttachment from './DocumentAttachmet';
 
 const Criterion1 = () => {
   const [rowCount, setRowCount] = useState(1);
@@ -175,6 +177,8 @@ const Criterion1 = () => {
         </table>
         </div>
       )}
+     <DynamicTable headers={['Name', 'Age', 'Location']}></DynamicTable>
+     <DocumentAttachment documents={['Document1.pdf', 'Document2.docx', 'Document3.jpg']} />
     </div>
     </>
   )
