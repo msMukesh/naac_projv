@@ -22,11 +22,13 @@ const DocumentAttachment = ({ documents }) => {
       <label htmlFor="document">Select Document:</label>
       <div>
         {documents.map((document, index) => (
-          <span key={index}>{document}</span>
+          <div key={index}>
+            <span>{document}</span>
+            <input type="file" id={`document-${index}`} onChange={handleFileChange} />
+            <button onClick={handleUpload}>Upload</button>
+          </div>
         ))}
       </div>
-      <input type="file" id="document" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload</button>
       {selectedDocument && (
         <div>
           <p>Document selected: {selectedDocument.name}</p>
