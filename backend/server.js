@@ -34,7 +34,7 @@ run().catch(console.dir);
 
 app.use(cors());
 app.use(cors({
-  origin: "http://localhost:5173"
+  origin: "https://naac-frontend-eta.vercel.app"
 }));
 
 app.use(express.json());
