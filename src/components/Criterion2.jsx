@@ -1,205 +1,15 @@
-import React, { useState } from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
+import React,{useState} from "react";
 import NavBar from "./Navbar";
+import DynamicTable from './DynamicTable';
+import DocumentAttachment from "./DocumentAttachmet";
 
 const Criterion2 = () => {
-  // State for Criterion 3.1.1
-  const [file311, setFile311] = useState(null);
-  const [uploading311, setUploading311] = useState(false);
-  const [uploaded311, setUploaded311] = useState(false);
-  const [error311, setError311] = useState(null);
 
-  // State for Criterion 3.1.2
-  const [formData312, setFormData312] = useState({
-    teacherName: "",
-    amount: "",
-    year: "",
-    additionalInfo: "",
-    file312: null,
-  });
+  const [showForm, setShowForm] = useState(false);
 
-  // State for Criterion 3.1.3
-  const [formData313, setFormData313] = useState({
-    year: "",
-    teacherName: "",
-    designation: "",
-    fellowshipType: "",
-    fellowshipName: "",
-    sponsoringAgency: "",
-    file313: null,
-  });
-
-  const [toggleForm312, setToggleForm312] = useState(false);
-  const [uploading312, setUploading312] = useState(false);
-  const [uploaded312, setUploaded312] = useState(false);
-  const [error312, setError312] = useState(null);
-
-  const handleToggleForm312 = () => {
-    setToggleForm312(!toggleForm312);
+  const toggleForm = () => {
+    setShowForm(!showForm);
   };
-
-  const handleFile311Change = (e) => {
-    setFile311(e.target.files[0]);
-  };
-
-  const handleFile312Change = (e) => {
-    setFormData312({
-      ...formData312,
-      file312: e.target.files[0],
-    });
-  };
-
-  const handleFile313Change = (e) => {
-    setFormData313({
-      ...formData313,
-      file313: e.target.files[0],
-    });
-  };
-
-  const handleInputChange312 = (e) => {
-    const { name, value } = e.target;
-    setFormData312({
-      ...formData312,
-      [name]: value,
-    });
-  };
-
-  const handleInputChange313 = (e) => {
-    const { name, value } = e.target;
-    setFormData313({
-      ...formData313,
-      [name]: value,
-    });
-  };
-
-  const handleUpload311 = async () => {
-    if (!file311) {
-      setError311("Please select a file.");
-      return;
-    }
-
-    setUploading311(true);
-
-    try {
-      const formData = new FormData();
-      formData.append("file", file311);
-
-      // Get user name from cookie
-      const userName = Cookies.get("userName");
-      formData.append("userName", userName);
-
-      const response = await axios.post(
-        "http://localhost:5000/311upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      console.log(response.data);
-      alert("File uploaded successfully.");
-      setUploaded311(true);
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      setError311("Error uploading file. Please try again.");
-    } finally {
-      setUploading311(false);
-    }
-  };
-
-  const handleSubmit312 = async (e) => {
-    e.preventDefault();
-    setUploading312(true);
-
-    const formDataToSend = new FormData();
-    formDataToSend.append("teacherName", formData312.teacherName);
-    formDataToSend.append("amount", formData312.amount);
-    formDataToSend.append("year", formData312.year);
-    formDataToSend.append("additionalInfo", formData312.additionalInfo);
-    formDataToSend.append("file", formData312.file312);
- const handleToggleForm312 = () => {
-    setToggleForm312(!toggleForm312);
-  };
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/312upload",
-        formDataToSend,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      console.log(response.data);
-      alert("Data submitted successfully.");
-      setUploaded312(true);
-    } catch (error) {
-      console.error("Error submitting data:", error);
-      setError312("Error submitting data. Please try again.");
-    } finally {
-      setUploading312(false);
-    }
-  };
-  const [toggleForm313, setToggleForm313] = useState(false);
-  const [uploading313, setUploading313] = useState(false);
-  const [uploaded313, setUploaded313] = useState(false);
-  const [error313, setError313] = useState(null);
-  const handleToggleForm313 = () => {
-    setToggleForm313(!toggleForm313);
-  };
-  const handleSubmit313 = async (e) => {
-    e.preventDefault();
-    setUploading313(true);
-
-    const formDataToSend = new FormData();
-    formDataToSend.append("year", formData313.year);
-    formDataToSend.append("teacherName", formData313.teacherName);
-    formDataToSend.append("designation", formData313.designation);
-    formDataToSend.append("fellowshipType", formData313.fellowshipType);
-    formDataToSend.append("fellowshipName", formData313.fellowshipName);
-    formDataToSend.append("sponsoringAgency", formData313.sponsoringAgency);
-    formDataToSend.append("file", formData313.file313);
-
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/313upload",
-        formDataToSend,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      console.log(response.data);
-      alert("Data submitted successfully.");
-      setUploaded313(true);
-    } catch (error) {
-      console.error("Error submitting data:", error);
-      setError313("Error submitting data. Please try again.");
-    } finally {
-      setUploading313(false);
-    }
-  };
-
- 
-    const [rowCount, setRowCount] = useState(0);
-    const [inputs, setInputs] = useState([]);
-  
-    const handleAddRow = () => {
-      setRowCount(rowCount + 1);
-      setInputs([...inputs, ""]);
-    };
-  
-    const handleInputChange = (index, value) => {
-      const newInputs = [...inputs];
-      newInputs[index] = value;
-      setInputs(newInputs);
-    };
 
   return (
     <>
@@ -209,239 +19,128 @@ const Criterion2 = () => {
           <h1>Criterion II - Learning and Evaluation(200 Points)</h1>
           <div>
             <h2>Key Indicator - 2.1: Student Enrollment & Profile</h2>
-            <h2>2.1.1 Demand Ratio</h2>
-            <p>Seats Availble per year</p>
-         <div>
-    
-      <table>
-        <thead>
-          <tr>
-            <th>Academic Year</th>
-            <th>Name of programme</th>
-            <th>Nuber of seats Available</th>
-            <th>Number of Eligible Applicants Received</th>
-            <th>Number of seats filled</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Array.from({ length: rowCount }, (_, index) => (
-            <tr key={index}>
-              <td>
-                <input
-                  type="text"
-                  value={inputs[index]?.academicYear}
-                  onChange={(e) => handleInputChange(index, 'academicYear', e.target.value)}
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={inputs[index]?.programmeName}
-                  onChange={(e) => handleInputChange(index, 'programmeName', e.target.value)}
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={inputs[index]?.seatsAvailable}
-                  onChange={(e) => handleInputChange(index, 'seatsAvailable', e.target.value)}
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={inputs[index]?.applicantsReceived}
-                  onChange={(e) => handleInputChange(index, 'applicantsReceived', e.target.value)}
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={inputs[index]?.seatsFilled}
-                  onChange={(e) => handleInputChange(index, 'seatsFilled', e.target.value)}
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <button onClick={handleAddRow}>Add Row</button>
-    </div>
+            <h3>2.1.1 Demand Ratio</h3>
+            <p>Seats Available per year</p>
+            <DynamicTable headers={['Academic Year','Name of the programme','Number of seats Available','Number of Eligible Applications Received','Number of Seats filled']} />
+            <DocumentAttachment documents={['List of Applications Received','Admitted List of the students','Any other related additional information']} />
 
-            <h3>Documents to attach</h3>
-            <p>List of Applications Received</p>
-            <input type="file" onChange={handleFile311Change} />
-            <button onClick={handleUpload311} disabled={uploading311 || uploaded311}>
-              {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
-            </button>
-            {error311 && <div className="error">{error311}</div>}
-
-            <p>Admitted List of Student</p>
-            <input type="file" onChange={handleFile311Change} />
-            <button onClick={handleUpload311} disabled={uploading311 || uploaded311}>
-              {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
-            </button>
-            {error311 && <div className="error">{error311}</div>}
-
-            <p>Any other Related additional Information</p>
-            <input type="file" onChange={handleFile311Change} />
-            <button onClick={handleUpload311} disabled={uploading311 || uploaded311}>
-              {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
-            </button>
-            {error311 && <div className="error">{error311}</div>}
-          </div>
-          
-          <div>
-            <h2>{`2.1.2 - Seats filled against reserved for various categories(SC, ST, OBC, EWS, Divyanga, etc.) as per applicable reservation policy during the year (Excluding the Supernumerary seats)`}</h2>
-            <button onClick={handleToggleForm312}>
-              {toggleForm312 ? "Hide Form" : "Show Form"}
-            </button>
-            {toggleForm312 && (
-              <form onSubmit={handleSubmit312}>
-                <div>
-                  <label htmlFor="teacherName">Name of the teacher:</label>
-                  <input
-                    type="text"
-                    id="teacherName"
-                    name="teacherName"
-                    value={formData312.teacherName}
-                    onChange={handleInputChange312}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="amount">The amount of seed money (INR Lakhs):</label>
-                  <input
-                    type="text"
-                    id="amount"
-                    name="amount"
-                    value={formData312.amount}
-                    onChange={handleInputChange312}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="year">Year of receiving grant:</label>
-                  <input
-                    type="text"
-                    id="year"
-                    name="year"
-                    value={formData312.year}
-                    onChange={handleInputChange312}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="additionalInfo">
-                    Any additional information:
-                  </label>
-                  <textarea
-                    id="additionalInfo"
-                    name="additionalInfo"
-                    value={formData312.additionalInfo}
-                    onChange={handleInputChange312}
-                  ></textarea>
-                </div>
-                <div>
-                  <label htmlFor="file">Upload relevant supporting document:</label>
-                  <input
-                    type="file"
-                    id="file"
-                    name="file"
-                    onChange={handleFile312Change}
-                  />
-                </div>
-                <button type="submit" disabled={uploading312 || uploaded312}>
-                  {uploading312 ? "Submitting..." : uploaded312 ? "Submitted" : "Submit"}
-                </button>
-                {error312 && <div className="error">{error312}</div>}
-              </form>
-            )}
-          </div>
-
-          {/* Criterion 3.1.3 Form */}
-          <div>
-            <h2>Criterion 3.1.3 - Teachers receiving national/international fellowship/financial support:</h2>
-            <button onClick={handleToggleForm313}>
-              {toggleForm313 ? "Hide Form" : "Show Form"}
-            </button>
-            {toggleForm313 && (
-            <form onSubmit={handleSubmit313}>
-              <div>
-                <label htmlFor="year">Year of Fellowship:</label>
-                <input
-                  type="number"
-                  id="year"
-                  name="year"
-                  value={formData313.year}
-                  onChange={handleInputChange313}
-                />
-              </div>
-              <div>
-                <label htmlFor="teacherName">Name of Teacher:</label>
-                <input
-                  type="text"
-                  id="teacherName"
-                  name="teacherName"
-                  value={formData313.teacherName}
-                  onChange={handleInputChange313}
-                />
-              </div>
-              <div>
-                <label htmlFor="designation">Designation:</label>
-                <input
-                  type="text"
-                  id="designation"
-                  name="designation"
-                  value={formData313.designation}
-                  onChange={handleInputChange313}
-                />
-              </div>
-              <div>
-                <label htmlFor="fellowshipType">International/National/State:</label>
-                <input
-                  type="text"
-                  id="fellowshipType"
-                  name="fellowshipType"
-                  value={formData313.fellowshipType}
-                  onChange={handleInputChange313}
-                />
-              </div>
-              <div>
-                <label htmlFor="fellowshipName">Name of the Fellowship:</label>
-                <input
-                  type="text"
-                  id="fellowshipName"
-                  name="fellowshipName"
-                  value={formData313.fellowshipName}
-                  onChange={handleInputChange313}
-                />
-              </div>
-              <div>
-                <label htmlFor="sponsoringAgency">Name of the Sponsoring Agency:</label>
-                <input
-                  type="text"
-                  id="sponsoringAgency"
-                  name="sponsoringAgency"
-                  value={formData313.sponsoringAgency}
-                  onChange={handleInputChange313}
-                />
-              </div>
-              <div>
-                <label htmlFor="file">Upload relevant supporting document:</label>
-                <input
-                  type="file"
-                  id="file"
-                  name="file"
-                  onChange={handleFile313Change}
-                />
-              </div>
-              <button type="submit" disabled={uploading313 || uploaded313}>
-                {uploading313 ? "Submitting..." : uploaded313 ? "Submitted" : "Submit"}
-              </button>
-              {error313 && <div className="error">{error313}</div>}
-            </form>
-)}
+            <h3>2.1.2 Seats filled against seats reserved for various categories(SC, ST, OBC, EWS, Divyanga, etc.) as per applicable reservation policy during the year</h3>
+            <DocumentAttachment documents={['List of Applications Received','Admitted List of the students reservation category wise','Any other related additional information']} />
           </div>
         </div>
       </div>
+      <h3>Key Indicator 2.2: Catering to Student Diversity</h3>
+      <button onClick={toggleForm}>{showForm ? 'Hide Form' : 'Show Form'}</button>
+      {showForm && (
+        <>
+        <DocumentAttachment documents={['List of students with category of learning','Organized programs for handling the remedial measures','Any other related additional information']}></DocumentAttachment>
+
+        <h3>2.2.2 Student - Full time Teacher Ratio (Academic year data)</h3>
+        <DynamicTable headers={['Academic Year','Total Number admitted Students in all programs','Total Number of Teachers','Full time Ratio']}></DynamicTable>
+        <DocumentAttachment documents={['Total number of students enrolled','Total number of full time teachers Formula: Students : Teachers','data in prescribed format, List of Full Time Teachers & List of Final admitted Students','Any additional information']}></DocumentAttachment>
+        </>
+      )}
+      <h3>Key Indicator- 2.3: Teaching Learning Process</h3>
+      <button onClick={toggleForm}>{showForm ? 'Hide Form' : 'Show Form'}</button>
+      {showForm && (
+        <>
+        <h3>2.3.1 Student centric methods, such as experiential learning, participative learning and problem solving methodologies are used for enhancing learning experiences</h3>
+        <p>Write description in maximum of 200 words</p>
+        <textarea/>
+        <DocumentAttachment documents={['Upload any additional information','Link for Additional Information']}></DocumentAttachment>
+
+        <h3>2.3.2 Teachers using ICT for effective teaching with Learning Management Systems (LMS), E-learning resources etc. (current year data)</h3>
+        <DynamicTable headers={['Number of teachers on roll','Number of teachers using ICT (LMS, eResources)','ICT tools and resources available','Number of ICT enabled classrooms','E-Resources and techniques used']}></DynamicTable>
+        <DocumentAttachment documents={['Upload any additional information','Link for Additional Information']}></DocumentAttachment>
+
+        <h3>2.3.3. Ratio of students to mentor for academic and stress related issues (current year data) </h3>
+        <h4>2.3.3.1: Number of mentors </h4>
+        <p>Number of students assigned to each Mentor</p>
+        <DynamicTable headers={['Academic Year','Number of Mentors','Number of Students per mentor']}></DynamicTable>
+        <DocumentAttachment documents={['List (Names) of Mentors & Operated programs','List of students under each mentor ','Any additional information','Formula: Mentor : Mentee ','• Upload year wise list of number of students, full time teachers and mentor/mentee ratio']}></DocumentAttachment>
+        </>
+      )}
+
+      <h3>Key Indicator – 2.4: Teacher Profile & Quality</h3>
+      <button onClick={toggleForm}>{showForm ? 'Hide Form' : 'Show Form'}</button>
+      {showForm && (
+        <>
+        <h3>2.4.1 Full time teachers against sanctioned posts during the current academic year</h3>
+        <DocumentAttachment documents={['Data Template']}></DocumentAttachment>
+        <DynamicTable headers={['Name of the Full time teacher','Highest Qualification','Designation','Date of Joining']}></DynamicTable>
+        <DocumentAttachment documents={['List of  full time teachers and sanctioned posts for during the year','Any additional information']}></DocumentAttachment>
+
+        <h3>2.4.2 Full time teachers with Ph.D./D.M/M.Ch./D.N.B Super speciality/D.Sc./D’Lit. during the year</h3>
+        <DynamicTable headers={['Academic Year','Name of the Teacher','Maximum Qualification','Any Addition information']}></DynamicTable>
+        <DocumentAttachment documents={['Relevant Supporting Document']}></DocumentAttachment>
+
+        <h3>2.4.4 Full time teachers who received awards, recognition, fellowships at State, National, International level from Government/Govt. recognised bodies during the year.</h3>
+        <DynamicTable headers={['Year of Award','Name of Full time Teacher','Designation','International/National /State','Name of the Award','Sponsoring Agency']}></DynamicTable>
+        <DocumentAttachment documents={['Relevant Supporting Document','Any Additional information']}>  </DocumentAttachment>
+
+        </>
+      )}
+
+      <h3>Key Indicator - 2.5 Evaluation Process and Reforms</h3>
+      <button onClick={toggleForm}>{showForm ? 'Hide Form' : 'Show Form'}</button>
+      {showForm && (
+        <>
+        <h3>2.5.1 Days from the date of last semester-end examination till the declaration of results during the year</h3>
+        <DynamicTable headers={['Semester-wise','Last date of the last semester-end examination','Date of declaration of results of semester-end examination','Number of days taken for declaration of the results','Average number of days for declaration of results during the year']}></DynamicTable>
+        <DocumentAttachment documents={['Relevant Supporting Document','Any additional information']}></DocumentAttachment>
+        <h3>2.5.2 Student complaints/grievances about evaluation against total number appeared in the examinations during the year</h3>
+        <DynamicTable headers={['Academic Year','Total number of students appeared in the examinations','Number of complaints/grievances about evaluation','Any other information']}></DynamicTable>
+        <DynamicTable headers={['Academic Year','Sem. No','Course Code and Name','Name of the Teacher','No of students having grievances on results','No of students resolved the grievances ','Reasons for non-clearing grievances ']}></DynamicTable>
+        <DocumentAttachment documents={['Relevant Supporting Document','Any additional information']}></DocumentAttachment>
+        <h3>2.5.3 IT integration and reforms in the examination procedures and processes (continuous internal assessment and end-semester assessment) have brought in considerable improvement in examination management system of the institution</h3>
+        <DynamicTable headers={['Academic Year','Sem. No','Course Code & Name','Name of the Teacher','% of online Teaching','Name of the LMS for online Teaching','Methods of ICT for Teaching','Method of LMS for Exam']}></DynamicTable>
+        <p>Write a description in maximum of 200 words</p>
+        <textarea/>
+        <DocumentAttachment documents={['Relevant Supporting Document','Any additional information','Number of applications, students and revaluation cases']}></DocumentAttachment>
+        <h3>2.5.4 Status of automation of Examination division along with approved Examination Manual Ensure all the following check list</h3>
+        <DynamicTable headers={['Names of Exam committee','Course code','Evaluation Marks Galley Sheet (Enclosure)','Attendance sheet of exam (Enclosure)','Question Paper attachment','scrutiny of syllabus coverage with Question Paper','Other related document']}></DynamicTable>
+        </>
+      )}
+      <h3>Key Indicator - 2.6 Student Performance and Learning Outcomes</h3>
+      <button onClick={toggleForm}>{showForm ? 'Hide Form' : 'Show Form'}</button>
+      {showForm && (
+        <>
+          <h3>2.6.1 The institution has stated learning outcomes (generic and programme specific)/graduate attributes which are integrated into the assessment process and widely publicized through the website and other documents.</h3>
+          <p>Write a description in maximum of 200 words</p>
+          <textarea></textarea>
+          <DocumentAttachment documents={['Upload Relevant Supporting Document','Upload any additional information','Upload COs for all courses (exemplars from Glossary)']}></DocumentAttachment>
+          <h3>2.6.2 Attainment of Programme outcomes, Programme specific outcomes and course outcomes are evaluated by the institution during the year</h3>
+          <DynamicTable headers={['Names of the Teacher','Course code (PG/Ph.D.)','No. of students registered','No of students attended exam','No. of students pass in exam','% of Failure students','Other related']}></DynamicTable>
+          <p>Describe the method of measuring the level of attainment of POs , PSOs and COs in not more than 200 words.</p>
+          <textarea></textarea>
+          <DocumentAttachment documents={['Upload relevant supporting document']}></DocumentAttachment>
+          <h3>2.6.3 Students passed during the year</h3>
+          <p>2.6.3.1: Outgoing students successfully completed the programme </p>
+          <p>2.6.3.2: Final year students who appeared for the examination</p>
+          <DynamicTable headers={['Academic Year','Programme Code','Name of the Programme','Number of Students Appeared','Number of Students Passed','Pass (%)']}></DynamicTable>
+          <DocumentAttachment documents={['Upload relevant supporting document','Any additional information']}></DocumentAttachment>
+        </>
+      )}
+      <h3>Key Indicator 2.7. Student Satisfaction Survey</h3>
+        <button onClick={toggleForm}>{showForm ? 'Hide Form' : 'Show Form'}</button>
+      {showForm && (
+        <>
+        <h3>2.7.1. Online Student Satisfaction Survey regarding the teaching-learning process. (Online survey to be conducted by IQAC)</h3>
+        <p>Data Requirements: (As per Data Template)</p>
+        <ul>
+          <li>
+          Name/ Class/ Gender
+          </li>
+          <li>Student Id number/ Aadhar number</li>
+          <li>Mobile number</li>
+          <li>Email id</li>
+          <li>Degree Programme </li>
+        </ul>
+        <p>(Database of all currently enrolled students need to be prepared and shared with NAAC along with the online submission of QIF)</p>
+        <DocumentAttachment documents={['Upload any additional information']}></DocumentAttachment>
+        <p>Upload database of all currently enrolled students (Data  Template)</p>
+        </>
+      )}
     </>
   );
 };
