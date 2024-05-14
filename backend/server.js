@@ -34,12 +34,12 @@ run().catch(console.dir);
 
 app.use(cors());
 app.use(cors({
-  origin: "http://localhost:5173"
+  origin: "https://naac-frontend-eta.vercel.app"
 }));
 
 app.use(express.json());
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 10000;
 
 mongoose.connect(uri);
 
@@ -269,6 +269,51 @@ console.log("results::"+results);
 });
 
 
+
+app.get('/getAll', async (req, res) => {
+  try {
+    const { userName, criterionNumbers } = req.query;
+
+    if (!criterionNumbers) {
+      return res.status(400).json({ error: 'No criterion numbers provided.' });
+    }
+
+    // Convert the comma-separated string into an array
+    const criterionArray = criterionNumbers.split(',').map(num => num.trim());
+    const results = [];
+
+     console.log("criterionArray",criterionArray);
+
+     for (const criterion of criterionArray) {
+      const foundDocuments = [];
+    
+      // Get the CriterionModel
+      const CriterionModel = getModelByName(`Criterion${criterion}`);
+    
+      try {
+        // Find all documents in the CriterionModel
+        const allDocuments = await CriterionModel.find({});
+    
+        if (allDocuments.length > 0) {
+          foundDocuments.push(...allDocuments); // Add found documents to the array
+        } else {
+          console.log(`No documents found for Criterion ${criterion}`);
+        }
+      } catch (error) {
+        console.error(`Error finding documents for Criterion ${criterion}:`, error);
+      }
+    
+      // Push the array of found documents for this criterion
+      results.push(foundDocuments);
+    }
+console.log("results::"+results);
+    // Return the results array, which contains arrays for each criterion
+    res.status(200).json({ results });
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).json({ error: 'Error occurred while fetching data.' });
+  }
+});
 
 
 

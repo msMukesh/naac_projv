@@ -1,13 +1,8 @@
 import React from 'react'
-import Chatbot from './Chatbot'
 
 function MainPage() {
   return (
-    <>
- 
-    <Chatbot></Chatbot>
-    </>
-    
+    <div>MainPage</div>
   )
 }
 

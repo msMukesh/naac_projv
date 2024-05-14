@@ -279,4 +279,6 @@ h4{
     background-color: rgb(200, 180, 0); /* Darker yellow on hover */
   }
   
-  
+  .downloadReport{
+    margin-left: 16px;
+  }
