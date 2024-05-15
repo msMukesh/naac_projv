@@ -6056,7 +6056,7 @@ Provide the link for additional information
         </form>
       )}
     </div>
-
+    anjana@anjana-HP-Notebook:~/naac_projv$ 
     {tableData348 && (
       <div>
       <table>
@@ -6083,7 +6083,7 @@ Provide the link for additional information
             <tr key={index}>
               <td>{data.titleOfPaper}</td>
               <td>{data.authorName}</td>
-              <td>{data.journalTitle}</td>
+              <td>{data.journalTitle}</td>anjana@anjana-HP-Notebook:~/naac_projv$ 
               <td>{data.yearOfPublication}</td>
               <td>{data.citationIndex}</td>
               <td>
@@ -7426,5 +7426,5 @@ Provide the link for additional information
     </div>
   );
 };
-
+}
 export default Criterion3;
