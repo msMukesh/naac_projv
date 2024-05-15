@@ -7,12 +7,12 @@ import Chatbot from "./Chatbot";
 
 const Dashboard = () => {
   const { user, logoutUser } = useUserContext();
-  const [userName, setUserName] = useState(""); // State to hold user name
+  const [userName, setUserName] = useState(""); 
 
   useEffect(() => {
     if (user) {
       Cookies.set("userName", user.displayName);
-      setUserName(user.displayName); // Update userName when user data is available
+      setUserName(user.displayName); 
     }
   }, [user]);
 
