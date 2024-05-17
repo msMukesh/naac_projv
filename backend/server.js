@@ -34,12 +34,13 @@ run().catch(console.dir);
 
 app.use(cors());
 app.use(cors({
-  origin: "http://localhost:5173"
+  origin: "https://naac-frontend-eta.vercel.app"
 }));
 
 app.use(express.json());
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 10000;
+
 
 mongoose.connect(uri);
 
