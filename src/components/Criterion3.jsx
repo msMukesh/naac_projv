@@ -6071,7 +6071,7 @@ Provide the link for additional information
             <th>Year of Publication</th>
             <th>Citation Index</th>
             <th>Download File</th>
-          <th>Actions</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>

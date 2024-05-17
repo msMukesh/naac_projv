@@ -2903,10 +2903,10 @@ const handleGenerateReport = () => {
     <table>
       <thead>
         <tr>
-          <th>Teacher Name</th>
-          <th>Amount</th>
-          <th>Year</th>
-          <th>Additional Info</th>
+          <th>Name of the teacher</th>
+          <th>The amount of seed money</th>
+          <th>Year of receiving grant</th>
+          <th>Any additional information</th>
           <th>File</th>          {!hideActions && (
 
           <th>Actions</th> )}
@@ -3012,7 +3012,7 @@ const handleGenerateReport = () => {
                 />
               </div>
               <div>
-                <label htmlFor="sponsoringAgency">Name of the Sponsoring Agency:</label>
+                <label htmlFor="sponsoringAgency">Sponsoring Agency:</label>
                 <input
                   type="text"
                   id="sponsoringAgency"
@@ -3055,11 +3055,12 @@ const handleGenerateReport = () => {
           <table>
             <thead>
               <tr>
-                <th>year</th>
-                <th>teacherName</th>
-                <th>designation</th>
-                <th>fellowshipName</th>
-                <th>sponsoringAgency</th>
+                <th>Year of Fellowship</th>
+                <th>Name of Teacher</th>
+                <th>Designation</th>
+                <th>International/National /State/</th>
+                <th>Name of the Fellowship</th>
+                <th>Sponsoring Agency</th>
                 <th>File</th>
                 {!hideActions && (
 
@@ -3074,6 +3075,7 @@ const handleGenerateReport = () => {
                 <td>{data.year}</td>
                 <td>{data.teacherName}</td>
                 <td>{data.designation}</td>
+                <td>{data.fellowshipType}</td>
                 <td>{data.fellowshipName}</td>
                 <td>{data.sponsoringAgency}</td>
                 <td>
@@ -3190,11 +3192,11 @@ const handleGenerateReport = () => {
           <table>
             <thead>
               <tr>
-                <th>fellowName</th>
-                <th>yearOfEnrollment</th>
-                <th>duration</th>
-                <th>fellowshipType</th>
-                <th>grantingAgency</th>
+                <th>Name of Research Fellow / Enrollment No.</th>
+                <th>Year of Enrolment</th>
+                <th>Duration of Fellowship</th>
+                <th>Type of the Fellowship</th>
+                <th>Granting Agency</th>
                 <th>File</th>
                 {!hideActions && (
 
@@ -3755,7 +3757,7 @@ const handleGenerateReport = () => {
                 <th>Principal Investigator / Co-principal investigator</th>
                 <th>Name of the Funding Agency</th>
                 <th>Type Govt. / Non Govt.</th>
-                <th>department</th>
+                <th>Department</th>
                 <th>Year of Award</th>
                 <th>Fund Layout amount Provided</th>
                 <th>Duration</th>
@@ -4698,8 +4700,8 @@ Provide the link for additional information
             <th>Academic Year</th>
             <th>Department</th>
             <th>Name of the Seminars/Workshops etc.</th>
-            <th>From</th>
-            <th>To</th>
+            <th>From Date</th>
+            <th>To Date</th>
             <th>Number of Participants</th>
             <th>Event Organizer</th>
             <th>Download File</th>
@@ -4768,7 +4770,7 @@ Provide the link for additional information
       {toggleForm333 && (
         <form onSubmit={handleSubmit333}>
           <div>
-            <label htmlFor="serialNumber">Serial Number:</label>
+            <label htmlFor="serialNumber">Sl Number:</label>
             <input
               type="number"
               id="serialNumber"
