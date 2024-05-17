@@ -187,6 +187,7 @@ const [formData312, setFormData312] = useState(initialFormData312);
   //   formDataToSend.append("file", formData312.file312);
   // }
 
+  
     try {
       const response = await axios.post(
         "http://localhost:5000/312upload",
@@ -2838,10 +2839,10 @@ function getFileNameFromPath(filePath1) {
     <table>
       <thead>
         <tr>
-          <th>Teacher Name</th>
-          <th>Amount</th>
-          <th>Year</th>
-          <th>Additional Info</th>
+          <th>Name of the teacher</th>
+          <th>The amount of seed money</th>
+          <th>Year of receiving grant</th>
+          <th>Any additional information</th>
           <th>File</th>
           <th>Actions</th> {/* New column for delete/edit buttons */}
         </tr>
@@ -2982,11 +2983,12 @@ function getFileNameFromPath(filePath1) {
           <table>
             <thead>
               <tr>
-                <th>year</th>
-                <th>teacherName</th>
-                <th>designation</th>
-                <th>fellowshipName</th>
-                <th>sponsoringAgency</th>
+                <th>Year of Fellowship</th>
+                <th>Name of Teacher</th>
+                <th>Designation</th>
+                <th>International/National /State/</th>
+                <th>Name of the Fellowship</th>
+                <th>Sponsoring Agency</th>
                 <th>File</th>
                 <th>Actions</th>
               </tr>
@@ -2998,6 +3000,7 @@ function getFileNameFromPath(filePath1) {
                 <td>{data.year}</td>
                 <td>{data.teacherName}</td>
                 <td>{data.designation}</td>
+                <td>{data.fellowshipType}</td>
                 <td>{data.fellowshipName}</td>
                 <td>{data.sponsoringAgency}</td>
                 <td>
@@ -3107,11 +3110,11 @@ function getFileNameFromPath(filePath1) {
           <table>
             <thead>
               <tr>
-                <th>fellowName</th>
-                <th>yearOfEnrollment</th>
-                <th>duration</th>
-                <th>fellowshipType</th>
-                <th>grantingAgency</th>
+                <th>Name of Research Fellow / Enrollment No.</th>
+                <th>Year of Enrolment</th>
+                <th>Duration of Fellowship</th>
+                <th>Type of the Fellowship</th>
+                <th>Granting Agency</th>
                 <th>File</th>
                 <th>Actions</th>
               </tr>
@@ -3463,7 +3466,7 @@ function getFileNameFromPath(filePath1) {
       <table>
         <thead>
           <tr>
-            <th>Facility Name</th>
+            <th>Name of the facility</th>
             <th>Year of Establishment</th>
             <th>Central Instrumentation Centre</th>
             <th>Animal House / Green House</th>
@@ -3643,7 +3646,7 @@ function getFileNameFromPath(filePath1) {
                 <th>Principal Investigator / Co-principal investigator</th>
                 <th>Name of the Funding Agency</th>
                 <th>Type Govt. / Non Govt.</th>
-                <th>department</th>
+                <th>Department</th>
                 <th>Year of Award</th>
                 <th>Fund Layout amount Provided</th>
                 <th>Duration</th>
@@ -6068,14 +6071,7 @@ Provide the link for additional information
             <th>Year of Publication</th>
             <th>Citation Index</th>
             <th>Download File</th>
-            <td> 
-              <button
-                className="Deletebtn"
-                onClick={() => handleDelete(data._id)} // Use handleDelete
-              >
-                Delete
-              </button>
-            </td>
+          <th>Actions</th>
           </tr>
         </thead>
         <tbody>
