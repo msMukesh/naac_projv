@@ -127,6 +127,7 @@ app.get("/downloadFile", (req, res) => {
 
 
 // Helper function to retrieve a Mongoose model by name
+
 function getModelByName(modelName) {
   if (mongoose.models[modelName]) {
     return mongoose.models[modelName];
@@ -238,7 +239,7 @@ app.get('/getFilesByCriteria', async (req, res) => {
       // Loop through all possible sequence numbers
       for (let i = 1; i <= sequenceValue; i++) {
         const CriterionModel = getModelByName(`Criterion${criterion}`);
-        const _id = `${criterion}${globalUserName}${i}`;
+        const _id = `${criterion}${userName}${i}`;
         // const _id = new mongoose.Types.ObjectId(`${criterion}${globalUserName}${i}`);
          
         // console.log("Checking ID:", _id);
