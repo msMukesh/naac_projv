@@ -502,7 +502,7 @@ app.post('/312upload', upload.single('file'), async (req, res) => {
     return res.status(500).json({ error: 'Error obtaining sequence value. Please try again.' });
   }
 
-  const _id = `${criterionNumber}${globalUserName}${sequenceValue}`;
+  const _id = `${criterionNumber}${userName}${sequenceValue}`;
 
 
   // Create a new document with or without a file path
