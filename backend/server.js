@@ -406,11 +406,11 @@ app.post('/311upload', upload.single('file'), async (req, res) => {
 
   try {
       // Construct the _id
-  const _id = `311${globalUserName}${sequenceValue}`;
+  const _id = `311${userName}${sequenceValue}`;
 console.log("idididid"+ _id);
   const newDocument = new Criterion311Model({
     _id,
-    globalUserName,
+    userName,
     filePath,
   });
 
