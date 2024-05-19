@@ -89,8 +89,9 @@ const createDirectoryIfNotExists = (directory) => {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
+    const { userName } = req.body;
     const uploadsDirectory = join(__dirname, 'uploads');
-    const userDirectory = join(uploadsDirectory, globalUserName);
+    const userDirectory = join(uploadsDirectory, userName);
     createDirectoryIfNotExists(userDirectory);
     cb(null, userDirectory);
   },
@@ -347,6 +348,8 @@ console.log("results::"+results);
 //     currentSequence++;
 //   }
 // };
+
+
 app.delete('/deleteFile/:id', async (req, res) => {
   try {
     const { id } = req.params;
