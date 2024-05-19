@@ -137,9 +137,9 @@ function getModelByName(modelName) {
 }
 
 
-const getNextSequenceValue = async (criterionNumber) => {
+const getNextSequenceValue = async (criterionNumber, userName) => {
   // Define a pattern to identify documents with the specified criterion number and user name
-  const regexPattern = `^${criterionNumber}${globalUserName}`;
+  const regexPattern = `^${criterionNumber}${userName}`;
   console.log("regexpattern"+ regexPattern);
 
    // Get the correct model based on the criterion number
@@ -153,8 +153,6 @@ const getNextSequenceValue = async (criterionNumber) => {
     .limit(1);
 
     console.log("maxSequenceDoc"+maxSequenceDoc);
-
-
     console.log("criterionNumber:", criterionNumber);
     console.log("globalUserName:", globalUserName);
     
@@ -164,7 +162,7 @@ const getNextSequenceValue = async (criterionNumber) => {
       return 1;
     }
   
-    const slicedSubstring = maxSequenceDoc._id.slice(criterionNumber.length + globalUserName.length);
+    const slicedSubstring = maxSequenceDoc._id.slice(criterionNumber.length + userName.length);
     console.log("Sliced Substring:", slicedSubstring);
     const maxExistingValue = maxSequenceDoc
         ? parseInt(slicedSubstring, 10)
@@ -173,7 +171,7 @@ const getNextSequenceValue = async (criterionNumber) => {
 
 // Check for missing sequence values by iterating from 1 to the maxExistingValue
 for (let i = 1; i <= maxExistingValue; i++) {
-  const sequenceId = `${criterionNumber}${globalUserName}${i}`; // Construct the sequence ID
+  const sequenceId = `${criterionNumber}${userName}${i}`; // Construct the sequence ID
   const exists = await CriterionModel.exists({ _id: sequenceId }); // Check if it exists
   if (!exists) {
     // If there's a gap, use the missing sequence value
@@ -187,9 +185,9 @@ for (let i = 1; i <= maxExistingValue; i++) {
 
 
 // Function to get the maximum existing sequence value for a given criterion number
-const getMaxExistingValue = async (criterionNumber) => {
+const getMaxExistingValue = async (criterionNumber, userName) => {
   // Define a pattern to identify documents with the specified criterion number and user name
-  const regexPattern = `^${criterionNumber}${globalUserName}`;
+  const regexPattern = `^${criterionNumber}${userName}`;
   // console.log("RegEx pattern:", regexPattern);
 
   // Get the correct model based on the criterion number
@@ -207,7 +205,7 @@ const getMaxExistingValue = async (criterionNumber) => {
   // If there's a document, extract the sequence number, otherwise, return 0
 
   return maxSequenceDoc
-    ? parseInt(maxSequenceDoc._id.slice(criterionNumber.length + globalUserName.length), 10)
+    ? parseInt(maxSequenceDoc._id.slice(criterionNumber.length + userName.length), 10)
     : 0; // Return 0 if no document is found
 };
 
@@ -233,7 +231,7 @@ app.get('/getFilesByCriteria', async (req, res) => {
       const foundDocuments = [];
     //   console.log("criterion number::"+criterion);
 
-      const sequenceValue = await getMaxExistingValue(criterion);
+      const sequenceValue = await getMaxExistingValue(criterion,userName);
       console.log("sequenceValue of criterion "+criterion+"is: "+sequenceValue);
 
       // Loop through all possible sequence numbers
@@ -349,7 +347,6 @@ console.log("results::"+results);
 //     currentSequence++;
 //   }
 // };
-
 app.delete('/deleteFile/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -392,7 +389,7 @@ app.post('/311upload', upload.single('file'), async (req, res) => {
   let sequenceValue;
   try {
     console.log("criterionNumber"+criterionNumber);
-    sequenceValue = await getNextSequenceValue(criterionNumber);
+    sequenceValue = await getNextSequenceValue(criterionNumber, userName);
   } catch (error) {
     console.error('Error getting next sequence value:', error);
     return res.status(500).json({ error: 'Error uploading file. Please try again.' });
@@ -496,7 +493,7 @@ app.post('/312upload', upload.single('file'), async (req, res) => {
   let sequenceValue;
   try {
     // Obtain the maximum existing value or the next sequence
-    sequenceValue = await getNextSequenceValue(criterionNumber);
+    sequenceValue = await getNextSequenceValue(criterionNumber,userName);
   } catch (error) {
     console.error('Error getting sequence value:', error);
     return res.status(500).json({ error: 'Error obtaining sequence value. Please try again.' });
@@ -593,7 +590,7 @@ app.post('/313upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
   
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error('Error getting next sequence value:', error);
       return res.status(500).json({ error: 'Error uploading file. Please try again.' });
@@ -671,7 +668,7 @@ app.post('/314upload', upload.single('file'), async (req, res) => {
     const filePath = req.file ? req.file.path : null; // If there's a file, use its path
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error('Error getting next sequence value:', error);
       return res.status(500).json({ error: 'Error uploading file. Please try again.' });
@@ -771,7 +768,7 @@ app.post('/315upload', upload.single('file'), async (req, res) => {
 
     try {
       // Obtain the maximum existing value or the next sequence
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error('Error getting sequence value:', error);
       return res.status(500).json({ error: 'Error obtaining sequence value. Please try again.' });
@@ -868,7 +865,7 @@ app.post('/316upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error('Error getting next sequence value:', error);
       return res.status(500).json({ error: 'Error getting sequence value. Please try again.' });
@@ -958,7 +955,7 @@ app.post('/321upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error('Error getting next sequence value:', error);
       return res.status(500).json({ error: 'Error getting sequence value. Please try again.' });
@@ -1024,7 +1021,7 @@ app.post('/322upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value." });
@@ -1105,7 +1102,7 @@ app.post('/323upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value." });
@@ -1187,7 +1184,7 @@ app.post('/331upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
@@ -1272,7 +1269,7 @@ app.post('/332upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value." });
@@ -1353,7 +1350,7 @@ app.post('/333upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value." });
@@ -1435,7 +1432,7 @@ app.post('/341upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
@@ -1518,7 +1515,7 @@ app.post('/342upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
@@ -1595,7 +1592,7 @@ app.post('/343upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
@@ -1678,7 +1675,7 @@ app.post('/344upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
@@ -1758,7 +1755,7 @@ app.post('/345upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
@@ -1841,7 +1838,7 @@ app.post('/346upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
@@ -1915,7 +1912,7 @@ app.post('/347upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
@@ -1998,7 +1995,7 @@ app.post('/platforms_upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
@@ -2081,7 +2078,7 @@ app.post('/348upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
@@ -2159,7 +2156,7 @@ app.post('/349upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
@@ -2235,7 +2232,7 @@ app.post('/351upload', upload.fields([
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
@@ -2330,7 +2327,7 @@ app.post('/352upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
@@ -2415,7 +2412,7 @@ app.post('/361upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
@@ -2494,7 +2491,7 @@ app.post('/362upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
@@ -2572,7 +2569,7 @@ app.post('/363upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
@@ -2647,7 +2644,7 @@ app.post('/364upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
@@ -2728,7 +2725,7 @@ app.post('/371upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
@@ -2810,7 +2807,7 @@ app.post('/372upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
