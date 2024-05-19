@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import Auth from './components/auth';
 import Dashboard from './components/dashboard';
 import Home from './components/Home';
@@ -17,7 +17,7 @@ function App() {
   const { user, loading, error } = useUserContext();
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Auth />} />
@@ -41,7 +41,7 @@ function App() {
         <Route path="/Criterion2" element={<Criterion2 />} /> {/* Add Criterion2 route */}
         <Route path="/Criterion3" element={<Criterion3 />} /> {/* Add Criterion3 route */}
       </Routes>
-    </BrowserRouter>
+      </HashRouter>
   );
 }
 

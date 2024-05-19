@@ -3,7 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import NavBar from "./Navbar";
 import "./Criterion3.css";
-
+//vercel test
 const Criterion3 = () => {
 
   const [tableData311, setTableData311] = useState(null);
@@ -187,6 +187,7 @@ const [formData312, setFormData312] = useState(initialFormData312);
   //   formDataToSend.append("file", formData312.file312);
   // }
 
+  
     try {
       const response = await axios.post(
         "https://naac-server.onrender.com/312upload",
@@ -267,6 +268,8 @@ const [formData313, setFormData313] = useState(initialFormData313);
     const userName = Cookies.get("userName");
     const id = userName + "313"; // Combining userName with "312" to create id
     formDataToSend.append("id",id);
+    formDataToSend.append("userName",userName);
+
     formDataToSend.append("year", formData313.year);
     formDataToSend.append("teacherName", formData313.teacherName);
     formDataToSend.append("designation", formData313.designation);
@@ -366,6 +369,7 @@ const [formData314, setFormData314] = useState(initialFormData314);
     const userName = Cookies.get("userName");
     const id = userName + "314"; // Combining userName with "312" to create id
     formData.append("id",id);
+    formData.append("userName",userName);
     formData.append('fellowName', formData314.fellowName);
     formData.append('yearOfEnrollment', formData314.yearOfEnrollment);
     formData.append('duration', formData314.duration);
@@ -462,6 +466,7 @@ const [formData314, setFormData314] = useState(initialFormData314);
     const id = userName + "315"; // Unique ID for data submission
 
     formData.append("id", id);
+    formData.append("userName", userName);
     formData.append('facilityName', formData315.facilityName);
     formData.append('yearOfEstablishment', formData315.yearOfEstablishment);
     formData.append('centralInstrumentationCentre', formData315.centralInstrumentationCentre);
@@ -547,6 +552,8 @@ const handleSubmit316 = async (e) => {
   const userName = Cookies.get("userName");
   const id = userName + "316"; // Combining userName with "312" to create id
   dataToSend.append("id",id);
+  dataToSend.append("userName", userName);
+
   // Append other form data fields
   dataToSend.append("schemeName", formData316.schemeName);
   dataToSend.append("principalInvestigator", formData316.principalInvestigator);
@@ -632,6 +639,8 @@ const handleSubmit321 = async (e) => {
   const userName = Cookies.get("userName");
   const id = userName + "321"; // Combining userName with "321" to create id
   dataToSend.append("id", id);
+  dataToSend.append("userName", userName);
+
   // Append other form data fields
   dataToSend.append("projectName", formData321.projectName);
   dataToSend.append("principalInvestigator", formData321.principalInvestigator);
@@ -739,6 +748,7 @@ const handleSubmit322 = async (e) => {
   const id = userName + "322"; // Unique ID for the data submission
 
   formData.append("id", id);
+  formData.append("userName", userName);
   formData.append("projectName", formData322.projectName);
   formData.append("principalInvestigator", formData322.principalInvestigator);
   formData.append("yearOfAward", formData322.yearOfAward);
@@ -821,6 +831,7 @@ const [formData323, setFormData323] = useState(initialFormData323);
     const id = userName + "323"; // Unique ID for the data submission
 
     formData.append("id", id);
+    formData.append("userName", userName);
     formData.append("projectName", formData323.projectName);
     formData.append("principalInvestigator", formData323.principalInvestigator);
     formData.append("department", formData323.department);
@@ -899,6 +910,7 @@ const [formData323, setFormData323] = useState(initialFormData323);
       const id = userName + "_331"; // Unique ID for data submission
   
       formData.append("id", id);
+      formData.append("userName", userName);
       formData.append("innovationEcosystem", formData331.innovationEcosystem);
       formData.append("ecosystemLaboratory", formData331.ecosystemLaboratory);
       formData.append("innovationCenter", formData331.innovationCenter);
@@ -979,6 +991,7 @@ const [formData323, setFormData323] = useState(initialFormData323);
       const id = userName + "332"; // Unique ID for the data submission
   
       formData.append("id", id);
+      formData.append("userName", userName);
       formData.append("academicYear", formData332.academicYear);
       formData.append("department", formData332.department);
       formData.append("seminarName", formData332.seminarName);
@@ -1056,6 +1069,8 @@ const [formData323, setFormData323] = useState(initialFormData323);
         const id = userName + "333"; // Unique ID for the data submission
     
         formData.append("id", id);
+        formData.append("userName", userName);
+
         formData.append("serialNumber", formData333.serialNumber);
         formData.append("academicYear", formData333.academicYear);
         formData.append("awardeeName", formData333.awardeeName);
@@ -1131,6 +1146,7 @@ const initialFormData341 = {
     const id = userName + "_341"; // Unique ID for data submission
 
     formData.append("id", id);
+    formData.append("userName", userName);
     formData.append("researchMethodology", formData341.researchMethodology);
     formData.append("departmentalEthicsCommittees", formData341.departmentalEthicsCommittees);
     formData.append("scientificResearchWriting", formData341.scientificResearchWriting);
@@ -1207,6 +1223,7 @@ const initialFormData341 = {
           const id = userName + "342"; // Unique ID for the data submission
       
           formData.append("id", id);
+          formData.append("userName", userName);
           formData.append("academicYear", formData342.academicYear);
           formData.append("awardeeName", formData342.awardeeName);
           formData.append("contactDetails", formData342.contactDetails);
@@ -1283,6 +1300,8 @@ const initialFormData341 = {
             const id = userName + "343"; // Unique ID for the data submission
         
             formData.append("id", id);
+            formData.append("userName", userName);
+
             formData.append("academicYear", formData343.academicYear);
             formData.append("patentName", formData343.patentName);
             formData.append("patentNumber", formData343.patentNumber);
@@ -1358,6 +1377,8 @@ const initialFormData341 = {
               const id = userName + "344"; // Unique ID for the data submission
           
               formData.append("id", id);
+              formData.append("userName", userName);
+
               formData.append("serialNumber", formData344.serialNumber);
               formData.append("scholarName", formData344.scholarName);
               formData.append("department", formData344.department);
@@ -1431,7 +1452,8 @@ const initialFormData341 = {
                 const formData = new FormData();
                 const userName = Cookies.get("userName");
                 const id = userName + "345"; // Unique ID for the data submission
-            
+                formData.append("userName", userName);
+
                 formData.append("id", id);
                 formData.append("titleOfPaper", formData345.titleOfPaper);
                 formData.append("authors", formData345.authors);
@@ -1513,6 +1535,8 @@ const initialFormData341 = {
                   const id = userName + "346"; // Unique ID for data submission
               
                   formData.append("id", id);
+                  formData.append("userName", userName);
+
                   formData.append("teacherName", formData346.teacherName);
                   formData.append("titleOfPaper", formData346.titleOfPaper);
                   formData.append("titleOfBookOrChapter", formData346.titleOfBookOrChapter);
@@ -1591,6 +1615,8 @@ const initialFormData341 = {
                     const id = userName + "347"; // Unique ID for data submission
                 
                     formData.append("id", id);
+                    formData.append("userName", userName);
+
                     formData.append("teacherName", formData347.teacherName);
                     formData.append("moduleName", formData347.moduleName);
                     formData.append("platform", formData347.platform);
@@ -1675,7 +1701,8 @@ const initialFormData341 = {
                       const id = `${userName}_platforms`;
                   
                       formDataToSend.append("id", id);
-                  
+                      formDataToSend.append("userName", userName);
+
                       Object.keys(formData).forEach((key) => {
                         if (key !== 'files') {
                           formDataToSend.append(`${key}_status`, formData[key].status);
@@ -1757,6 +1784,7 @@ const initialFormData341 = {
                     const id = userName + "348"; // Unique ID for the data submission
                 
                     formData.append("id", id);
+                    formData.append("userName", userName);
                     formData.append("titleOfPaper", formData348.titleOfPaper);
                     formData.append("authorName", formData348.authorName);
                     formData.append("journalTitle", formData348.journalTitle);
@@ -1835,6 +1863,7 @@ const initialFormData341 = {
                       const id = userName + "349"; // Unique ID for data submission
                   
                       formData.append("id", id);
+                      formData.append("userName", userName);
                       formData.append("titleOfPaper", formData349.titleOfPaper);
                       formData.append("authorName", formData349.authorName);
                       formData.append("journalTitle", formData349.journalTitle);
@@ -1907,7 +1936,8 @@ const initialFormData341 = {
                         const id = userName + "351"; // Unique ID for data submission
                     
                         formData.append("id", id);
-                    
+                        formData.append("userName", userName);
+
                         if (formData351.governingMinutes) {
                           formData.append("governingMinutes", formData351.governingMinutes[0]); // Assuming single file for minutes
                         }
@@ -1989,6 +2019,7 @@ const initialFormData341 = {
                         const id = userName + "352"; // Unique ID for data submission
                     
                         formData.append("id", id);
+                        formData.append("userName", userName);
                         formData.append("nameOfConsultants", formData352.nameOfConsultants);
                         formData.append("nameOfConsultancyProjects", formData352.nameOfConsultancyProjects);
                         formData.append("consultingAgency", formData352.consultingAgency);
@@ -2068,6 +2099,8 @@ const initialFormData341 = {
                           const id = userName + "361"; // Unique ID for data submission
                       
                           formData.append("id", id);
+                          formData.append("userName", userName);
+
                           formData.append("titleOfProgram", formData361.titleOfProgram);
                           formData.append("beneficiaryOrganization", formData361.beneficiaryOrganization);
                           formData.append("outreachProgramDescription", formData361.outreachProgramDescription);
@@ -2148,6 +2181,8 @@ const initialFormData341 = {
                             const id = userName + "362"; // Unique ID for data submission
                         
                             formData.append("id", id);
+                            formData.append("userName", userName);
+
                             formData.append("teacherName", formData362.teacherName);
                             formData.append("activityName", formData362.activityName);
                             formData.append("awardName", formData362.awardName);
@@ -2222,6 +2257,8 @@ const initialFormData341 = {
                               const id = userName + "363"; // Unique ID for data submission
                           
                               formData.append("id", id);
+                              formData.append("userName", userName);
+
                               formData.append("activityName", formData363.activityName);
                               formData.append("organizingUnit", formData363.organizingUnit);
                               formData.append("schemeName", formData363.schemeName);
@@ -2293,6 +2330,8 @@ const initialFormData341 = {
                                 const id = userName + "364"; // Unique ID for data submission
                             
                                 formData.append("id", id);
+                                formData.append("userName", userName);
+
                                 formData.append("activityName", formData364.activityName);
                                 formData.append("schemeName", formData364.schemeName);
                                 formData.append("yearOfActivity", formData364.yearOfActivity);
@@ -2371,6 +2410,8 @@ const initialFormData341 = {
                                   const id = userName + "371"; // Unique ID for data submission
                               
                                   formData.append("id", id);
+                                  formData.append("userName", userName);
+
                                   formData.append("collaborativeTitle", formData371.collaborativeTitle);
                                   formData.append("collaboratingAgency", formData371.collaboratingAgency);
                                   formData.append("financialSupportSource", formData371.financialSupportSource);
@@ -2451,6 +2492,8 @@ const initialFormData341 = {
                                     const id = userName + "372"; // Unique ID for data submission
                                 
                                     formData.append("id", id);
+                                    formData.append("userName", userName);
+
                                     formData.append("organizationName", formData372.organizationName);
                                     formData.append("mouYear", formData372.mouYear);
                                     formData.append("mouDuration", formData372.mouDuration);
@@ -2838,10 +2881,10 @@ function getFileNameFromPath(filePath1) {
     <table>
       <thead>
         <tr>
-          <th>Teacher Name</th>
-          <th>Amount</th>
-          <th>Year</th>
-          <th>Additional Info</th>
+          <th>Name of the teacher</th>
+          <th>The amount of seed money</th>
+          <th>Year of receiving grant</th>
+          <th>Any additional information</th>
           <th>File</th>
           <th>Actions</th> {/* New column for delete/edit buttons */}
         </tr>
@@ -2982,11 +3025,12 @@ function getFileNameFromPath(filePath1) {
           <table>
             <thead>
               <tr>
-                <th>year</th>
-                <th>teacherName</th>
-                <th>designation</th>
-                <th>fellowshipName</th>
-                <th>sponsoringAgency</th>
+                <th>Year of Fellowship</th>
+                <th>Name of Teacher</th>
+                <th>Designation</th>
+                <th>International/National /State/</th>
+                <th>Name of the Fellowship</th>
+                <th>Sponsoring Agency</th>
                 <th>File</th>
                 <th>Actions</th>
               </tr>
@@ -2998,6 +3042,7 @@ function getFileNameFromPath(filePath1) {
                 <td>{data.year}</td>
                 <td>{data.teacherName}</td>
                 <td>{data.designation}</td>
+                <td>{data.fellowshipType}</td>
                 <td>{data.fellowshipName}</td>
                 <td>{data.sponsoringAgency}</td>
                 <td>
@@ -3107,11 +3152,11 @@ function getFileNameFromPath(filePath1) {
           <table>
             <thead>
               <tr>
-                <th>fellowName</th>
-                <th>yearOfEnrollment</th>
-                <th>duration</th>
-                <th>fellowshipType</th>
-                <th>grantingAgency</th>
+                <th>Name of Research Fellow / Enrollment No.</th>
+                <th>Year of Enrolment</th>
+                <th>Duration of Fellowship</th>
+                <th>Type of the Fellowship</th>
+                <th>Granting Agency</th>
                 <th>File</th>
                 <th>Actions</th>
               </tr>
@@ -3463,7 +3508,7 @@ function getFileNameFromPath(filePath1) {
       <table>
         <thead>
           <tr>
-            <th>Facility Name</th>
+            <th>Name of the facility</th>
             <th>Year of Establishment</th>
             <th>Central Instrumentation Centre</th>
             <th>Animal House / Green House</th>
@@ -3643,7 +3688,7 @@ function getFileNameFromPath(filePath1) {
                 <th>Principal Investigator / Co-principal investigator</th>
                 <th>Name of the Funding Agency</th>
                 <th>Type Govt. / Non Govt.</th>
-                <th>department</th>
+                <th>Department</th>
                 <th>Year of Award</th>
                 <th>Fund Layout amount Provided</th>
                 <th>Duration</th>
@@ -6068,14 +6113,7 @@ Provide the link for additional information
             <th>Year of Publication</th>
             <th>Citation Index</th>
             <th>Download File</th>
-            <td> 
-              <button
-                className="Deletebtn"
-                onClick={() => handleDelete(data._id)} // Use handleDelete
-              >
-                Delete
-              </button>
-            </td>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
