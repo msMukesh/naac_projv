@@ -1,28 +1,13 @@
-// import mongoose from "mongoose";
-// import { DB_NAME } from "../src/constant";
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
-// const connectDB = async() => {
-//     try {
-//         const connectionINstance = await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`)
-//         console.log(`DB Connected ${connectionINstance.connect.host}`);
-        
-//     } catch (error) {
-//         console.log("MongoDb connection error", error)
-//         process.exit(1)
-//     }
-// }
-
-// export default connectDB
-
-import mongoose from "mongoose";
+// Load environment variables from .env file
+dotenv.config();
 
 const connectDB = async () => {
     try {
-        const uri = "mongodb+srv://msmukesh2001:naacdb123@naac.kcdpff4.mongodb.net/?retryWrites=true&w=majority&appName=Naac";
-        const connectionInstance = await mongoose.connect(uri, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
+        const uri = process.env.MONGODB_URI;
+        const connectionInstance = await mongoose.connect(uri);
         console.log(`DB Connected to ${connectionInstance.connection.host}`);
     } catch (error) {
         console.log("MongoDB connection error:", error);
@@ -30,4 +15,4 @@ const connectDB = async () => {
     }
 };
 
-export default connectDB
+module.exports = connectDB;

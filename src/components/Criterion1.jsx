@@ -87,25 +87,8 @@ const Criterion1 = () => {
 
       <h3>Documents to attach</h3>
             <p>Details of program syllabus revisions</p>
-            {/*<input type="file" onChange={handleFile311Change} />
-            <button onClick={handleUpload311} disabled={uploading311 || uploaded311}>
-              {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
-            </button>
-              {error311 && <div className="error">{error311}</div>} */}
-
             <p>Minutes of relevant Academic Council/ BOS Meeting</p>
-           {/* <input type="file" onChange={handleFile311Change} />
-            <button onClick={handleUpload311} disabled={uploading311 || uploaded311}>
-              {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
-            </button>
-            {error311 && <div className="error">{error311}</div>} */}
-
              <p>Any additional relevant information</p>
-          {/*  <input type="file" onChange={handleFile311Change} />
-            <button onClick={handleUpload311} disabled={uploading311 || uploaded311}>
-              {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
-            </button>
-            {error311 && <div className="error">{error311}</div>} */}
     </div>
             <h3>1.1.3 Courses having focus on employability/ entrepreneurship/ skill development during the academic year</h3>
             <div>
