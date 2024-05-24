@@ -2,8 +2,7 @@ import React,{useState} from "react";
 import NavBar from "./Navbar";
 import DynamicTable from './DynamicTable';
 import DocumentAttachment from "./DocumentAttachmet";
-
-const Criterion2 = () => {
+const Criterion2 = () => { 
 
   const [showForm, setShowForm] = useState(false);
 

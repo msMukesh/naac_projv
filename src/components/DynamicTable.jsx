@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const DynamicTable = ({ headers }) => {
-  const [data, setData] = useState([{ id: 0 }]); // Initially, one blank row is added
+  const [data, setData] = useState([{ id: 0 }]); 
   const [newRow, setNewRow] = useState({});
 
   const handleChange = (e, header, rowIndex) => {
@@ -10,9 +10,21 @@ const DynamicTable = ({ headers }) => {
     setData(newData);
   };
 
-  const handleSubmit = (rowIndex) => {
-    // Handle submitting row data
+  const handleSubmit = async (rowIndex) => {
     console.log('Submitted row data:', data[rowIndex]);
+    try {
+   {/*  const response = await axios.post('http://127.0.0.1:8000/api/criterion1.1.2', data[rowIndex]);
+    console.log('Submitted row data:', response.data);*/} 
+      const response = await fetch("http://127.0.0.1:8000/api/criterion2.1.1", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data[rowIndex]), // Send the row data to backend
+      });
+    } catch (error) {
+      console.error('Error submitting data:', error);
+    }
   };
 
   const handleAddRow = () => {
