@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const DynamicTable = ({ headers }) => {
+const DynamicTable = ({ headers, submitUrl }) => {
   const [data, setData] = useState([{ id: 0 }]); 
   const [newRow, setNewRow] = useState({});
 
@@ -13,15 +13,18 @@ const DynamicTable = ({ headers }) => {
   const handleSubmit = async (rowIndex) => {
     console.log('Submitted row data:', data[rowIndex]);
     try {
-   {/*  const response = await axios.post('http://127.0.0.1:8000/api/criterion1.1.2', data[rowIndex]);
-    console.log('Submitted row data:', response.data);*/} 
-      const response = await fetch("http://127.0.0.1:8000/api/criterion2.1.1", {
+      const response = await fetch(submitUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data[rowIndex]), // Send the row data to backend
+        body: JSON.stringify(data[rowIndex]), 
       });
+      if (response.ok) {
+        console.log('Data submitted successfully');
+      } else {
+        console.error('Failed to submit data');
+      }
     } catch (error) {
       console.error('Error submitting data:', error);
     }

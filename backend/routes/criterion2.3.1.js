@@ -1,9 +1,7 @@
 const express = require('express');
-const Criterian = require('../models/Criterian1.1.1');
+const Criterian231 = require('../models/Criterion2.3.1');
 const bodyParser = require('body-parser')
 const router = express.Router();
-const criterionTab1 = require('../models/CriterionSchema1.1.2');
-const criterion211 = require('../models/Criterion2.1.1');
 
 router.use(express.json());
 
@@ -14,7 +12,7 @@ router.post('/', async (req, res) => {
         console.log(req.body)
         const { longText } = req.body;
         console.log('data',{longText})
-        const newCriterian = new Criterian({ longText });
+        const newCriterian = new Criterian231({ longText });
         
         await newCriterian.save();
         res.status(201).json({ message: 'Data saved successfully' });
