@@ -108,7 +108,7 @@ const Criterion2 = () => {
         <DocumentAttachment documents={['Relevant Supporting Document']}></DocumentAttachment>
 
         <h3>2.4.4 Full time teachers who received awards, recognition, fellowships at State, National, International level from Government/Govt. recognised bodies during the year.</h3>
-        <DynamicTable headers={['Year of Award','Name of Full time Teacher','Designation','International/National /State','Name of the Award','Sponsoring Agency']}></DynamicTable>
+        <DynamicTable headers={['Year of Award','Name of Full time Teacher','Designation','International/National /State','Name of the Award','Sponsoring Agency']} submitUrl="http://127.0.0.1:8000/api/criterion2.4.4"></DynamicTable>
         <DocumentAttachment documents={['Relevant Supporting Document','Any Additional information']}>  </DocumentAttachment>
 
         </>
@@ -119,19 +119,27 @@ const Criterion2 = () => {
       {showForm && (
         <>
         <h3>2.5.1 Days from the date of last semester-end examination till the declaration of results during the year</h3>
-        <DynamicTable headers={['Semester-wise','Last date of the last semester-end examination','Date of declaration of results of semester-end examination','Number of days taken for declaration of the results','Average number of days for declaration of results during the year']}></DynamicTable>
+        <DynamicTable headers={['Semester-wise','Last date of the last semester-end examination','Date of declaration of results of semester-end examination','Number of days taken for declaration of the results','Average number of days for declaration of results during the year']} submitUrl="http://127.0.0.1:8000/api/criterion2.5.1"></DynamicTable>
         <DocumentAttachment documents={['Relevant Supporting Document','Any additional information']}></DocumentAttachment>
         <h3>2.5.2 Student complaints/grievances about evaluation against total number appeared in the examinations during the year</h3>
-        <DynamicTable headers={['Academic Year','Total number of students appeared in the examinations','Number of complaints/grievances about evaluation','Any other information']}></DynamicTable>
-        <DynamicTable headers={['Academic Year','Sem. No','Course Code and Name','Name of the Teacher','No of students having grievances on results','No of students resolved the grievances ','Reasons for non-clearing grievances ']}></DynamicTable>
+        <DynamicTable headers={['Academic Year','Total number of students appeared in the examinations','Number of complaints/grievances about evaluation','Any other information']} submitUrl="http://127.0.0.1:8000/api/criterion2.5.2"></DynamicTable>
+        <DynamicTable headers={['Academic Year','Sem. No','Course Code and Name','Name of the Teacher','No of students having grievances on results','No of students resolved the grievances ','Reasons for non-clearing grievances ']}  submitUrl="http://127.0.0.1:8000/api/criterionRoute2.5.2"></DynamicTable>
         <DocumentAttachment documents={['Relevant Supporting Document','Any additional information']}></DocumentAttachment>
         <h3>2.5.3 IT integration and reforms in the examination procedures and processes (continuous internal assessment and end-semester assessment) have brought in considerable improvement in examination management system of the institution</h3>
-        <DynamicTable headers={['Academic Year','Sem. No','Course Code & Name','Name of the Teacher','% of online Teaching','Name of the LMS for online Teaching','Methods of ICT for Teaching','Method of LMS for Exam']}></DynamicTable>
+        <DynamicTable headers={['Academic Year','Sem. No','Course Code & Name','Name of the Teacher','% of online Teaching','Name of the LMS for online Teaching','Methods of ICT for Teaching','Method of LMS for Exam']} submitUrl="http://127.0.0.1:8000/api/criterion2.5.3"></DynamicTable>
         <p>Write a description in maximum of 200 words</p>
-        <textarea/>
-        <DocumentAttachment documents={['Relevant Supporting Document','Any additional information','Number of applications, students and revaluation cases']}></DocumentAttachment>
+        <form onSubmit={handleSubmit}>
+        <textarea
+          placeholder="Enter your text here"
+          value={longText}
+          onChange={handleTextareaChange}
+        />
+
+        <button type="submit">Submit</button>
+      </form>
+        <DocumentAttachment documents={['Relevant Supporting Document','Any additional information','Number of applications, students and revaluation cases']} ></DocumentAttachment>
         <h3>2.5.4 Status of automation of Examination division along with approved Examination Manual Ensure all the following check list</h3>
-        <DynamicTable headers={['Names of Exam committee','Course code','Evaluation Marks Galley Sheet (Enclosure)','Attendance sheet of exam (Enclosure)','Question Paper attachment','scrutiny of syllabus coverage with Question Paper','Other related document']}></DynamicTable>
+        <DynamicTable headers={['Names of Exam committee','Course code','Evaluation Marks Galley Sheet (Enclosure)','Attendance sheet of exam (Enclosure)','Question Paper attachment','scrutiny of syllabus coverage with Question Paper','Other related document']} submitUrl="http://127.0.0.1:8000/api/criterion2.5.4"></DynamicTable>
         </>
       )}
       <h3>Key Indicator - 2.6 Student Performance and Learning Outcomes</h3>
@@ -143,14 +151,14 @@ const Criterion2 = () => {
           <textarea></textarea>
           <DocumentAttachment documents={['Upload Relevant Supporting Document','Upload any additional information','Upload COs for all courses (exemplars from Glossary)']}></DocumentAttachment>
           <h3>2.6.2 Attainment of Programme outcomes, Programme specific outcomes and course outcomes are evaluated by the institution during the year</h3>
-          <DynamicTable headers={['Names of the Teacher','Course code (PG/Ph.D.)','No. of students registered','No of students attended exam','No. of students pass in exam','% of Failure students','Other related']}></DynamicTable>
+          <DynamicTable headers={['Names of the Teacher','Course code (PG/Ph.D.)','No. of students registered','No of students attended exam','No. of students pass in exam','% of Failure students','Other related']} submitUrl="http://127.0.0.1:8000/api/criterion2.6.2"></DynamicTable>
           <p>Describe the method of measuring the level of attainment of POs , PSOs and COs in not more than 200 words.</p>
           <textarea></textarea>
           <DocumentAttachment documents={['Upload relevant supporting document']}></DocumentAttachment>
           <h3>2.6.3 Students passed during the year</h3>
           <p>2.6.3.1: Outgoing students successfully completed the programme </p>
           <p>2.6.3.2: Final year students who appeared for the examination</p>
-          <DynamicTable headers={['Academic Year','Programme Code','Name of the Programme','Number of Students Appeared','Number of Students Passed','Pass (%)']}></DynamicTable>
+          <DynamicTable headers={['Academic Year','Programme Code','Name of the Programme','Number of Students Appeared','Number of Students Passed','Pass (%)']} submitUrl="http://127.0.0.1:8000/api/criterion2.6.3"></DynamicTable>
           <DocumentAttachment documents={['Upload relevant supporting document','Any additional information']}></DocumentAttachment>
         </>
       )}

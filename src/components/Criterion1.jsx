@@ -59,15 +59,6 @@ const Criterion1 = () => {
     setSelectedOption(event.target.value);
   };
 
-  {
-    /*  const [selectedOption, setSelectedOption] = useState('');
-
-  const handleChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
-*/
-  }
-
   return (
     <>
       <NavBar />
@@ -94,108 +85,15 @@ const Criterion1 = () => {
         1.1.2 Programmes where syllabus revision was carried out during the
         academic year{" "}
       </h3>
-      <div>
-        <table>
-          <thead>
-            <tr>
-              <th>Academic Year</th>
-              <th>Program Code</th>
-              <th>Names of Programs Revised</th>
-              <th>Copy of the Data Template</th>
-              <th>Relevant Supporting Documents</th>
-              <th>Link for Additional Information</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tableData.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {row.map((cell, columnIndex) => (
-                  <td key={columnIndex}>
-                    <input
-                      type="text"
-                      value={cell}
-                      onChange={(e) =>
-                        handleInputChange(rowIndex, columnIndex, e.target.value)
-                      }
-                    />
-                  </td>
-                ))}
-                <td>
-                  <button onClick={() => handleSubmit(rowIndex)}>Submit</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <button onClick={handleAddRow}>Add Row</button>
-
-        <h3>Documents to attach</h3>
-        <p>Details of program syllabus revisions</p>
-        <p>Minutes of relevant Academic Council/ BOS Meeting</p>
-        <p>Any additional relevant information</p>
-      </div>
+      <DynamicTable headers={['Academic Year','Programme Code','Names of Programs Revised','Copy of the Data Template','Relevant Supporting Documents','Link for Additional Information']} submitUrl="http://127.0.0.1:8000/api/criterion1.1.2"></DynamicTable>
+      <DocumentAttachment documents={['Details of program syllabus revisions','Minutes of relevant Academic Council/ BOS Meeting','Any additional relevant information']}></DocumentAttachment>
       <h3>
         1.1.3 Courses having focus on employability/ entrepreneurship/ skill
         development during the academic year
       </h3>
-      <div>
-        <h2>Dynamic Table</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Academic Year</th>
-              <th>Course Code</th>
-              <th>Names of the Course</th>
-              <th>
-                Activities with direct bearing on
-                Employability/Entrepreneurship/Skill Development
-              </th>
-              <th>Name of the Program</th>
-              <th>Copy of the Data Template</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tableData.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {row.map((cell, columnIndex) => (
-                  <td key={columnIndex}>
-                    <input
-                      type="text"
-                      value={cell}
-                      onChange={(e) =>
-                        handleInputChange(rowIndex, columnIndex, e.target.value)
-                      }
-                    />
-                  </td>
-                ))}
-                <td>
-                  <button onClick={() => handleSubmit(rowIndex)}>Submit</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <button onClick={handleAddRow}>Add Row</button>
-
-        <h3>Documents to attach</h3>
-        <p>Programme/ Curriculum/ Syllabus of the Course</p>
-
-        <p>
-          Minutes of BOS/ Academic Council Meeting with approvals for these
-          courses
-        </p>
-
-        <p>MoUs with relevant organizations for these courses</p>
-
-        <p>
-          Data template on the courses having the focus on
-          Employability/Entrepreneurship/ Skill development
-        </p>
-        <p>Any other related additional information</p>
-      </div>
-      <div>
+      <DynamicTable headers={['Academic Year','Programme Code','Names of the Course',' Activities with direct bearing on Employability/Entrepreneurship/Skill Development','Name of the Program','Copy of the Data Template']} submitUrl="http://127.0.0.1:8000/api/criterion2.6.3"></DynamicTable>
+      <DocumentAttachment documents={['Programme/ Curriculum/ Syllabus of the Course','Minutes of BOS/ Academic Council Meeting with approvals for these courses','MoUs with relevant organizations for these courses','Data template on the courses having the focus onEmployability/Entrepreneurship/ Skill development','Any other related additional information']}></DocumentAttachment>
+     
         <h2>Key Indicator – 1.2: Academic Flexibility</h2>
         <button onClick={toggleForm}>
           {showForm ? "Hide Form" : "Show Form"}
@@ -203,17 +101,8 @@ const Criterion1 = () => {
         {showForm && (
           <div>
             <h3>1.2.1 New Courses introduced during the academic year</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Names of the New Courses Introduced</th>
-                  <th>Name of the Program</th>
-                  <th>Copy of the Data Template</th>
-                  <th>Relevant Supporting Documents</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-            </table>
+            <DynamicTable headers={['Names of the New Courses Introduced','Name of the Program',' Copy of the Data Template','Relevant Supporting Documents']} submitUrl="http://127.0.0.1:8000/api/criterion2.6.3"></DynamicTable>
+
             <DocumentAttachment
               documents={[
                 "Programme/ Curriculum/ Syllabus of the New Course",
@@ -244,7 +133,7 @@ const Criterion1 = () => {
             "Any other related additional information",
           ]}
         />
-      </div>
+     
       <h2>Key Indicator – 1.3: Curriculum Enrichment</h2>
       <button onClick={toggleForm}>
         {showForm ? "Hide Form" : "Show Form"}
