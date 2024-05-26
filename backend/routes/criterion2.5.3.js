@@ -1,5 +1,5 @@
 const express = require('express');
-const Criterion2521 = require('../models/criterionSchema2.5.2');
+const Criterion253 = require('../models/Criterion2.5.3');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
@@ -8,25 +8,27 @@ router.post('/', async (req, res) => {
         const {
             'Academic Year': academicYear,
             'Sem. No': semesterNumber,
-            'Course Code and Name': courseCodeAndName,
+            'Course Code & Name': courseCodeAndName,
             'Name of the Teacher': teacherName,
-            'No of students having grievances on results': numberOfStudentsHavingGrievances,
-            'No of students resolved the grievances ': numberOfStudentsResolvedGrievances,
-            'Reasons for non-clearing grievances ': reasonsForNonClearingGrievances
+            '% of online Teaching': onlineTeachingPercentage,
+            'Name of the LMS for online Teaching': LMSName,
+            'Methods of ICT for Teaching': ICTMethods,
+            'Method of LMS for Exam': examLMSMethod
         } = req.body;
 
-        const newCriterion2521 = new Criterion2521({
+        const newCriterion253 = new Criterion253({
             academicYear,
             semesterNumber,
             courseCodeAndName,
             teacherName,
-            numberOfStudentsHavingGrievances,
-            numberOfStudentsResolvedGrievances,
-            reasonsForNonClearingGrievances
+            onlineTeachingPercentage,
+            LMSName,
+            ICTMethods,
+            examLMSMethod
         });
 
-        console.log('Saving data:', newCriterion2521);
-        await newCriterion2521.save();
+        console.log('Saving data:', newCriterion253);
+        await newCriterion253.save();
         res.status(201).json({ message: 'Data saved successfully' });
     } catch (error) {
         console.error('Error saving data:', error.message, error.stack);

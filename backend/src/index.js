@@ -14,6 +14,9 @@ const criterionRoute242 = require('../routes/criterion2.4.2')
 const criterionRoute244 = require('../routes/criterion2.4.4')
 const criterionRoute251 = require('../routes/criterion2.5.1')
 const criterionRoute252 = require('../routes/criterion2.5.2')
+const criterionRoute2521 = require('../routes/criterionRoute2.5.2')
+const criterionRoute253 = require('../routes/criterion2.5.3')
+
 
 // Load environment variables from .env file
 dotenv.config();
@@ -35,6 +38,8 @@ app.use('/api/criterion2.4.2',criterionRoute242)
 app.use('/api/criterion2.4.4',criterionRoute244)
 app.use('/api/criterion2.5.1',criterionRoute251)
 app.use('/api/criterion2.5.2',criterionRoute252)
+app.use('/api/criterionRoute2.5.2',criterionRoute2521)
+app.use('/api/criterion2.5.3',criterionRoute253)
 
 
 
