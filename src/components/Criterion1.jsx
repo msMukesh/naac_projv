@@ -101,7 +101,7 @@ const Criterion1 = () => {
         {showForm && (
           <div>
             <h3>1.2.1 New Courses introduced during the academic year</h3>
-            <DynamicTable headers={['Names of the New Courses Introduced','Name of the Program',' Copy of the Data Template','Relevant Supporting Documents']} submitUrl="http://127.0.0.1:8000/api/criterion2.6.3"></DynamicTable>
+            <DynamicTable headers={['Names of the New Courses Introduced','Name of the Program',' Copy of the Data Template','Relevant Supporting Documents']} submitUrl="http://127.0.0.1:8000/api/criterion1.2.1"></DynamicTable>
 
             <DocumentAttachment
               documents={[
@@ -109,7 +109,7 @@ const Criterion1 = () => {
                 "Minutes of BOS/ Academic Council Meeting with approvals for these courses",
                 "Data template on the courses having the focus on Employability/Entrepreneurship/ Skill Development",
                 "Any other related additional information",
-              ]}
+              ]} 
             />{" "}
           </div>
         )}
