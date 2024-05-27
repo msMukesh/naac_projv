@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
             'Academic Year': academicYear,
             'Programme Code': programmeCode,
             'Names of Programs Revised': namesOfProgramsRevised,
-            'Copy of the Data Template': copyOfDataTemplate,
+            'Copy of the Data Template': copyOfTheDataTemplate,
             'Relevant Supporting Documents': relevantSupportingDocuments,
             'Link for Additional Information': linkForAdditionalInformation
         } = req.body;
@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
             academicYear,
             programmeCode,
             namesOfProgramsRevised,
-            copyOfDataTemplate,
+            copyOfTheDataTemplate,
             relevantSupportingDocuments,
             linkForAdditionalInformation
         });

@@ -13,7 +13,7 @@ const criterion112Schema = new mongoose.Schema({
         type: String,
         required: true
     },
-    copyOfDataTemplate: {
+    copyOfTheDataTemplate: {
         type: String,
         required: true
     },
@@ -23,10 +23,11 @@ const criterion112Schema = new mongoose.Schema({
     },
     linkForAdditionalInformation: {
         type: String,
-        required: false
+        required: true
     }
 });
 
-const Criterion112 = mongoose.model('Criterion1.1.2', criterion112Schema);
+// Check if the model already exists before defining it
+const Criterion112 = mongoose.models.Criterion112 || mongoose.model('Criterion112', criterion112Schema);
 
 module.exports = Criterion112;
