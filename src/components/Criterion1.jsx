@@ -91,7 +91,7 @@ const Criterion1 = () => {
         1.1.3 Courses having focus on employability/ entrepreneurship/ skill
         development during the academic year
       </h3>
-      <DynamicTable headers={['Academic Year','Programme Code','Names of the Course',' Activities with direct bearing on Employability/Entrepreneurship/Skill Development','Name of the Program','Copy of the Data Template']} submitUrl="http://127.0.0.1:8000/api/criterion2.6.3"></DynamicTable>
+      <DynamicTable headers={['Academic Year','Programme Code','Names of the Course',' Activities with direct bearing on Employability/Entrepreneurship/Skill Development','Name of the Program','Copy of the Data Template']} submitUrl="http://127.0.0.1:8000/api/criterion1.1.3"></DynamicTable>
       <DocumentAttachment documents={['Programme/ Curriculum/ Syllabus of the Course','Minutes of BOS/ Academic Council Meeting with approvals for these courses','MoUs with relevant organizations for these courses','Data template on the courses having the focus onEmployability/Entrepreneurship/ Skill development','Any other related additional information']}></DocumentAttachment>
      
         <h2>Key Indicator – 1.2: Academic Flexibility</h2>
