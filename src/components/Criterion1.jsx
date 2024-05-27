@@ -124,7 +124,7 @@ const Criterion1 = () => {
             "Names of the programs adopting ECS",
             "Copy of the Data Template",
             "Relevant Supporting Documents",
-          ]}
+          ]} submitUrl="http://127.0.0.1:8000/api/criterion1.2.2"
         ></DynamicTable>
         <DocumentAttachment
           documents={[
