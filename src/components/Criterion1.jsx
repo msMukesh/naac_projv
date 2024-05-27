@@ -164,7 +164,7 @@ const Criterion1 = () => {
               "Academic Year",
               "Name(s) of the New Value added course with 30 or more contact hours",
               "Number of times the course is offered in the same year",
-            ]}
+            ]} submitUrl="http://127.0.0.1:8000/api/criterion1.3.2"
           ></DynamicTable>
           <DocumentAttachment
             documents={[
