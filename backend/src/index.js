@@ -24,6 +24,7 @@ const criterionRoute113 = require('../routes/criterion1.1.3')
 const criterionRoute121 = require('../routes/criterion1.2.1')
 const criterionRoute122 = require('../routes/criterion1.2.2')
 const criterionRoute132 = require('../routes/criterion1.3.2')
+const criterionRoute133 = require('../routes/criterion1.3.3')
 
 
 // Load environment variables from .env file
@@ -56,6 +57,8 @@ app.use('/api/criterion1.1.3',criterionRoute113)
 app.use('/api/criterion1.2.1',criterionRoute121)
 app.use('/api/criterion1.2.2',criterionRoute122)
 app.use('/api/criterion1.3.2',criterionRoute132)
+app.use('/api/criterion1.3.3',criterionRoute133)
+
 
 
 // Connect to the database

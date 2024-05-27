@@ -179,7 +179,7 @@ const Criterion1 = () => {
               "Academic Year",
               "Total number of students admitted",
               "Number of students completed the course",
-            ]}
+            ]} submitUrl="http://127.0.0.1:8000/api/criterion1.3.3"
           ></DynamicTable>
           <DocumentAttachment
             documents={[
