@@ -202,7 +202,7 @@ const Criterion1 = () => {
               "Name of the programme",
               "Number of students undertaking the field projects",
               "Number of students undertaking the research  projects",
-            ]}
+            ]} submitUrl="http://127.0.0.1:8000/api/criterion1.3.4"
           ></DynamicTable>
           <DocumentAttachment
             documents={[

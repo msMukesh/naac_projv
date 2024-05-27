@@ -6,12 +6,28 @@ const DocumentAttachment = ({ documents }) => {
   const handleFileChange = (e) => {
     setSelectedDocument(e.target.files[0]);
   };
+  
 
-  const handleUpload = () => {
-    // Handle upload logic for selected document
+  const handleUpload = async(index) => {
     if (selectedDocument) {
       console.log('Uploading document:', selectedDocument);
-      // You can use FormData to upload the selected document to the server
+      const formData = new FormData();
+      formData.append('document', selectedDocument);
+      formData.append('documentName', documents[index]);
+
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        if (response.ok) {
+          console.log('Document uploaded successfully');
+        } else {
+          console.error('Failed to upload document');
+        }
+      } catch (error) {
+        console.error('Error uploading document:', error);
+      }
     } else {
       console.log('No document selected');
     }
