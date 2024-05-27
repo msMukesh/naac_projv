@@ -41,6 +41,7 @@ app.use(express.json());
 
 const port = process.env.PORT || 10000;
 
+
 mongoose.connect(uri);
 
 const db = mongoose.connection;
@@ -88,8 +89,9 @@ const createDirectoryIfNotExists = (directory) => {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
+    const { userName } = req.body;
     const uploadsDirectory = join(__dirname, 'uploads');
-    const userDirectory = join(uploadsDirectory, globalUserName);
+    const userDirectory = join(uploadsDirectory, userName);
     createDirectoryIfNotExists(userDirectory);
     cb(null, userDirectory);
   },
@@ -126,6 +128,7 @@ app.get("/downloadFile", (req, res) => {
 
 
 // Helper function to retrieve a Mongoose model by name
+
 function getModelByName(modelName) {
   if (mongoose.models[modelName]) {
     return mongoose.models[modelName];
@@ -135,9 +138,9 @@ function getModelByName(modelName) {
 }
 
 
-const getNextSequenceValue = async (criterionNumber) => {
+const getNextSequenceValue = async (criterionNumber, userName) => {
   // Define a pattern to identify documents with the specified criterion number and user name
-  const regexPattern = `^${criterionNumber}${globalUserName}`;
+  const regexPattern = `^${criterionNumber}${userName}`;
   console.log("regexpattern"+ regexPattern);
 
    // Get the correct model based on the criterion number
@@ -151,8 +154,6 @@ const getNextSequenceValue = async (criterionNumber) => {
     .limit(1);
 
     console.log("maxSequenceDoc"+maxSequenceDoc);
-
-
     console.log("criterionNumber:", criterionNumber);
     console.log("globalUserName:", globalUserName);
     
@@ -162,7 +163,7 @@ const getNextSequenceValue = async (criterionNumber) => {
       return 1;
     }
   
-    const slicedSubstring = maxSequenceDoc._id.slice(criterionNumber.length + globalUserName.length);
+    const slicedSubstring = maxSequenceDoc._id.slice(criterionNumber.length + userName.length);
     console.log("Sliced Substring:", slicedSubstring);
     const maxExistingValue = maxSequenceDoc
         ? parseInt(slicedSubstring, 10)
@@ -171,7 +172,7 @@ const getNextSequenceValue = async (criterionNumber) => {
 
 // Check for missing sequence values by iterating from 1 to the maxExistingValue
 for (let i = 1; i <= maxExistingValue; i++) {
-  const sequenceId = `${criterionNumber}${globalUserName}${i}`; // Construct the sequence ID
+  const sequenceId = `${criterionNumber}${userName}${i}`; // Construct the sequence ID
   const exists = await CriterionModel.exists({ _id: sequenceId }); // Check if it exists
   if (!exists) {
     // If there's a gap, use the missing sequence value
@@ -185,9 +186,9 @@ for (let i = 1; i <= maxExistingValue; i++) {
 
 
 // Function to get the maximum existing sequence value for a given criterion number
-const getMaxExistingValue = async (criterionNumber) => {
+const getMaxExistingValue = async (criterionNumber, userName) => {
   // Define a pattern to identify documents with the specified criterion number and user name
-  const regexPattern = `^${criterionNumber}${globalUserName}`;
+  const regexPattern = `^${criterionNumber}${userName}`;
   // console.log("RegEx pattern:", regexPattern);
 
   // Get the correct model based on the criterion number
@@ -205,7 +206,7 @@ const getMaxExistingValue = async (criterionNumber) => {
   // If there's a document, extract the sequence number, otherwise, return 0
 
   return maxSequenceDoc
-    ? parseInt(maxSequenceDoc._id.slice(criterionNumber.length + globalUserName.length), 10)
+    ? parseInt(maxSequenceDoc._id.slice(criterionNumber.length + userName.length), 10)
     : 0; // Return 0 if no document is found
 };
 
@@ -231,13 +232,13 @@ app.get('/getFilesByCriteria', async (req, res) => {
       const foundDocuments = [];
     //   console.log("criterion number::"+criterion);
 
-      const sequenceValue = await getMaxExistingValue(criterion);
+      const sequenceValue = await getMaxExistingValue(criterion,userName);
       console.log("sequenceValue of criterion "+criterion+"is: "+sequenceValue);
 
       // Loop through all possible sequence numbers
       for (let i = 1; i <= sequenceValue; i++) {
         const CriterionModel = getModelByName(`Criterion${criterion}`);
-        const _id = `${criterion}${globalUserName}${i}`;
+        const _id = `${criterion}${userName}${i}`;
         // const _id = new mongoose.Types.ObjectId(`${criterion}${globalUserName}${i}`);
          
         // console.log("Checking ID:", _id);
@@ -348,6 +349,7 @@ console.log("results::"+results);
 //   }
 // };
 
+
 app.delete('/deleteFile/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -390,7 +392,7 @@ app.post('/311upload', upload.single('file'), async (req, res) => {
   let sequenceValue;
   try {
     console.log("criterionNumber"+criterionNumber);
-    sequenceValue = await getNextSequenceValue(criterionNumber);
+    sequenceValue = await getNextSequenceValue(criterionNumber, userName);
   } catch (error) {
     console.error('Error getting next sequence value:', error);
     return res.status(500).json({ error: 'Error uploading file. Please try again.' });
@@ -404,11 +406,11 @@ app.post('/311upload', upload.single('file'), async (req, res) => {
 
   try {
       // Construct the _id
-  const _id = `311${globalUserName}${sequenceValue}`;
+  const _id = `311${userName}${sequenceValue}`;
 console.log("idididid"+ _id);
   const newDocument = new Criterion311Model({
     _id,
-    globalUserName,
+    userName,
     filePath,
   });
 
@@ -494,13 +496,13 @@ app.post('/312upload', upload.single('file'), async (req, res) => {
   let sequenceValue;
   try {
     // Obtain the maximum existing value or the next sequence
-    sequenceValue = await getNextSequenceValue(criterionNumber);
+    sequenceValue = await getNextSequenceValue(criterionNumber,userName);
   } catch (error) {
     console.error('Error getting sequence value:', error);
     return res.status(500).json({ error: 'Error obtaining sequence value. Please try again.' });
   }
 
-  const _id = `${criterionNumber}${globalUserName}${sequenceValue}`;
+  const _id = `${criterionNumber}${userName}${sequenceValue}`;
 
 
   // Create a new document with or without a file path
@@ -580,6 +582,7 @@ app.post('/313upload', upload.single('file'), async (req, res) => {
     const { year, teacherName, designation, fellowshipType, fellowshipName, sponsoringAgency } = req.body;
   
     const filePath = req.file ? req.file.path : null; // If there's a file, use its path
+    const { userName } = req.body;
 
     // Validate required fields
     // if (!year || !teacherName || !fellowshipType || !fellowshipName || !sponsoringAgency || !filePath) {
@@ -590,14 +593,14 @@ app.post('/313upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
   
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error('Error getting next sequence value:', error);
       return res.status(500).json({ error: 'Error uploading file. Please try again.' });
     }
     console.log("313 sequence value:"+ sequenceValue);
   
-    const _id = `313${globalUserName}${sequenceValue}`;
+    const _id = `313${userName}${sequenceValue}`;
       // Generate custom _id
 
     // Save the document
@@ -660,6 +663,7 @@ app.get('/getFile314', async (req, res) => {
 app.post('/314upload', upload.single('file'), async (req, res) => {
   try {
     const { fellowName, yearOfEnrollment, duration, fellowshipType, grantingAgency } = req.body;
+    const { userName } = req.body;
 
     const criterionNumber = '314'; // This would be based on your scenario
     let sequenceValue;
@@ -667,13 +671,13 @@ app.post('/314upload', upload.single('file'), async (req, res) => {
     const filePath = req.file ? req.file.path : null; // If there's a file, use its path
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error('Error getting next sequence value:', error);
       return res.status(500).json({ error: 'Error uploading file. Please try again.' });
     }
   
-    const _id = `314${globalUserName}${sequenceValue}`;
+    const _id = `314${userName}${sequenceValue}`;
       // Generate custom _id
 
     // Save data to the database
@@ -740,6 +744,7 @@ app.get('/getFile315', async (req, res) => {
 });
 
 app.post('/315upload', upload.single('file'), async (req, res) => {
+  
   try {
     const {
       facilityName,
@@ -758,6 +763,7 @@ app.post('/315upload', upload.single('file'), async (req, res) => {
 
     // Get the path to the uploaded file if available
     const filePath = req.file ? req.file.path : null;
+    const { userName } = req.body;
 
     const criterionNumber = '315';
     let sequenceValue;
@@ -765,17 +771,13 @@ app.post('/315upload', upload.single('file'), async (req, res) => {
 
     try {
       // Obtain the maximum existing value or the next sequence
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error('Error getting sequence value:', error);
       return res.status(500).json({ error: 'Error obtaining sequence value. Please try again.' });
     }
 
-
-
-    const _id = `${criterionNumber}${globalUserName}${sequenceValue}`;
-
-
+    const _id = `${criterionNumber}${userName}${sequenceValue}`;
 
     const newRecord = new Criterion315Model({
       _id,
@@ -860,18 +862,19 @@ app.post('/316upload', upload.single('file'), async (req, res) => {
     
     // If a file is uploaded, assign its path; otherwise, set it to null
     const filePath = req.file ? req.file.path : null;
+    const { userName } = req.body;
 
     const criterionNumber = '316';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error('Error getting next sequence value:', error);
       return res.status(500).json({ error: 'Error getting sequence value. Please try again.' });
     }
 
-    const _id = `316${globalUserName}${sequenceValue}`;
+    const _id = `316${userName}${sequenceValue}`;
 
     const newDocument = new Criterion316Model({
       _id,
@@ -949,18 +952,19 @@ app.post('/321upload', upload.single('file'), async (req, res) => {
 
     // If a file is uploaded, set the path; otherwise, set it to null
     const filePath = req.file ? req.file.path : null;
+    const { userName } = req.body;
 
     const criterionNumber = '321';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error('Error getting next sequence value:', error);
       return res.status(500).json({ error: 'Error getting sequence value. Please try again.' });
     }
 
-    const _id = `321${globalUserName}${sequenceValue}`;
+    const _id = `321${userName}${sequenceValue}`;
 
     const newDocument = new Criterion321Model({
       _id,
@@ -1014,18 +1018,19 @@ app.post('/322upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // Check if a file is uploaded
+    const { userName } = req.body;
 
     const criterionNumber = '322';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value." });
     }
 
-    const _id = `322${globalUserName}${sequenceValue}`;
+    const _id = `322${userName}${sequenceValue}`;
 
     const newDocument = new Criterion322Model({
       _id,
@@ -1094,18 +1099,19 @@ app.post('/323upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // Check if a file is uploaded
+    const { userName } = req.body;
 
     const criterionNumber = '323';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value." });
     }
 
-    const _id = `323${globalUserName}${sequenceValue}`;
+    const _id = `323${userName}${sequenceValue}`;
 
     const newDocument = new Criterion323Model({
       _id,
@@ -1175,18 +1181,19 @@ app.post('/331upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // Get the file path if a file is uploaded
+    const { userName } = req.body;
 
     const criterionNumber = '331';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
     }
 
-    const _id = `331${globalUserName}${sequenceValue}`;
+    const _id = `331${userName}${sequenceValue}`;
 
     const newDocument = new Criterion331Model({
       _id,
@@ -1259,18 +1266,19 @@ app.post('/332upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // Check if a file is uploaded
+    const { userName } = req.body;
 
     const criterionNumber = '332';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value." });
     }
 
-    const _id = `332${globalUserName}${sequenceValue}`;
+    const _id = `332${userName}${sequenceValue}`;
 
     const newDocument = new Criterion332Model({
       _id,
@@ -1339,18 +1347,19 @@ app.post('/333upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // Check if a file is uploaded
+    const { userName } = req.body;
 
     const criterionNumber = '333';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value." });
     }
 
-    const _id = `333${globalUserName}${sequenceValue}`;
+    const _id = `333${userName}${sequenceValue}`;
 
     const newDocument = new Criterion333Model({
       _id,
@@ -1420,18 +1429,19 @@ app.post('/341upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // Get the file path if a file is uploaded
+    const { userName } = req.body;
 
     const criterionNumber = '341';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
     }
 
-    const _id = `341${globalUserName}${sequenceValue}`;
+    const _id = `341${userName}${sequenceValue}`;
 
 
     const newDocument = new Criterion341Model({
@@ -1502,18 +1512,19 @@ app.post('/342upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // Check if a file is uploaded
+    const { userName } = req.body;
 
     const criterionNumber = '342';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
     }
 
-    const _id = `342${globalUserName}${sequenceValue}`;
+    const _id = `342${userName}${sequenceValue}`;
 
     const newDocument = new Criterion342Model({
       _id,
@@ -1577,19 +1588,20 @@ app.post('/343upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // If a file is uploaded, get the file path
+    const { userName } = req.body;
 
     
     const criterionNumber = '343';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
     }
 
-    const _id = `343${globalUserName}${sequenceValue}`;
+    const _id = `343${userName}${sequenceValue}`;
 
     const newDocument = new Criterion343Model({
       _id,
@@ -1660,18 +1672,19 @@ app.post('/344upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // If a file is uploaded, get the file path
+    const { userName } = req.body;
 
     const criterionNumber = '344';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
     }
 
-    const _id = `344${globalUserName}${sequenceValue}`;
+    const _id = `344${userName}${sequenceValue}`;
 
     const newDocument = new Criterion344Model({
       _id,
@@ -1739,18 +1752,19 @@ app.post('/345upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // If a file is uploaded, get the file path
+    const { userName } = req.body;
 
     const criterionNumber = '345';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
     }
 
-    const _id = `345${globalUserName}${sequenceValue}`;
+    const _id = `345${userName}${sequenceValue}`;
 
     const newDocument = new Criterion345Model({
       _id,
@@ -1821,18 +1835,19 @@ app.post('/346upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // If a file is uploaded, get the file path
+    const { userName } = req.body;
 
     const criterionNumber = '346';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
     }
 
-    const _id = `346${globalUserName}${sequenceValue}`;
+    const _id = `346${userName}${sequenceValue}`;
 
     const newDocument = new Criterion346Model({
       _id,
@@ -1894,18 +1909,19 @@ app.post('/347upload', upload.single('file'), async (req, res) => {
     const { teacherName, moduleName, platform, launchDate, platformCount } = req.body;
 
     const filePath = req.file ? req.file.path : null; // Get the file path if a file is uploaded
+    const { userName } = req.body;
 
     const criterionNumber = '347';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
     }
 
-    const _id = `347${globalUserName}${sequenceValue}`;
+    const _id = `347${userName}${sequenceValue}`;
 
     const newDocument = new Criterion347Model({
       _id,
@@ -1982,7 +1998,7 @@ app.post('/platforms_upload', upload.single('file'), async (req, res) => {
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
@@ -2059,18 +2075,19 @@ app.post('/348upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // If a file is uploaded, get the file path
+    const { userName } = req.body;
 
     const criterionNumber = '348';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
     }
 
-    const _id = `348${globalUserName}${sequenceValue}`;
+    const _id = `348${userName}${sequenceValue}`;
 
     const newDocument = new Criterion348Model({
       _id,
@@ -2136,18 +2153,19 @@ app.post('/349upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // If a file is uploaded, get the file path
+    const { userName } = req.body;
 
     const criterionNumber = '349';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
     }
 
-    const _id = `349${globalUserName}${sequenceValue}`;
+    const _id = `349${userName}${sequenceValue}`;
 
     const newDocument = new Criterion349Model({
       _id,
@@ -2211,18 +2229,19 @@ app.post('/351upload', upload.fields([
 ]), async (req, res) => {
   try {
     const { governingMinutes, consultancyPolicy, additionalInfo } = req.files;
-    
+    const { userName } = req.body;
+
     const criterionNumber = '351';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
     }
 
-    const _id = `351${globalUserName}${sequenceValue}`;
+    const _id = `351${userName}${sequenceValue}`;
 
     const newDocument = new Criterion351Model({
       _id,
@@ -2305,18 +2324,19 @@ app.post('/352upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // If a file is uploaded, get the file path
+    const { userName } = req.body;
 
     const criterionNumber = '352';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
     }
 
-    const _id = `352${globalUserName}${sequenceValue}`;
+    const _id = `352${userName}${sequenceValue}`;
 
     const newDocument = new Criterion352Model({
       _id,
@@ -2389,18 +2409,19 @@ app.post('/361upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // If a file is uploaded, get the file path
+    const { userName } = req.body;
 
     const criterionNumber = '361';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
     }
 
-    const _id = `361${globalUserName}${sequenceValue}`;
+    const _id = `361${userName}${sequenceValue}`;
 
     const newDocument = new Criterion361Model({
       _id,
@@ -2467,18 +2488,19 @@ app.post('/362upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // If a file is uploaded, get the file path
+    const { userName } = req.body;
 
     const criterionNumber = '362';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
     }
 
-    const _id = `362${globalUserName}${sequenceValue}`;
+    const _id = `362${userName}${sequenceValue}`;
 
     const newDocument = new Criterion362Model({
       _id,
@@ -2544,18 +2566,19 @@ app.post('/363upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // If a file is uploaded, get the file path
+    const { userName } = req.body;
 
     const criterionNumber = '363';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
     }
 
-    const _id = `363${globalUserName}${sequenceValue}`;
+    const _id = `363${userName}${sequenceValue}`;
 
     const newDocument = new Criterion363Model({
       _id,
@@ -2618,18 +2641,19 @@ app.post('/364upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // If a file is uploaded, get the file path
+    const { userName } = req.body;
 
     const criterionNumber = '364';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
     }
 
-    const _id = `364${globalUserName}${sequenceValue}`;
+    const _id = `364${userName}${sequenceValue}`;
 
     const newDocument = new Criterion364Model({
       _id,
@@ -2698,18 +2722,19 @@ app.post('/371upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // Get the file path if uploaded
+    const { userName } = req.body;
 
     const criterionNumber = '371';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
     }
 
-    const _id = `371${globalUserName}${sequenceValue}`;
+    const _id = `371${userName}${sequenceValue}`;
 
     const newDocument = new Criterion371Model({
       _id,
@@ -2779,18 +2804,19 @@ app.post('/372upload', upload.single('file'), async (req, res) => {
     } = req.body;
 
     const filePath = req.file ? req.file.path : null; // Get the file path if a file is uploaded
+    const { userName } = req.body;
 
     const criterionNumber = '372';
     let sequenceValue;
 
     try {
-      sequenceValue = await getNextSequenceValue(criterionNumber);
+      sequenceValue = await getNextSequenceValue(criterionNumber,userName);
     } catch (error) {
       console.error("Error getting sequence value:", error);
       return res.status(500).json({ error: "Error getting sequence value. Please try again." });
     }
 
-    const _id = `372${globalUserName}${sequenceValue}`;
+    const _id = `372${userName}${sequenceValue}`;
 
     const newDocument = new Criterion372Model({
       _id,
