@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import NavBar from "./Navbar";
+import "./Criterion3.css";
 
 const Criterion2 = () => {
   // State for Criterion 3.1.1
@@ -202,7 +203,7 @@ const Criterion2 = () => {
     };
 
   return (
-    <>
+    <div className="displayContainer">
       <NavBar />
       <div className="criterion-container">
         <div className="content">
@@ -442,7 +443,7 @@ const Criterion2 = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

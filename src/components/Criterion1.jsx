@@ -1,5 +1,6 @@
 import React, { useState} from 'react'
 import NavBar from './Navbar'
+import "./Criterion3.css";
 
 const Criterion1 = () => {
   const [rowCount, setRowCount] = useState(1);
@@ -28,7 +29,7 @@ const Criterion1 = () => {
     };
 
   return (
-    <>
+    <div className="displayContainer">
       <NavBar/>
       <h1>I. CURRICULAR ASPECTS (150 Points)</h1>
       <h2>Key Indicator - 1.1: Curriculum Design & Development</h2>
@@ -176,7 +177,7 @@ const Criterion1 = () => {
         </div>
       )}
     </div>
-    </>
+    </div>
   )
 }
 
