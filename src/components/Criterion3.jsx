@@ -3202,7 +3202,7 @@ function getFileNameFromPath(filePath1) {
 
 <div className="formDiv">
       <h4>3.1.5.	Your department is having the following facilities to support research:</h4>
-      <button onClick={handleToggleForm315}>
+      <button className="toggleFormbtn" onClick={handleToggleForm315}>
         {toggleForm315 ? 'Hide Form' : 'Show Form'}
       </button>
 
