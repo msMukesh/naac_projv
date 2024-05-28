@@ -8,7 +8,7 @@ const app = express();
 const path = require("path");
 const fs = require('fs');
 
-// MongoDB connection
+// MongoDB  connection
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://msmukesh:naacdb1234@naaccluster.rheatzk.mongodb.net/?retryWrites=true&w=majority&appName=NaacCluster";
 
