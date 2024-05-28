@@ -2740,7 +2740,7 @@ const handleGenerateReport = () => {
       <div className="criterion-container">
       <button className="downloadReport"  onClick={handleGenerateReport}>Generate Report</button>
 
-      <button className="downloadReport" onClick={handleClickPrint}>Print Container</button>
+      <button className="downloadReport" onClick={handleClickPrint}>Download Report</button>
 
       <div className="criterionCon31">
 
