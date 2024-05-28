@@ -29,17 +29,6 @@ input {
   margin-top: 18px;
 }
 
-
-
-.App {
-  /* display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  flex-direction: column;
-  background-color: #f5f5f5;  */
-}
-
 .authcontainer {
   box-shadow: 0 1px 6px #ccc;
   border-radius: 6px;

@@ -177,15 +177,7 @@ const [formData312, setFormData312] = useState(initialFormData312);
     formDataToSend.append("year", formData312.year);
     formDataToSend.append("additionalInfo", formData312.additionalInfo);
     formDataToSend.append("file", formData312.file312);
-// Logging all data in formDataToSend
-// for (const pair of formDataToSend.entries()) {
-//   console.log(pair[0], pair[1]);
-// } 
 
-  // Check if a file is uploaded before appending it to FormData
-  // if (formData312.file312) {
-  //   formDataToSend.append("file", formData312.file312);
-  // }
 
   
     try {
@@ -2614,7 +2606,6 @@ useEffect(() => {
         userName,
         criterionNumbers: criterionNumbers.join(','),
       };
-
       // Send GET request with query parameters
       const response = await axios.get("https://naac-server.onrender.com/getFilesByCriteria", { params });
 
@@ -2663,7 +2654,8 @@ useEffect(() => {
   };
 
   fetchData(); // Fetch data once when the component mounts
-}, [
+}, 
+[
   uploaded311,
   uploaded312,
   uploaded313,
