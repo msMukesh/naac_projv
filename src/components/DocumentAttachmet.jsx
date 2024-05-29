@@ -39,14 +39,14 @@ const DocumentAttachment = ({ documents }) => {
       <div>
         {documents.map((document, index) => (
           <div className="document-row" key={index}>
-            <span className="document-label">{document}</span>
+            <span className="document-label ">{document}</span>
             <input
               type="file"
               id={`document-${index}`}
               onChange={handleFileChange}
-              className="document-input"
+              className="document-input btn"
             />
-            <button onClick={() => handleUpload(index)} className="upload-button">
+            <button  onClick={() => handleUpload(index)} className="upload-button btn">
               Upload
             </button>
           </div>

@@ -3,12 +3,19 @@ import React, { useState, useEffect } from 'react';
 
 const DynamicTable = ({ headers, submitUrl, userData }) => {
   const [data, setData] = useState([{ id: 0 }]);
- ;
+//  ;
   const [criterionData, setCriterionData] = useState(userData);
+
+  const headerMapping222  = {
+    "Academic Year":"academicYear",
+    "Total Number admitted Students in all programs":"totalNumberAdmittedStudentsInAllPrograms",
+    "Total Number of Teachers":"totalNumberOfTeachers",
+    "Full time Ratio":"fullTimeRatio"
+  }
+
   useEffect(() => {
     setCriterionData(userData);
   }, [userData]);
- console.log("userdata:",userData )
 
   const handleChange = (e, header, rowIndex) => {
     const newData = [...data];
@@ -42,7 +49,7 @@ const DynamicTable = ({ headers, submitUrl, userData }) => {
   };
 
   const handleDeleteRow = () => {
-    if (data.length > 1) {
+    if (data && data.length > 1) {
       const newData = data.slice(0, -1);
       setData(newData);
     }
@@ -59,8 +66,28 @@ const DynamicTable = ({ headers, submitUrl, userData }) => {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-          {data.map((row, rowIndex) => (
+        <tbody>{
+          criterionData && criterionData.map((row, rowIndex)=>(
+            <tr key={row.id}>
+            {headers.map((header, index) => (
+              
+              <td key={index}>
+                
+                <input
+                  type="text"
+                  value={criterionData[rowIndex][headerMapping222[header]] || ''}
+                  onChange={(e) => handleChange(e, header, rowIndex)}
+                  className="myInput"
+                />
+              </td>
+            ))}
+            <td>
+              <button className="btn" onClick={() => handleSubmit(rowIndex)}>Submit</button>
+            </td>
+          </tr>
+          ))
+          }
+          { data && data.map((row, rowIndex) => (
             <tr key={row.id}>
               {headers.map((header, index) => (
                 <td key={index}>
@@ -73,14 +100,14 @@ const DynamicTable = ({ headers, submitUrl, userData }) => {
                 </td>
               ))}
               <td>
-                <button onClick={() => handleSubmit(rowIndex)}>Submit</button>
+                <button className="btn" onClick={() => handleSubmit(rowIndex)}>Submit</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <button onClick={handleAddRow}>Add Row</button>
-      <button onClick={handleDeleteRow} disabled={data.length === 1}>
+      <button className="btn" onClick={handleAddRow}>Add Row</button>
+      <button className="btn" onClick={handleDeleteRow} disabled={data && data.length === 1}>
         Delete Row
       </button>
     </div>

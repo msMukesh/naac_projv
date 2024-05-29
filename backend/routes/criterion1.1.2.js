@@ -31,12 +31,10 @@ router.post('/', async (req, res) => {
         res.status(500).json({ message: 'Error saving data', error: error.message });
     }
 });
-
-
 router.get('/', async (req, res) => {
     try {
-        const criteria = await Criterion112.findAll();
-        res.status(200).json(criteria);
+        const criterion112Data = await Criterion112.find();
+        res.status(200).json(criterion112Data);
     } catch (error) {
         console.error('Error fetching data:', error.message, error.stack);
         res.status(500).json({ message: 'Error fetching data', error: error.message });
