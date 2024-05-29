@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './DocumentAttachment.css'; // Import the CSS file
 
 const DocumentAttachment = ({ documents }) => {
   const [selectedDocument, setSelectedDocument] = useState(null);
@@ -6,22 +7,21 @@ const DocumentAttachment = ({ documents }) => {
   const handleFileChange = (e) => {
     setSelectedDocument(e.target.files[0]);
   };
-  
 
-  const handleUpload = async(index) => {
+  const handleUpload = async (index) => {
     if (selectedDocument) {
       console.log('Uploading document:', selectedDocument);
       const formData = new FormData();
-      formData.append('document', selectedDocument);
-      formData.append('documentName', documents[index]);
+      formData.append('file', selectedDocument);
 
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/upload', {
+        const response = await fetch('http://127.0.0.1:8000/api/upload2.1.1/upload', {
           method: 'POST',
           body: formData,
         });
         if (response.ok) {
           console.log('Document uploaded successfully');
+          alert('Document uploaded successfully');
         } else {
           console.error('Failed to upload document');
         }
@@ -35,13 +35,20 @@ const DocumentAttachment = ({ documents }) => {
 
   return (
     <div>
-      <label htmlFor="document">Documents to Attach</label>
+      <label className="document" htmlFor="document">Documents to Attach</label>
       <div>
         {documents.map((document, index) => (
-          <div key={index}>
-            <span>{document}</span>
-            <input type="file" id={`document-${index}`} onChange={handleFileChange} />
-            <button onClick={handleUpload}>Upload</button>
+          <div className="document-row" key={index}>
+            <span className="document-label">{document}</span>
+            <input
+              type="file"
+              id={`document-${index}`}
+              onChange={handleFileChange}
+              className="document-input"
+            />
+            <button onClick={() => handleUpload(index)} className="upload-button">
+              Upload
+            </button>
           </div>
         ))}
       </div>

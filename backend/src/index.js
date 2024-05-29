@@ -4,6 +4,11 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const connectDB = require('../db/index.js');
 const criterianRoutes = require('../routes/routes');
+const criterianRoutes131 = require('../routes/criterion1.3.1');
+const criterianRoutes253Text = require('../routes/criterion2.5.3Text');
+const criterianRoutes261= require('../routes/criterion2.6.1');
+const criterianRoutes262Text= require('../routes/criterion2.6.1Text');
+
 const criterionRoute211 = require('../routes/criterion2.1.1')
 const criterionRoute222 = require('../routes/criterion2.2.2')
 const criterionRoute231 = require('../routes/criterion2.3.1')
@@ -26,10 +31,8 @@ const criterionRoute122 = require('../routes/criterion1.2.2')
 const criterionRoute132 = require('../routes/criterion1.3.2')
 const criterionRoute133 = require('../routes/criterion1.3.3')
 const criterionRoute134 = require('../routes/criterion1.3.4')
-const uploadRoute211 = require('../routes/criterionUpload2.1.1')
+const upload211 =  require('../routes/upload2.1.1')
 // Upload routes
-
-
 
 // Load environment variables from .env file
 dotenv.config();
@@ -41,6 +44,11 @@ app.use(cors());
 
 app.use(express.json())
 app.use('/api/criterion1.1.1',criterianRoutes)
+app.use('/api/criterion1.3.1',criterianRoutes131)
+app.use('/api/criterion2.5.3Text',criterianRoutes253Text)
+app.use('/api/criterion2.6.1',criterianRoutes261)
+app.use('/api/criterion2.6.2Text',criterianRoutes262Text)
+
 app.use('/api/criterion2.1.1',criterionRoute211)
 app.use('/api/criterion2.2.2',criterionRoute222)
 app.use('/api/criterion2.3.1',criterionRoute231)
@@ -63,7 +71,8 @@ app.use('/api/criterion1.2.2',criterionRoute122)
 app.use('/api/criterion1.3.2',criterionRoute132)
 app.use('/api/criterion1.3.3',criterionRoute133)
 app.use('/api/criterion1.3.4',criterionRoute134)
-app.use('/api/criterionUpload2.1.1',uploadRoute211)
+app.use('/api/upload2.1.1', upload211)
+//app.use('/api/criterionUpload2.1.1',uploadRoute211)
 
 
 // Connect to the database

@@ -3,12 +3,15 @@ import NavBar from "./Navbar";
 import DynamicTable from "./DynamicTable";
 import DocumentAttachment from "./DocumentAttachmet";
 import axios from "axios";
+import Chatbot from "./Chatbot";
+import './Criterion.css'
 
 const Criterion1 = () => {
   const [rowCount, setRowCount] = useState(1);
   const [tableData, setTableData] = useState([Array(6).fill("")]);
   const [longText, setLongText] = useState("");
   const [description, setDescription] = useState("");
+  const [openFormId, setOpenFormId] = useState(null);
 
   const handleAddRow = () => {
     setRowCount(rowCount + 1);
@@ -42,13 +45,39 @@ const Criterion1 = () => {
     }
   };
 
+  const handleSubmit13 = async (e) => {
+    e.preventDefault();
+    try {
+     
+      const response = await fetch("http://127.0.0.1:8000/api/criterion1.1.1", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ longText }), // Send the row data to backend
+      });
+      if (response.ok) {
+        alert("Data saved successfully!");
+      } else {
+        alert("Failed to save data.");
+      }
+    } catch (error) {
+      console.error("Error submitting data:", error);
+    }
+  };
+
   const handleTextareaChange = (e) => {
     setLongText(e.target.value);
   };
   const [showForm, setShowForm] = useState(false);
 
-  const toggleForm = () => {
-    setShowForm(!showForm);
+  const toggleForm = (formId) => {
+    if (openFormId === formId) {
+      setOpenFormId(null); 
+   // setShowForm(!showForm);
+  } else {
+    setOpenFormId(formId); // Open the form with the given ID
+  }
   };
   {
     /*for 1.4.1*/
@@ -61,9 +90,12 @@ const Criterion1 = () => {
 
   return (
     <>
+    <div className="parent">
       <NavBar />
+      <Chatbot></Chatbot>
       <h1>I. CURRICULAR ASPECTS (150 Points)</h1>
-      <h2>Key Indicator - 1.1: Curriculum Design & Development</h2>
+      <hr></hr>
+      <h3>Key Indicator - 1.1: Curriculum Design & Development</h3>
       <p>
         1.1.1 Curricula developed and implemented have relevance to the local/
         national / regional/global developmental needs which is reflected with
@@ -71,7 +103,7 @@ const Criterion1 = () => {
         specific outcomes (PSOs) and course outcomes (Cos) of all the Programme
         offered by the University.
       </p>
-      <p>Write description in maximum of 500 words File Description</p>
+      <p>Write description in maximum of 500 words File Description.</p>
       <form onSubmit={handleSubmit}>
         <textarea
           placeholder="Enter your text here"
@@ -95,10 +127,11 @@ const Criterion1 = () => {
       <DocumentAttachment documents={['Programme/ Curriculum/ Syllabus of the Course','Minutes of BOS/ Academic Council Meeting with approvals for these courses','MoUs with relevant organizations for these courses','Data template on the courses having the focus onEmployability/Entrepreneurship/ Skill development','Any other related additional information']}></DocumentAttachment>
      
         <h2>Key Indicator – 1.2: Academic Flexibility</h2>
-        <button onClick={toggleForm}>
-          {showForm ? "Hide Form" : "Show Form"}
-        </button>
-        {showForm && (
+        <button onClick={() => toggleForm('1.2')}>
+  {openFormId === '1.2' ? "Hide Form" : "Show Form"}
+</button>
+
+        {openFormId === '1.2' && (
           <div>
             <h3>1.2.1 New Courses introduced during the academic year</h3>
             <DynamicTable headers={['Names of the New Courses Introduced','Name of the Program',' Copy of the Data Template','Relevant Supporting Documents']} submitUrl="http://127.0.0.1:8000/api/criterion1.2.1"></DynamicTable>
@@ -111,10 +144,7 @@ const Criterion1 = () => {
                 "Any other related additional information",
               ]} 
             />{" "}
-          </div>
-        )}
-
-        <h3>
+              <h3>
           1.2.2 Programmes in which Choice Based Credit System (CBCS)/elective
           course system has been implemented during the year ( Nil )
         </h3>
@@ -133,12 +163,18 @@ const Criterion1 = () => {
             "Any other related additional information",
           ]}
         />
+          </div>
+        )}
+
+      
      
       <h2>Key Indicator – 1.3: Curriculum Enrichment</h2>
-      <button onClick={toggleForm}>
-        {showForm ? "Hide Form" : "Show Form"}
-      </button>
-      {showForm && (
+      <button onClick={() => toggleForm('1.3')}>
+  {openFormId === '1.3' ? "Hide Form" : "Show Form"}
+</button>
+
+
+      {openFormId === '1.3'  && (
         <>
           <h3>
             1.3.1 Departmental cross cutting issues relevant to Gender,
@@ -146,7 +182,15 @@ const Criterion1 = () => {
             into the Curriculum
           </h3>
           <p>Write description in maximum of 500 words</p>
-          <textarea />
+          <form onSubmit={handleSubmit13}>
+        <textarea
+          placeholder="Enter your text here"
+          value={longText}
+          onChange={handleTextareaChange}
+        />
+
+        <button type="submit">Submit</button>
+      </form>
           <h4>File Description(Upload)/ Documents to Attach</h4>
           <DocumentAttachment
             documents={[
@@ -218,10 +262,12 @@ const Criterion1 = () => {
       )}
 
       <h2>Key Indicator – 1.4: Feedback Systems ( Not For The Departments)</h2>
-      <button onClick={toggleForm}>
-        {showForm ? "Hide Form" : "Show Form"}
-      </button>
-      {showForm && (
+      <button onClick={() => toggleForm('1.4')}>
+  {openFormId === '1.4' ? "Hide Form" : "Show Form"}
+</button>
+
+
+      {openFormId === '1.4' && (
         <>
           <div>
             <h3>
@@ -367,8 +413,10 @@ const Criterion1 = () => {
               "URL for feedback report",
             ]}
           ></DocumentAttachment>
+          <Chatbot></Chatbot>
         </>
       )}
+      </div>
     </>
   );
 };

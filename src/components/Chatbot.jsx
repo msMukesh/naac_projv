@@ -1,10 +1,10 @@
-
 import { useState } from 'react';
-
-
+import './Chatbot.css'; // Import your CSS file
+import chatbotIcon from '../assets/ChatBotIcon.png';
 function Chatbot() {
   const [question, setQuestion] = useState('');
   const [response, setResponse] = useState('');
+  const [isOpen, setIsOpen] = useState(false); // State to track if the chatbox is open or closed
 
   const sendQuestion = async () => {
     try {
@@ -22,26 +22,45 @@ function Chatbot() {
     }
   };
 
+  const handleClose = () => {
+    setIsOpen(false);
+    setQuestion('');
+    setResponse('');
+  };
+
   return (
     <div className="app-container">
-      <div className="chatbot-container">
-        <div className="chatbot-popup">
-          <div className="chatbot-input">
+    
+      {!isOpen && (
+        <div className="chatbot-icon" onClick={() => setIsOpen(true)}>
+          <img className="icon"src={chatbotIcon} alt="Chatbot Icon" />
+        </div>
+      )}
+
+   
+      {isOpen && (
+        <div className="chatbot-container open">
+          <button className="chatbot-close" onClick={handleClose}>✖</button>
+          <div className="chatbot-popup">
             <textarea
+              className="chatbot-response response"
               value={response}
               readOnly
               placeholder="Chatbot response..."
             ></textarea>
-            <input
-              type="text"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              placeholder="Ask a question..."
-            />
-            <button onClick={sendQuestion}>Ask</button>
+            <div className="chatbot-input bottom">
+              <input
+                className="input-box"
+                type="text"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                placeholder="Ask a question..."
+              />
+              <button className="btn" onClick={sendQuestion}>Ask</button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

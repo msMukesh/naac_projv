@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const DynamicTable = ({ headers, submitUrl }) => {
-  const [data, setData] = useState([{ id: 0 }]); 
-  const [newRow, setNewRow] = useState({});
+
+const DynamicTable = ({ headers, submitUrl, userData }) => {
+  const [data, setData] = useState([{ id: 0 }]);
+ ;
+  const [criterionData, setCriterionData] = useState(userData);
+  useEffect(() => {
+    setCriterionData(userData);
+  }, [userData]);
+ console.log("userdata:",userData )
 
   const handleChange = (e, header, rowIndex) => {
     const newData = [...data];
@@ -18,10 +24,11 @@ const DynamicTable = ({ headers, submitUrl }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data[rowIndex]), 
+        body: JSON.stringify(data[rowIndex]),
       });
       if (response.ok) {
         console.log('Data submitted successfully');
+        alert('Data submitted successfully');
       } else {
         console.error('Failed to submit data');
       }
@@ -34,6 +41,13 @@ const DynamicTable = ({ headers, submitUrl }) => {
     setData([...data, { id: data.length }]);
   };
 
+  const handleDeleteRow = () => {
+    if (data.length > 1) {
+      const newData = data.slice(0, -1);
+      setData(newData);
+    }
+  };
+
   return (
     <div>
       <table>
@@ -42,7 +56,7 @@ const DynamicTable = ({ headers, submitUrl }) => {
             {headers.map((header, index) => (
               <th key={index}>{header}</th>
             ))}
-            <th>Action</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -54,6 +68,7 @@ const DynamicTable = ({ headers, submitUrl }) => {
                     type="text"
                     value={data[rowIndex][header] || ''}
                     onChange={(e) => handleChange(e, header, rowIndex)}
+                    className="myInput"
                   />
                 </td>
               ))}
@@ -65,6 +80,9 @@ const DynamicTable = ({ headers, submitUrl }) => {
         </tbody>
       </table>
       <button onClick={handleAddRow}>Add Row</button>
+      <button onClick={handleDeleteRow} disabled={data.length === 1}>
+        Delete Row
+      </button>
     </div>
   );
 };

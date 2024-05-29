@@ -7,6 +7,6 @@ const CriterianSchema = new mongoose.Schema({
     }
 });
 
-const Criterian = mongoose.model('Criterian1.1.1', CriterianSchema);
+const Criterian = mongoose.model('Criterian131', CriterianSchema);
 
 module.exports = Criterian;

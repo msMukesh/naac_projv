@@ -1,11 +1,32 @@
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
 import NavBar from "./Navbar";
 import DynamicTable from './DynamicTable';
 import DocumentAttachment from "./DocumentAttachmet";
+import Chatbot from "./Chatbot";
+import './Chatbot.css'
+import './Criterion.css'
+
+import axios from 'axios';
+
 const Criterion2 = () => { 
 
   const [showForm, setShowForm] = useState(false);
   const [longText, setLongText] = useState("");
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/api/criterion2.2.2');
+        setData(response.data);
+        console.log(response.data);
+        
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const toggleForm = () => {
     setShowForm(!showForm);
@@ -36,9 +57,75 @@ const Criterion2 = () => {
     }
   };
 
+  const handleSubmit253 = async (e) => {
+    e.preventDefault();
+    try {
+     
+      const response = await fetch("http://127.0.0.1:8000/api/criterion2.5.3Text", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ longText }),
+      });
+      if (response.ok) {
+        alert("Data saved successfully!");
+      } else {
+        alert("Failed to save data.");
+      }
+    } catch (error) {
+      console.error("Error submitting data:", error);
+    }
+  };
+
+  const handleSubmit261 = async (e) => {
+    e.preventDefault();
+    try {
+     
+      const response = await fetch("http://127.0.0.1:8000/api/criterion2.6.1", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ longText }),
+      });
+      if (response.ok) {
+        alert("Data saved successfully!");
+      } else {
+        alert("Failed to save data.");
+      }
+    } catch (error) {
+      console.error("Error submitting data:", error);
+    }
+  };
+
+  const handleSubmit262 = async (e) => {
+    e.preventDefault();
+    try {
+     
+      const response = await fetch("http://127.0.0.1:8000/api/criterion2.6.2Text", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ longText }),
+      });
+      if (response.ok) {
+        alert("Data saved successfully!");
+      } else {
+        alert("Failed to save data.");
+      }
+    } catch (error) {
+      console.error("Error submitting data:", error);
+    }
+  };
   return (
     <>
+    <div className="parent">
       <NavBar />
+     
+      <Chatbot></Chatbot>
+
       <div className="criterion-container">
         <div className="content">
           <h1>Criterion II - Learning and Evaluation(200 Points)</h1>
@@ -61,7 +148,7 @@ const Criterion2 = () => {
         <DocumentAttachment documents={['List of students with category of learning','Organized programs for handling the remedial measures','Any other related additional information']}></DocumentAttachment>
 
         <h3>2.2.2 Student - Full time Teacher Ratio (Academic year data)</h3>
-        <DynamicTable headers={['Academic Year','Total Number admitted Students in all programs','Total Number of Teachers','Full time Ratio']}  submitUrl="http://127.0.0.1:8000/api/criterion2.2.2"></DynamicTable>
+        <DynamicTable headers={['Academic Year','Total Number admitted Students in all programs','Total Number of Teachers','Full time Ratio']}  submitUrl="http://127.0.0.1:8000/api/criterion2.2.2"  userData={data}></DynamicTable>
         <DocumentAttachment documents={['Total number of students enrolled','Total number of full time teachers Formula: Students : Teachers','data in prescribed format, List of Full Time Teachers & List of Final admitted Students','Any additional information']}></DocumentAttachment>
         </>
       )}
@@ -128,7 +215,7 @@ const Criterion2 = () => {
         <h3>2.5.3 IT integration and reforms in the examination procedures and processes (continuous internal assessment and end-semester assessment) have brought in considerable improvement in examination management system of the institution</h3>
         <DynamicTable headers={['Academic Year','Sem. No','Course Code & Name','Name of the Teacher','% of online Teaching','Name of the LMS for online Teaching','Methods of ICT for Teaching','Method of LMS for Exam']} submitUrl="http://127.0.0.1:8000/api/criterion2.5.3"></DynamicTable>
         <p>Write a description in maximum of 200 words</p>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit253}>
         <textarea
           placeholder="Enter your text here"
           value={longText}
@@ -148,12 +235,28 @@ const Criterion2 = () => {
         <>
           <h3>2.6.1 The institution has stated learning outcomes (generic and programme specific)/graduate attributes which are integrated into the assessment process and widely publicized through the website and other documents.</h3>
           <p>Write a description in maximum of 200 words</p>
-          <textarea></textarea>
+          <form onSubmit={handleSubmit261}>
+        <textarea
+          placeholder="Enter your text here"
+          value={longText}
+          onChange={handleTextareaChange}
+        />
+
+        <button type="submit">Submit</button>
+      </form>
           <DocumentAttachment documents={['Upload Relevant Supporting Document','Upload any additional information','Upload COs for all courses (exemplars from Glossary)']}></DocumentAttachment>
           <h3>2.6.2 Attainment of Programme outcomes, Programme specific outcomes and course outcomes are evaluated by the institution during the year</h3>
           <DynamicTable headers={['Names of the Teacher','Course code (PG/Ph.D.)','No. of students registered','No of students attended exam','No. of students pass in exam','% of Failure students','Other related']} submitUrl="http://127.0.0.1:8000/api/criterion2.6.2"></DynamicTable>
           <p>Describe the method of measuring the level of attainment of POs , PSOs and COs in not more than 200 words.</p>
-          <textarea></textarea>
+          <form onSubmit={handleSubmit262}>
+        <textarea
+          placeholder="Enter your text here"
+          value={longText}
+          onChange={handleTextareaChange}
+        />
+
+        <button type="submit">Submit</button>
+      </form>
           <DocumentAttachment documents={['Upload relevant supporting document']}></DocumentAttachment>
           <h3>2.6.3 Students passed during the year</h3>
           <p>2.6.3.1: Outgoing students successfully completed the programme </p>
@@ -180,8 +283,11 @@ const Criterion2 = () => {
         <p>(Database of all currently enrolled students need to be prepared and shared with NAAC along with the online submission of QIF)</p>
         <DocumentAttachment documents={['Upload any additional information']}></DocumentAttachment>
         <p>Upload database of all currently enrolled students (Data  Template)</p>
+        
         </>
+
       )}
+      </div>
     </>
   );
 };

@@ -32,4 +32,15 @@ router.post('/', async (req, res) => {
     }
 });
 
+
+router.get('/', async (req, res) => {
+    try {
+        const criteria = await Criterion112.findAll();
+        res.status(200).json(criteria);
+    } catch (error) {
+        console.error('Error fetching data:', error.message, error.stack);
+        res.status(500).json({ message: 'Error fetching data', error: error.message });
+    }
+});
+
 module.exports = router;
