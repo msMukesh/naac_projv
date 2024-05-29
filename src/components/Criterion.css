@@ -1,0 +1,58 @@
+.parent{
+    background-color: antiquewhite;
+    margin: -32px;
+    padding: 0px;
+}
+h1{
+    align-items: center;
+    font-size: 30px;
+    margin-top: 15px;
+}
+p{
+    text-align: justify;
+    font-size: 17px;
+    padding: 5px;
+    margin: 15px;
+   
+}
+textarea{
+    height: 220px;
+    align-items: center;
+    justify-content: center;
+    width: 97%;
+    margin-bottom: 10px;
+    resize: none;
+    margin-left: 20px;
+}
+h3{
+    text-align: left;
+    margin: 17px;
+    font-size: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+   /* align-items: flex-end;*/
+  }
+
+ 
+  button {
+    align-self: flex-end;
+    margin-right: 8px;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  .selected {
+    font-weight: bold;
+    color: blue; /* Adjust color as needed */
+  }
+  input[type="radio"] {
+    margin-right: 5px; /* Adjust the margin as needed */
+  }
+  
+  /* CSS for labels */
+  label {
+    margin-right: 10px; /* Adjust the margin as needed */
+    cursor: pointer;
+  }
