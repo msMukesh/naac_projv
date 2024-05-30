@@ -28,6 +28,17 @@ router.post('/', async (req, res) => {
         console.error('Error saving data:', error);
         res.status(500).json({ message: 'Error saving data', error });
     }
+
+    router.get('/', async (req, res) => {
+        try {
+            const data = await criterion232.find({});
+            res.status(200).json(data);
+            console.log(data)
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            res.status(500).json({ message: 'Error fetching data', error });
+        }
+    });
 });
 
 module.exports = router;

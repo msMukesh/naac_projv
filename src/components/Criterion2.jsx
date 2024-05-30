@@ -26,9 +26,12 @@ const Criterion2 = () => {
   const [Criterion2521, setCriterion2521] = useState(null);
   const [Criterion253, setCriterion253] = useState(null);
   const [Criterion254, setCriterion254] = useState(null);
+  const [Criterion262, setCriterion262] = useState(null);
+  const [Criterion263, setCriterion263] = useState(null);
+
   const containerRef = useRef(null);
 
-  useEffect(() => {
+  useEffect(() => {memoizedData262
     const fetchData = async () => {
       try {
         const response = await axios.get('http://127.0.0.1:8000/api/criterion2.2.2');
@@ -47,7 +50,7 @@ const Criterion2 = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/criterion2.1.1');
+        const response = await fetch('http://127.0.0.1:8000/api/criterion2.1.1');
         setCriterion211(()=>response.data);
         console.log(response.data);
         
@@ -58,23 +61,23 @@ const Criterion2 = () => {
     fetchData();
   }, []);
 
-  const memoizedData211 = useMemo(() => Criterion211, [Criterion211]);
+   const memoizedData211 = useMemo(() => Criterion211, [Criterion211]);
 
-  useEffect(() => {
-    const fetchData = async () => {
+   useEffect(() => {
+     const fetchData = async () => {
       try {
         const response = await axios.get('http://127.0.0.1:8000/api/criterion2.3.2');
         setCriterion232(()=>response.data);
-        console.log(response.data);
+         console.log(response.data);
         
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-    fetchData();
-  }, []);
+     fetchData();
+   }, []);
 
-  const memoizedData232 = useMemo(() => Criterion232, [Criterion232]);
+   const memoizedData232 = useMemo(() => Criterion232, [Criterion232]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -207,6 +210,22 @@ const Criterion2 = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const response = await axios.get('http://127.0.0.1:8000/api/criterion2.6.2');
+        setCriterion262(()=>response.data);
+        console.log(response.data);
+        
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const memoizedData262 = useMemo(() => Criterion262, [Criterion262]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
         const response = await axios.get('http://127.0.0.1:8000/api/criterion2.5.4');
         setCriterion254(()=>response.data);
         console.log(response.data);
@@ -219,6 +238,22 @@ const Criterion2 = () => {
   }, []);
 
   const memoizedData254 = useMemo(() => Criterion254, [Criterion254]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/api/criterion2.6.3');
+        setCriterion263(()=>response.data);
+        console.log(response.data);
+        
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const memoizedData263 = useMemo(() => Criterion263, [Criterion263]);
 
   const toggleForm = () => {
     setShowForm(true);
@@ -485,7 +520,7 @@ const Criterion2 = () => {
       </form>
           <DocumentAttachment documents={['Upload Relevant Supporting Document','Upload any additional information','Upload COs for all courses (exemplars from Glossary)']}></DocumentAttachment>
           <h3>2.6.2 Attainment of Programme outcomes, Programme specific outcomes and course outcomes are evaluated by the institution during the year</h3>
-          <DynamicTable headers={['Names of the Teacher','Course code (PG/Ph.D.)','No. of students registered','No of students attended exam','No. of students pass in exam','% of Failure students','Other related']} submitUrl="http://127.0.0.1:8000/api/criterion2.6.2"></DynamicTable>
+          <DynamicTable headers={['Names of the Teacher','Course code (PG/Ph.D.)','No. of students registered','No of students attended exam','No. of students pass in exam','% of Failure students','Other related']} submitUrl="http://127.0.0.1:8000/api/criterion2.6.2" userData={memoizedData262}></DynamicTable>
           <p>Describe the method of measuring the level of attainment of POs , PSOs and COs in not more than 200 words.</p>
           <form onSubmit={handleSubmit262}>
         <textarea
@@ -500,7 +535,7 @@ const Criterion2 = () => {
           <h3>2.6.3 Students passed during the year</h3>
           <p>2.6.3.1: Outgoing students successfully completed the programme </p>
           <p>2.6.3.2: Final year students who appeared for the examination</p>
-          <DynamicTable headers={['Academic Year','Programme Code','Name of the Programme','Number of Students Appeared','Number of Students Passed','Pass (%)']} submitUrl="http://127.0.0.1:8000/api/criterion2.6.3"></DynamicTable>
+          <DynamicTable headers={['Academic Year','Programme Code','Name of the Programme','Number of Students Appeared','Number of Students Passed','Pass (%)']} submitUrl="http://127.0.0.1:8000/api/criterion2.6.3" userData={memoizedData263}></DynamicTable>
           <DocumentAttachment documents={['Upload relevant supporting document','Any additional information']}></DocumentAttachment>
         </>
       )}

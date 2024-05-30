@@ -30,6 +30,16 @@ router.post('/', async (req, res) => {
         console.error('Error saving data:', error.message, error.stack);
         res.status(500).json({ message: 'Error saving data', error: error.message });
     }
+
+    router.get('/', async (req, res) => {
+        try {
+            const criterion113Data = await Criterion113.find();
+            res.status(200).json(criterion112Data);
+        } catch (error) {
+            console.error('Error fetching data:', error.message, error.stack);
+            res.status(500).json({ message: 'Error fetching data', error: error.message });
+        }
+    });
 });
 
 module.exports = router;
