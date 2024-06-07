@@ -3214,10 +3214,11 @@ const handleGenerateReport = () => {
                 <th>Duration of Fellowship</th>
                 <th>Type of the Fellowship</th>
                 <th>Granting Agency</th>
-                <th>File</th>
                 {!hideActions && (
+<>
+                <th>File</th>
 
-                <th>Actions</th>
+                <th>Actions</th></>
               )}
               </tr>
             </thead>
@@ -3232,6 +3233,10 @@ const handleGenerateReport = () => {
                 <td>{data.duration}</td>
                 <td>{data.fellowshipType}</td>
                 <td>{data.grantingAgency}</td>
+
+
+                {!hideActions && (
+                <>
                 <td>
                 <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -3241,7 +3246,6 @@ const handleGenerateReport = () => {
                 </td>
                 {/* <td>{tableData314.filePath}</td> */}
 
-                {!hideActions && (
 
                 <td> {/* Actions column */}
               <button
@@ -3252,7 +3256,10 @@ const handleGenerateReport = () => {
               </button>
               
             </td>
+            </>
             )}
+
+
               </tr>
             ))}
             </tbody>
@@ -3778,10 +3785,11 @@ const handleGenerateReport = () => {
                 <th>Year of Award</th>
                 <th>Fund Layout amount Provided</th>
                 <th>Duration</th>
-                <th>File</th>
                 {!hideActions && (
-
+                <>
+                <th>File</th>
                 <th>Actions</th>
+                </>
               )}
               </tr>
             </thead>
@@ -3797,6 +3805,9 @@ const handleGenerateReport = () => {
                 <td>{data.fundLayoutAmount}</td>
                 <td>{data.duration}</td>
 
+
+                {!hideActions && (
+<>
                 <td>
                 <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -3805,7 +3816,6 @@ const handleGenerateReport = () => {
                   </button>
                 </td>
                 {/* <td>{tableData316.filePath}</td> */}
-                {!hideActions && (
 
                 <td> 
               <button
@@ -3814,7 +3824,7 @@ const handleGenerateReport = () => {
               >
                 Delete
               </button>
-            </td>
+            </td></>
 )}
               </tr>
             ))}
@@ -3956,10 +3966,11 @@ const handleGenerateReport = () => {
             <th>Year of Award</th>
             <th>Funds (Amount) Provided</th>
             <th>Duration</th>
-            <th>File </th>
             {!hideActions && (
-
-            <th>Actions</th>
+<>
+            <th>File </th>
+           
+            <th>Actions</th></>
           )}
           </tr>
         </thead>
@@ -3973,6 +3984,8 @@ const handleGenerateReport = () => {
             <td>{data.yearOfAward}</td>
             <td>{data.fundsProvided}</td>
             <td>{data.duration}</td>
+            {!hideActions && (
+<>
             <td>
             <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -3981,9 +3994,6 @@ const handleGenerateReport = () => {
                     </button>
                   </td>
             {/* <td>{tableData321.filePath}</td> */}
-
-            {!hideActions && (
-
             <td> 
               <button
                 className="Deletebtn"
@@ -3991,7 +4001,7 @@ const handleGenerateReport = () => {
               >
                 Delete
               </button>
-            </td>
+            </td></>
 )}
           </tr>
         ))}
@@ -4129,10 +4139,11 @@ const handleGenerateReport = () => {
             <th>Duration of the Project</th>
             <th>Funding Agency</th>
             <th>Total Amount Funds Received</th>
-            <th>File</th>
             {!hideActions && (
+<>
+            <th>File</th>
 
-            <th>Actions</th>
+            <th>Actions</th></>
           )}
           </tr>
         </thead>
@@ -4146,6 +4157,8 @@ const handleGenerateReport = () => {
               <td>{data.duration}</td>
               <td>{data.fundingAgency}</td>
               <td>{data.totalAmountFundsReceived}</td>
+              {!hideActions && (
+<>
               <td>
               <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -4157,7 +4170,6 @@ const handleGenerateReport = () => {
                   'No File Attached'
                 )}
               </td>
-              {!hideActions && (
 
               <td> 
               <button
@@ -4166,7 +4178,7 @@ const handleGenerateReport = () => {
               >
                 Delete
               </button>
-            </td>
+            </td></>
 )}
             </tr>
           ))}
@@ -4292,10 +4304,10 @@ const handleGenerateReport = () => {
             <th>Amount/Funds Received</th>
             <th>Name of Funding Agency</th>
             <th>Year of Sanction</th>
-            <th>Download File</th>
             {!hideActions && (
-
-            <th>Actions</th>
+              <>
+            <th>Download File</th>
+            <th>Actions</th></>
           )}
           </tr>
         </thead>
@@ -4308,6 +4320,9 @@ const handleGenerateReport = () => {
               <td>{data.fundsReceived}</td>
               <td>{data.fundingAgency}</td>
               <td>{data.yearOfSanction}</td>
+
+              {!hideActions && (
+<>
               <td>
               <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -4319,7 +4334,6 @@ const handleGenerateReport = () => {
                   "No File Attached"
                 )}
               </td>
-              {!hideActions && (
 
               <td> 
               <button
@@ -4328,7 +4342,9 @@ const handleGenerateReport = () => {
               >
                 Delete
               </button>
-            </td>)}
+            </td>
+            </>
+          )}
 
             </tr>
           ))}
@@ -4546,10 +4562,11 @@ Provide the link for additional information
 </th>
             <th>other Similar</th>
             <th>Description</th>
-            <th>Download File</th>
             {!hideActions && (
-
+            <>
+            <th>Download File</th>
             <th>Actions</th>
+            </>
           )}
           </tr>
         </thead>
@@ -4563,6 +4580,8 @@ Provide the link for additional information
               <td>{data.startupCenter}</td>
               <td>{data.otherSimilar}</td>
               <td>{data.description}</td>
+              {!hideActions && (
+<>
               <td>
               <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -4574,7 +4593,6 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
-              {!hideActions && (
 
               <td> 
               <button
@@ -4583,7 +4601,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>
+            </td></>
             )}
             </tr>
           ))}
@@ -4721,10 +4739,11 @@ Provide the link for additional information
             <th>To Date</th>
             <th>Number of Participants</th>
             <th>Event Organizer</th>
-            <th>Download File</th>
             {!hideActions && (
+<>
+            <th>Download File</th>
 
-            <th>Actions</th>
+            <th>Actions</th></>
           )}
           </tr>
         </thead>
@@ -4738,6 +4757,8 @@ Provide the link for additional information
               <td>{data.endDate}</td>
               <td>{data.participantsCount}</td>
               <td>{data.eventOrganizer}</td>
+              {!hideActions && (
+                <>
               <td>
               <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -4749,7 +4770,6 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
-              {!hideActions && (
 
               <td> 
               <button
@@ -4758,7 +4778,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>
+            </td></>
             )}
             </tr>
           ))}
@@ -4885,10 +4905,11 @@ Provide the link for additional information
             <th>Name of the Awardee</th>
             <th>Name of the Awarding Agency with Contact Details</th>
             <th>Date of Award</th>
-            <th>Download File</th>
             {!hideActions && (
-
+            <>
+            <th>Download File</th>
             <th>Actions</th>
+            </>
           )}
           </tr>
         </thead>
@@ -4900,6 +4921,8 @@ Provide the link for additional information
               <td>{data.awardeeName}</td>
               <td>{data.awardingAgency}</td>
               <td>{data.dateOfAward}</td>
+              {!hideActions && (
+<>
               <td>
               <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -4911,7 +4934,6 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
-              {!hideActions && (
 
               <td> 
               <button
@@ -4920,7 +4942,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>
+            </td></>
 )}
             </tr>
           ))}
@@ -5137,6 +5159,8 @@ Provide the link for additional information
       <td>{data.plagiarismCheck}</td>
       <td>{data.researchAdvisoryCommittee}</td>
       <td>{data.otherRelatedItem}</td>
+      {!hideActions && (
+<>
       <td>
       <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -5148,7 +5172,6 @@ Provide the link for additional information
           "No File Attached"
         )}
       </td>
-      {!hideActions && (
 
       <td> 
               <button
@@ -5157,7 +5180,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>)}
+            </td></>)}
     </tr>
   ))}
 </tbody>
@@ -5287,10 +5310,11 @@ Provide the link for additional information
             <th>Name of the Awarding Agency</th>
             <th>Year of Award</th>
             <th>Incentive Details</th>
-            <th>Download File</th>
             {!hideActions && (
-
+            <>
+            <th>Download File</th>
             <th>Actions</th>
+            </>
           )}
           </tr>
         </thead>
@@ -5303,6 +5327,9 @@ Provide the link for additional information
               <td>{data.awardingAgency}</td>
               <td>{data.yearOfAward}</td>
               <td>{data.incentiveDetails}</td>
+
+              {!hideActions && (
+<>
               <td>
               <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -5314,7 +5341,6 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
-              {!hideActions && (
 
               <td> 
               <button
@@ -5323,7 +5349,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>)}
+            </td> </>)}
             </tr>
           ))}
         </tbody>
@@ -5436,10 +5462,10 @@ Provide the link for additional information
              <th>Patent Number</th>
              <th>Published / Awarded / Granted</th>
              <th>Year of Award</th>
-             <th>Download File</th>
              {!hideActions && (
-
-             <th>Actions</th>
+<>
+             <th>Download File</th>
+             <th>Actions</th></>
             )}
            </tr>
          </thead>
@@ -5451,6 +5477,8 @@ Provide the link for additional information
                <td>{data.patentNumber}</td>
                <td>{data.status}</td>
                <td>{data.yearOfAward}</td>
+               {!hideActions && (
+<>
                <td>
                <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -5462,7 +5490,6 @@ Provide the link for additional information
                    "No File Attached"
                  )}
                </td>
-               {!hideActions && (
                <td> 
               <button
                 className="Deletebtn"
@@ -5470,7 +5497,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>)}
+            </td></>)}
              </tr>
            ))}
          </tbody>
@@ -5591,10 +5618,11 @@ Provide the link for additional information
             <th>Name of the Guide</th>
             <th>Year of Registration</th>
             <th>Year of award of PhD</th>
-            <th>Download File</th>
             {!hideActions && (
+<>
+            <th>Download File</th>
 
-            <th>Actions</th>
+            <th>Actions</th></>
           )}
           </tr>
         </thead>
@@ -5607,6 +5635,8 @@ Provide the link for additional information
               <td>{data.guideName}</td>
               <td>{data.registrationYear}</td>
               <td>{data.awardYear}</td>
+              {!hideActions && (
+<>
               <td>
               <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -5618,7 +5648,6 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
-              {!hideActions && (
 
               <td> 
               <button
@@ -5627,7 +5656,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>)}
+            </td></>)}
             </tr>
           ))}
         </tbody>
@@ -5747,10 +5776,11 @@ Provide the link for additional information
             <th>Name of Journal</th>
             <th>Year of Publication</th>
             <th>ISSN Number</th>
-            <th>Download File</th>
             {!hideActions && (
+<>
+            <th>Download File</th>
 
-            <th>Actions</th>
+            <th>Actions</th></>
           )}
           </tr>
         </thead>
@@ -5764,6 +5794,8 @@ Provide the link for additional information
               <td>{data.journalName}</td>
               <td>{data.yearOfPublication}</td>
               <td>{data.issnNumber}</td>
+              {!hideActions && (
+<>
               <td>
               <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -5775,7 +5807,6 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
-              {!hideActions && (
 
               <td> 
               <button
@@ -5784,7 +5815,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>)}
+            </td></>)}
             </tr>
           ))}
         </tbody>
@@ -5929,10 +5960,11 @@ Provide the link for additional information
             <th>Name of the Publisher National / International</th>
             <th>ISBN  Number of the Proceeding</th>
             <th>Year of Publications</th>
-            <th>Download File</th>
             {!hideActions && (
+<>
+            <th>Download File</th>
 
-            <th>Actions</th>
+            <th>Actions</th></>
           )}
           </tr>
         </thead>
@@ -5947,6 +5979,8 @@ Provide the link for additional information
               <td>{data.publisher}</td>
               <td>{data.isbnNumber}</td>
               <td>{data.yearOfPublication}</td>
+              {!hideActions && (
+<>
               <td>
               <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -5958,7 +5992,6 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
-              {!hideActions && (
 
               <td> 
               <button
@@ -5967,7 +6000,9 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>)}
+            </td>
+            </>
+          )}
             </tr>
           ))}
         </tbody>
@@ -6076,10 +6111,11 @@ Provide the link for additional information
             <th>Platform on which module is developed</th>
             <th>Date of launching e-content</th>
             <th>Number of platform on which e-content has been developed by teacher</th>
-            <th>Download File</th>
             {!hideActions && (
+<>
+            <th>Download File</th>
 
-            <th>Actions</th>
+            <th>Actions</th></>
           )}
           </tr>
         </thead>
@@ -6091,6 +6127,8 @@ Provide the link for additional information
               <td>{data.platform}</td>
               <td>{data.launchDate}</td>
               <td>{data.platformCount}</td>
+              {!hideActions && (
+<>
               <td>
               <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -6102,7 +6140,6 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
-              {!hideActions && (
 
               <td> 
               <button
@@ -6111,7 +6148,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>)}
+            </td></>)}
             </tr>
           ))}
         </tbody>
@@ -6346,10 +6383,11 @@ Provide the link for additional information
             <th>Title of the Journal</th>
             <th>Year of Publication</th>
             <th>Citation Index</th>
-            <th>Download File</th>    
             {!hideActions && (
+<>
+            <th>Download File</th>    
         
-            <th>Action</th>
+            <th>Action</th></>
           )}
           </tr>
         </thead>
@@ -6361,6 +6399,8 @@ Provide the link for additional information
               <td>{data.journalTitle}</td>
               <td>{data.yearOfPublication}</td>
               <td>{data.citationIndex}</td>
+              {!hideActions && (
+<>
               <td>
               <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -6372,7 +6412,6 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
-              {!hideActions && (
 
               <td> 
               <button
@@ -6381,7 +6420,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>
+            </td></>
                       )}
 
             </tr>
@@ -6492,10 +6531,10 @@ Provide the link for additional information
             <th>Title of the Journal</th>
             <th>Year of Publication</th>
             <th>H Index</th>
-            <th>Download File</th>
             {!hideActions && (
-
-            <th>Actions</th>
+            <>
+            <th>Download File</th>
+            <th>Actions</th></>
           )}
 
           </tr>
@@ -6508,6 +6547,8 @@ Provide the link for additional information
               <td>{data.journalTitle}</td>
               <td>{data.yearOfPublication}</td>
               <td>{data.hIndex}</td>
+              {!hideActions && (
+<>
               <td>
               <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -6519,7 +6560,6 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
-              {!hideActions && (
 
               <td> 
               <button
@@ -6528,7 +6568,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>
+            </td></>
                       )}
 
             </tr>
@@ -6610,10 +6650,11 @@ Provide the link for additional information
           <tr>
             <th>Minutes of the Governing Council</th>
             <th>Consultancy Policy</th>
-            <th>Supporting document</th>
             {!hideActions && (
+<>
+            <th>Supporting document</th>
 
-            <th>Actions</th>
+            <th>Actions</th></>
           )}
 
           </tr>
@@ -6644,6 +6685,8 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
+              {!hideActions && (
+<>
               <td>
               <div>{getFileNameFromPath(data.additionalInfo)}</div>
 
@@ -6655,7 +6698,6 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
-              {!hideActions && (
 
               <td> 
               <button
@@ -6665,7 +6707,7 @@ Provide the link for additional information
                 Delete
               </button>
             </td>
-                      )}
+            </>  )}
 
             </tr>
           ))}
@@ -6810,10 +6852,11 @@ Provide the link for additional information
         <th>Details of Corporate training provided</th>
         <th>Title of the Training</th>
         <th>Number of Participants Benefitted</th>
-        <th>Download File</th>
         {!hideActions && (
+<>
+        <th>Download File</th>
 
-        <th>Actions</th>
+        <th>Actions</th></>
       )}
 
       </tr>
@@ -6829,6 +6872,8 @@ Provide the link for additional information
           <td>{item.corporateTrainingDetails}</td>
           <td>{item.titleOfTraining}</td>
           <td>{item.numberOfParticipants}</td>
+          {!hideActions && (
+<>
           <td>
           <div>{getFileNameFromPath(item.filePath)}</div>
 
@@ -6840,7 +6885,6 @@ Provide the link for additional information
               "No File Attached"
             )}
           </td>
-          {!hideActions && (
 
           <td> 
               <button
@@ -6850,7 +6894,7 @@ Provide the link for additional information
                 Delete
               </button>
             </td>
-                      )}
+            </>  )}
 
         </tr>
       ))}
@@ -6988,10 +7032,11 @@ Provide the link for additional information
             <th>Venue of the Event</th>
             <th>Outcome</th>
             <th>Impact Description</th>
-            <th>Download File</th>
             {!hideActions && (
+<>
+            <th>Download File</th>
 
-            <th>Actions</th>
+            <th>Actions</th></>
           )}
 
           </tr>
@@ -7006,6 +7051,8 @@ Provide the link for additional information
               <td>{data.eventVenue}</td>
               <td>{data.outcome}</td>
               <td>{data.impactDescription}</td>
+              {!hideActions && (
+<>
               <td>
               <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -7017,7 +7064,6 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
-              {!hideActions && (
 
               <td> 
               <button
@@ -7027,7 +7073,7 @@ Provide the link for additional information
                 Delete
               </button>
             </td>
-                      )}
+            </>)}
 
             </tr>
           ))}
@@ -7136,10 +7182,11 @@ Provide the link for additional information
             <th>Name of the Award/Recognition</th>
             <th>Name of the Awarding Government/Government recognized bodies</th>
             <th>Year of the Award</th>
-            <th>Download File</th>
             {!hideActions && (
+<>
+            <th>Download File</th>
 
-            <th>Actions</th>
+            <th>Actions</th></>
           )}
 
           </tr>
@@ -7152,6 +7199,8 @@ Provide the link for additional information
               <td>{data.awardName}</td>
               <td>{data.awardingBody}</td>
               <td>{data.yearOfAward}</td>
+              {!hideActions && (
+<>
               <td>
               <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -7163,7 +7212,6 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
-              {!hideActions && (
 
               <td> 
               <button
@@ -7173,7 +7221,7 @@ Provide the link for additional information
                 Delete
               </button>
             </td>
-                      )}
+            </>   )}
 
             </tr>
           ))}
@@ -7280,10 +7328,11 @@ Provide the link for additional information
             <th>Name of the Scheme</th>
             <th>Number of Students Participated</th>
             <th>Issues Addressed</th>
-            <th>Download File</th>
             {!hideActions && (
+<>
+            <th>Download File</th>
 
-            <th>Actions</th>
+            <th>Actions</th></>
           )}
 
           </tr>
@@ -7296,6 +7345,8 @@ Provide the link for additional information
               <td>{data.schemeName}</td>
               <td>{data.numberOfStudents}</td>
               <td>{data.issuesAddressed}</td>
+              {!hideActions && (
+<>
               <td>
               <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -7307,7 +7358,6 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
-              {!hideActions && (
 
               <td> 
               <button
@@ -7316,7 +7366,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>          )}
+            </td>        </>  )}
 
             </tr>
           ))}
@@ -7412,10 +7462,11 @@ Provide the link for additional information
             <th>Name of the Scheme</th>
             <th>Year of the Activity</th>
             <th>Names of the Students Participating in Such activities</th>
-            <th>Download File</th>
             {!hideActions && (
+<>
+            <th>Download File</th>
 
-            <th>Actions</th>
+            <th>Actions</th></>
           )}
 
           </tr>
@@ -7427,6 +7478,8 @@ Provide the link for additional information
               <td>{data.schemeName}</td>
               <td>{data.yearOfActivity}</td>
               <td>{data.studentNames}</td>
+              {!hideActions && (
+<>
               <td>
               <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -7438,7 +7491,6 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
-              {!hideActions && (
 
               <td> 
               <button
@@ -7447,7 +7499,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>          )}
+            </td>  </>        )}
 
             </tr>
           ))}
@@ -7587,10 +7639,11 @@ Provide the link for additional information
             <th>Duration of the Collaboration</th>
             <th>Names of the Faculty Members Involved</th>
             <th>Nature of the Activity</th>
-            <th>Download File</th>
             {!hideActions && (
+<>
+            <th>Download File</th>
 
-            <th>Actions</th>
+            <th>Actions</th></>
           )}
 
           </tr>
@@ -7605,6 +7658,8 @@ Provide the link for additional information
               <td>{data.collaborationDuration}</td>
               <td>{data.facultyInvolved}</td>
               <td>{data.natureOfActivity}</td>
+              {!hideActions && (
+<>
               <td>
               <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -7616,7 +7671,6 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
-              {!hideActions && (
 
               <td> 
               <button
@@ -7625,7 +7679,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>          )}
+            </td>       </>   )}
 
             </tr>
           ))}
@@ -7738,10 +7792,11 @@ Provide the link for additional information
             <th>Names(s) of the Faculty Coordinators</th>
             <th>Actual Activities under each MoU</th>
             <th>Year-wise Number of students/teachers who participated under MoUs</th>
-            <th>Download File</th>
             {!hideActions && (
+<>
+            <th>Download File</th>
 
-            <th>Actions</th>
+            <th>Actions</th></>
           )}
 
           </tr>
@@ -7755,6 +7810,8 @@ Provide the link for additional information
               <td>{data.facultyCoordinators}</td>
               <td>{data.actualActivities}</td>
               <td>{data.participants}</td>
+              {!hideActions && (
+<>
               <td>
               <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -7766,7 +7823,6 @@ Provide the link for additional information
                   "No File Attached"
                 )}
               </td>
-              {!hideActions && (
 
               <td> 
               <button
@@ -7775,7 +7831,7 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>          )}
+            </td>     </>     )}
 
 
             </tr>
