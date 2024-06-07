@@ -2776,28 +2776,33 @@ const handleGenerateReport = () => {
     <table>
       <thead>
         <tr>
-          <th>User Name</th>
-          <th>File</th>
-          {!hideActions && (
-          <th className={hideActions ? 'Deltd hidden' : 'Deltd'}>Actions</th>)}
-        </tr>
+    <th>User Name</th>
+    {!hideActions && (
+      <>
+        <th className="Deltd">File</th>
+        <th className="Deltd">Actions</th>
+      </>
+    )}
+  </tr>
+
       </thead>
       <tbody>
         {/* Map over the tableData311 array to create a row for each object */}
         {tableData311.map((data, index) => (
           <tr key={index}>
-            <td>{data._id}</td> {/* ID column */}
-            <td>
+          <td>{data._id}</td> {/* ID column */}
 
-            <div>{getFileNameFromPath(data.filePath)}</div>
+                  {!hideActions && (
+        <td>
+          <div>{getFileNameFromPath(data.filePath)}</div>
+          <button
+            className="Downloadbtn"
+            onClick={() => handleDownloadFile(data.filePath)}>
+            Download File
+          </button>
+        </td>
+      )}
 
-              <button
-                className="Downloadbtn"
-                onClick={() => handleDownloadFile(data.filePath)}
-              >
-                Download File
-              </button>
-            </td>
             {!hideActions && (
             <td className={hideActions ? 'Deltd hidden' : 'Deltd'}>
                     {/* Conditional rendering of delete button based on hideActions state */}
