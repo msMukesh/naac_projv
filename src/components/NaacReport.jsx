@@ -2912,9 +2912,12 @@ const handleGenerateReport = () => {
           <th>The amount of seed money</th>
           <th>Year of receiving grant</th>
           <th>Any additional information</th>
-          <th>File</th>          {!hideActions && (
-
-          <th>Actions</th> )}
+          {!hideActions && (
+            <> 
+            <th>File</th>          
+            <th>Actions</th>
+            </>
+          )}
         </tr>
       </thead>
       <tbody>
@@ -2924,6 +2927,8 @@ const handleGenerateReport = () => {
             <td>{data.amount}</td>
             <td>{data.year}</td>
             <td>{data.additionalInfo}</td>
+            {!hideActions && (
+              <>
             <td>
 
               <div>{getFileNameFromPath(data.filePath)}</div>
@@ -2935,7 +2940,7 @@ const handleGenerateReport = () => {
                 Download File
               </button>
             </td>
-            {!hideActions && (
+           
             <td> {/* Actions column */}
               <button
                 className="Deletebtn"
@@ -2944,7 +2949,9 @@ const handleGenerateReport = () => {
                 Delete
               </button>
               
-            </td>)}
+            </td>
+            </>)
+            }
           </tr>
         ))}
       </tbody>
@@ -3066,10 +3073,13 @@ const handleGenerateReport = () => {
                 <th>International/National /State/</th>
                 <th>Name of the Fellowship</th>
                 <th>Sponsoring Agency</th>
-                <th>File</th>
-                {!hideActions && (
 
-                <th>Actions</th>          )}
+                {!hideActions && (
+                   <>
+                <th>File</th>
+                <th>Actions</th>  
+                </>       
+                )}
 
               </tr>
             </thead>
@@ -3083,6 +3093,9 @@ const handleGenerateReport = () => {
                 <td>{data.fellowshipType}</td>
                 <td>{data.fellowshipName}</td>
                 <td>{data.sponsoringAgency}</td>
+
+                {!hideActions && (
+                <>
                 <td>
                 <div>{getFileNameFromPath(data.filePath)}</div>
 
@@ -3091,17 +3104,16 @@ const handleGenerateReport = () => {
                   </button>
                 </td>
                 {/* <td>{tableData313.filePath}</td> */}
-                {!hideActions && (
 
                 <td> {/* Actions column */}
               <button
                 className="Deletebtn"
-                onClick={() => handleDelete(data._id)} // Use handleDelete
-              >
+                onClick={() => handleDelete(data._id)}
+>
                 Delete
               </button>
               
-            </td>          )}
+            </td>  </>  )}
 
               </tr>
             ))}
