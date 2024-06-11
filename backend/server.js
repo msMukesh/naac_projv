@@ -385,7 +385,8 @@ const Criterion311Model = mongoose.model('Criterion311', Criterion311Schema);
 
 app.post('/311upload', upload.single('file'), async (req, res) => { 
   const { userName } = req.body;
-  const { path: filePath } = req.file;
+  const filePath = req.file ? req.file.path : null; // Get file path if file exists
+console.log("filepath filepath"+filePath);
   const criterionNumber = '311'; // This would be based on your scenario
 
   // Get the next sequence value
@@ -406,11 +407,11 @@ app.post('/311upload', upload.single('file'), async (req, res) => {
 
   try {
       // Construct the _id
-  const _id = `311${globalUserName}${sequenceValue}`;
+  const _id = `311${userName}${sequenceValue}`;
 console.log("idididid"+ _id);
   const newDocument = new Criterion311Model({
     _id,
-    globalUserName,
+    userName,
     filePath,
   });
 

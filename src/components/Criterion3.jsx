@@ -127,11 +127,6 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
   };
 
 
-
-
-
-
-
 // Initial state for Criterion 3.1.2
 const initialFormData312 = {
   teacherName: "",
