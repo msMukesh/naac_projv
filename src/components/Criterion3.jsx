@@ -68,7 +68,6 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
   
 
     
-  // State for Criterion 3.1.1
   const [file311, setFile311] = useState(null);
   const [uploading311, setUploading311] = useState(false);
   const [uploaded311, setUploaded311] = useState(false);
@@ -79,8 +78,6 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
     setUploaded311(false); // Reset the upload status
     setError311(null); // Reset any errors
   };
-
-  const [criterionNumber, setCriterionNumber] = useState(null);
 
   const handleUpload311 = async () => {
     if (!file311) {
@@ -93,8 +90,12 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
       formData.append("file", file311);
       // Get user name from cookie
       const userName = Cookies.get("userName");
+      if (!userName) {
+        setError311("User name is not available.");
+        return;
+      }
       formData.append("userName", userName);
-      console.log("311 frontend"+userName);
+      console.log("User name for 3.1.1 upload: " + userName);
       const response = await axios.post(
         "https://naac-server.onrender.com/311upload",
         formData,
@@ -106,14 +107,12 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
       );
       console.log(response.data);
       alert("File uploaded successfully.");
- // Reset the form and update states after successful upload
       setUploaded311(true); // Set upload status to true
 
- // Reset the file input after 3 seconds
- setTimeout(() => {
-  setUploaded311(false); // Reset uploaded status to false after 3 seconds
-}, 1000); // 3000 milliseconds = 3 seconds
-
+      // Reset the file input after 3 seconds
+      setTimeout(() => {
+        setUploaded311(false); // Reset uploaded status to false after 3 seconds
+      }, 3000); // 3000 milliseconds = 3 seconds
 
       setFile311(null); // Reset the file input
 
@@ -123,9 +122,8 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
     } finally {
       setUploading311(false);
     }
-    // resetFormAndErrors();
   };
-
+  
 
 // Initial state for Criterion 3.1.2
 const initialFormData312 = {
@@ -2730,23 +2728,19 @@ function getFileNameFromPath(filePath1) {
           <h3 className="subTitle1">Key Indicator - 3.1 Promotion of Research and Facilities</h3>
 
  
-          {/* Criterion 3.1.1 Form */}
           <div className="formDiv">
-              <h4>3.1.1 The institution Research facilities are frequently updated and there is well defined policy for
-                  promotion of research which is uploaded on the institutional website and implemented 
-              </h4>
+      <h4>3.1.1 The institution Research facilities are frequently updated and there is well defined policy for promotion of research which is uploaded on the institutional website and implemented</h4>
 
-              <p>Upload relevant supporting document </p>
- <input
+      <p>Upload relevant supporting document</p>
+      <input
         type="file"
         onChange={handleFile311Change}
-        
       />
-                            <button className="submitFormBtn" onClick={handleUpload311} disabled={uploading311 || uploaded311}>
-                        {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
-                      </button>
-                      {error311 && <div className="error">{error311}</div>}
-          </div>
+      <button className="submitFormBtn" onClick={handleUpload311} disabled={uploading311 || uploaded311}>
+        {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
+      </button>
+      {error311 && <div className="error">{error311}</div>}
+    </div>
 
           {tableData311 && (
   <div>

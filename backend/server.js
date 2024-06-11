@@ -380,42 +380,38 @@ const Criterion311Schema = new mongoose.Schema({
   userName: String,
   filePath: String,
 });
+
 // Define the model for Criterion311 collection
 const Criterion311Model = mongoose.model('Criterion311', Criterion311Schema);
 
-app.post('/311upload', upload.single('file'), async (req, res) => { 
-  const { userName } = req.body;
-  const filePath = req.file ? req.file.path : null; // Get file path if file exists
-console.log("filepath filepath"+filePath);
-  const criterionNumber = '311'; // This would be based on your scenario
 
-  // Get the next sequence value
+app.post('/311upload', upload.single('file'), async (req, res) => {
+  const { userName } = req.body;
+  const filePath = req.file ? req.file.path : null;
+
+  console.log("Received file path: " + filePath);
+  const criterionNumber = '311';
+
   let sequenceValue;
   try {
-    console.log("criterionNumber"+criterionNumber);
+    console.log("Criterion number: " + criterionNumber);
     sequenceValue = await getNextSequenceValue(criterionNumber);
   } catch (error) {
     console.error('Error getting next sequence value:', error);
     return res.status(500).json({ error: 'Error uploading file. Please try again.' });
   }
-  console.log("sequence value in post "+ sequenceValue);
-  // Check if sequenceValue is a valid number
+
+  console.log("Sequence value: " + sequenceValue);
   if (isNaN(sequenceValue)) {
     console.error('Invalid sequence value:', sequenceValue);
     return res.status(500).json({ error: 'Error uploading file. Please try again.' });
   }
 
   try {
-      // Construct the _id
-  const _id = `311${userName}${sequenceValue}`;
-console.log("idididid"+ _id);
-  const newDocument = new Criterion311Model({
-    _id,
-    userName,
-    filePath,
-  });
-
-  await newDocument.save();
+    const _id = `311${userName}${sequenceValue}`;
+    console.log("Generated ID: " + _id);
+    const newDocument = new Criterion311Model({ _id, userName, filePath });
+    await newDocument.save();
     return res.status(200).json({ message: 'File uploaded successfully' });
   } catch (error) {
     console.error('Error saving document:', error);
