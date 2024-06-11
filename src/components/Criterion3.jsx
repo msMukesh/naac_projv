@@ -67,7 +67,7 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
   };
   
 
-  
+    
   // State for Criterion 3.1.1
   const [file311, setFile311] = useState(null);
   const [uploading311, setUploading311] = useState(false);
@@ -125,6 +125,7 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
     }
     // resetFormAndErrors();
   };
+
 
 
 
@@ -2733,23 +2734,26 @@ function getFileNameFromPath(filePath1) {
           <h2 class="criterionMainTitle">Criterion III - Research, Innovations and Extension</h2>
           <h3 className="subTitle1">Key Indicator - 3.1 Promotion of Research and Facilities</h3>
 
-                 {/* Criterion 3.1.1 Form */}
-                 <div className="formDiv">
+ 
+          {/* Criterion 3.1.1 Form */}
+          <div className="formDiv">
               <h4>3.1.1 The institution Research facilities are frequently updated and there is well defined policy for
                   promotion of research which is uploaded on the institutional website and implemented 
               </h4>
 
               <p>Upload relevant supporting document </p>
  <input
-    type="file"
-    onChange={handleFile311Change}/>
+        type="file"
+        onChange={handleFile311Change}
+        
+      />
                             <button className="submitFormBtn" onClick={handleUpload311} disabled={uploading311 || uploaded311}>
                         {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
                       </button>
                       {error311 && <div className="error">{error311}</div>}
           </div>
 
- {tableData311 && (
+          {tableData311 && (
   <div>
     <table>
       <thead>
