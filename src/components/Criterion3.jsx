@@ -67,63 +67,69 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
   };
   
 
-    
-  const [file311, setFile311] = useState(null);
-  const [uploading311, setUploading311] = useState(false);
-  const [uploaded311, setUploaded311] = useState(false);
-  const [error311, setError311] = useState(null);
 
-  const handleFile311Change = (e) => {
-    setFile311(e.target.files[0]);
-    setUploaded311(false); // Reset the upload status
-    setError311(null); // Reset any errors
-  };
+// Initial state for Criterion 3.1.1
+const initialFormData311 = {
+  userName: "",
+  file311: null,
+};
 
-  const handleUpload311 = async () => {
-    if (!file311) {
-      setError311("Please select a file.");
-      return;
-    }
-    setUploading311(true);
-    try {
-      const formData = new FormData();
-      formData.append("file", file311);
-      // Get user name from cookie
-      const userName = Cookies.get("userName");
-      if (!userName) {
-        setError311("User name is not available.");
-        return;
+// State for Criterion 3.1.1
+const [formData311, setFormData311] = useState(initialFormData311);
+const [uploading311, setUploading311] = useState(false);
+const [uploaded311, setUploaded311] = useState(false);
+const [error311, setError311] = useState(null);
+
+const handleFile311Change = (e) => {
+  setFormData311({
+    ...formData311,
+    file311: e.target.files[0],
+  });
+};
+
+
+const handleSubmit311 = async (e) => {
+  e.preventDefault();
+  setUploading311(true);
+
+  const formDataToSend = new FormData();
+  const userName = Cookies.get("userName");
+  const id = userName + "311"; // Combining userName with "311" to create id
+  formDataToSend.append("userName", userName);
+  formDataToSend.append("id", id);
+  formDataToSend.append("file", formData311.file311);
+
+  try {
+    const response = await axios.post(
+      "https://naac-server.onrender.com/311upload",
+      formDataToSend,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       }
-      formData.append("userName", userName);
-      console.log("User name for 3.1.1 upload: " + userName);
-      const response = await axios.post(
-        "https://naac-server.onrender.com/311upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log(response.data);
-      alert("File uploaded successfully.");
-      setUploaded311(true); // Set upload status to true
+    );
+    console.log(response.data);
+    alert("Data submitted successfully.");
+    // Reset the form and other states after successful submission
+    setFormData311(initialFormData311);
 
-      // Reset the file input after 3 seconds
-      setTimeout(() => {
-        setUploaded311(false); // Reset uploaded status to false after 3 seconds
-      }, 3000); // 3000 milliseconds = 3 seconds
+    // Reset the form and update states after successful upload
+    setUploaded311(true); // Set upload status to true
+    // Reset the file input after 3 seconds
+    setTimeout(() => {
+      setUploaded311(false); // Reset uploaded status to false after 3 seconds
+    }, 1000); // 3000 milliseconds = 3 seconds
 
-      setFile311(null); // Reset the file input
+  } catch (error) {
+    console.error("Error submitting data:", error);
+    setError311("Error submitting data. Please try again.");
+  } finally {
+    setUploading311(false);
+  }
+};
 
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      setError311("Error uploading file. Please try again.");
-    } finally {
-      setUploading311(false);
-    }
-  };
-  
+
 
 // Initial state for Criterion 3.1.2
 const initialFormData312 = {
@@ -2727,40 +2733,49 @@ function getFileNameFromPath(filePath1) {
           <h2 class="criterionMainTitle">Criterion III - Research, Innovations and Extension</h2>
           <h3 className="subTitle1">Key Indicator - 3.1 Promotion of Research and Facilities</h3>
 
- 
           <div className="formDiv">
-      <h4>3.1.1 The institution Research facilities are frequently updated and there is well defined policy for promotion of research which is uploaded on the institutional website and implemented</h4>
-
-      <p>Upload relevant supporting document</p>
-      <input
-        type="file"
-        onChange={handleFile311Change}
-      />
-      <button className="submitFormBtn" onClick={handleUpload311} disabled={uploading311 || uploaded311}>
-        {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
+    <h4>3.1.1 The institution Research facilities are frequently updated and there is well defined policy for promotion of research which is uploaded on the institutional website and implemented</h4>
+    <form onSubmit={handleSubmit311}>
+      <div>
+        <h5>Document to Attach:</h5>
+        <div>
+          <ul>● Budget and expenditure statements signed by the Finance Officer indicating the amount of seed money provided and utilized</ul>
+          <ul>● Upload relevant supporting document</ul>
+        </div>
+      </div>
+      <div>
+        <label htmlFor="file">Upload relevant supporting document:</label>
+        <input
+          type="file"
+          id="file"
+          name="file"
+          onChange={handleFile311Change}
+        />
+      </div>
+      <button className="submitFormBtn" type="submit" disabled={uploading311 || uploaded311}>
+        {uploading311 ? "Submitting..." : uploaded311 ? "Submitted" : "Submit"}
       </button>
       {error311 && <div className="error">{error311}</div>}
-    </div>
+    </form>
+  </div>
 
-          {tableData311 && (
+
+ {tableData311 && (
   <div>
     <table>
       <thead>
         <tr>
-          <th>User Name</th>
+          <th>userName</th>
           <th>File</th>
-          <th>Actions</th> {/* New column for the action buttons */}
+          <th>Actions</th> {/* New column for delete/edit buttons */}
         </tr>
       </thead>
       <tbody>
-        {/* Map over the tableData311 array to create a row for each object */}
         {tableData311.map((data, index) => (
           <tr key={index}>
-            <td>{data._id}</td> {/* ID column */}
+            <td>{data.userName}</td>
             <td>
-
-            <div>{getFileNameFromPath(data.filePath)}</div>
-
+              <div>{getFileNameFromPath(data.filePath)}</div>
               <button
                 className="Downloadbtn"
                 onClick={() => handleDownloadFile(data.filePath)}
@@ -2768,15 +2783,13 @@ function getFileNameFromPath(filePath1) {
                 Download File
               </button>
             </td>
-            
-            <td> {/* Actions column */}
+            <td>
               <button
                 className="Deletebtn"
-                onClick={() => handleDelete(data._id)}
+                onClick={() => handleDelete(data._id)} // Use handleDelete
               >
                 Delete
               </button>
-            
             </td>
           </tr>
         ))}
@@ -2785,6 +2798,10 @@ function getFileNameFromPath(filePath1) {
   </div>
 )}
 
+
+
+ 
+  
   
 
 

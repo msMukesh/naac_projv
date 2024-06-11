@@ -374,50 +374,70 @@ app.delete('/deleteFile/:id', async (req, res) => {
 
 
 
+// Endpoint for file upload for 311
+// app.post('/311upload', upload.single('file'), async (req, res) => {
+//   const { userName } = req.body;
+//   const { path: filePath } = req.file;
+//   const _id = `311${globalUserName}`;
+
+//   const newDocument = new Criterion311Model({
+//     _id,
+//     userName,
+//     filePath,
+//   });
+
+//   try {
+//     await newDocument.save();
+//     return res.status(200).json({ message: 'File uploaded successfully' });
+//   } catch (error) {
+//     console.error('Error saving document:', error);
+//     return res.status(500).json({ error: 'Error uploading file. Please try again.' });
+//   }
+// });
+
+
 // Define the schema for Criterion311 collection
 const Criterion311Schema = new mongoose.Schema({
   _id: String,
-  userName: String,
-  filePath: String,
+  userName: { type: String },
+  filePath: { type: String }
 });
 
-// Define the model for Criterion311 collection
 const Criterion311Model = mongoose.model('Criterion311', Criterion311Schema);
 
-
+// Endpoint for file upload for 311
 app.post('/311upload', upload.single('file'), async (req, res) => {
+  const filePath = req.file ? req.file.path : null; // Get file path if file exists
   const { userName } = req.body;
-  const filePath = req.file ? req.file.path : null;
 
-  console.log("Received file path: " + filePath);
   const criterionNumber = '311';
 
   let sequenceValue;
   try {
-    console.log("Criterion number: " + criterionNumber);
-    sequenceValue = await getNextSequenceValue(criterionNumber);
+    sequenceValue = await getNextSequenceValue(criterionNumber, userName);
   } catch (error) {
-    console.error('Error getting next sequence value:', error);
-    return res.status(500).json({ error: 'Error uploading file. Please try again.' });
+    console.error('Error getting sequence value:', error);
+    return res.status(500).json({ error: 'Error obtaining sequence value. Please try again.' });
   }
 
-  console.log("Sequence value: " + sequenceValue);
-  if (isNaN(sequenceValue)) {
-    console.error('Invalid sequence value:', sequenceValue);
-    return res.status(500).json({ error: 'Error uploading file. Please try again.' });
-  }
+  const _id = `${criterionNumber}${userName}${sequenceValue}`;
+
+  const newDocument = new Criterion311Model({
+    _id,
+    userName,
+    filePath
+  });
 
   try {
-    const _id = `311${userName}${sequenceValue}`;
-    console.log("Generated ID: " + _id);
-    const newDocument = new Criterion311Model({ _id, userName, filePath });
     await newDocument.save();
-    return res.status(200).json({ message: 'File uploaded successfully' });
+    return res.status(200).json({ message: 'Data submitted successfully.' });
   } catch (error) {
     console.error('Error saving document:', error);
-    return res.status(500).json({ error: 'Error uploading file. Please try again.' });
+    return res.status(500).json({ error: 'Error saving document. Please try again.' });
   }
 });
+
+
 
 
 
