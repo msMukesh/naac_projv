@@ -67,7 +67,6 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
   };
   
 
-  
   const [file311, setFile311] = useState(null);
   const [uploading311, setUploading311] = useState(false);
   const [uploaded311, setUploaded311] = useState(false);
@@ -75,8 +74,8 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
 
   const handleFile311Change = (e) => {
     setFile311(e.target.files[0]);
-    setUploaded311(false); // Reset the upload status
-    setError311(null); // Reset any errors
+    setUploaded311(false);
+    setError311(null);
   };
 
   const handleUpload311 = async () => {
@@ -103,14 +102,12 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
       console.log(response.data);
       alert("File uploaded successfully.");
 
-      setUploaded311(true); // Set upload status to true
-
-      // Reset the file input after 3 seconds
+      setUploaded311(true);
       setTimeout(() => {
-        setUploaded311(false); // Reset uploaded status to false after 3 seconds
+        setUploaded311(false);
       }, 3000);
 
-      setFile311(null); // Reset the file input
+      setFile311(null);
     } catch (error) {
       console.error("Error uploading file:", error);
       setError311("Error uploading file. Please try again.");
@@ -2722,12 +2719,10 @@ function getFileNameFromPath(filePath1) {
           <h2 class="criterionMainTitle">Criterion III - Research, Innovations and Extension</h2>
           <h3 className="subTitle1">Key Indicator - 3.1 Promotion of Research and Facilities</h3>
 
-           {/* Criterion 3.1.1 Form */}
-      <div className="formDiv">
+          <div className="formDiv">
         <h4>3.1.1 The institution Research facilities are frequently updated and there is well defined policy for
           promotion of research which is uploaded on the institutional website and implemented 
         </h4>
-
         <p>Upload relevant supporting document </p>
         <input type="file" onChange={handleFile311Change} />
         <button className="submitFormBtn" onClick={handleUpload311} disabled={uploading311 || uploaded311}>
