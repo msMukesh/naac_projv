@@ -385,7 +385,7 @@ const Criterion311Model = mongoose.model('Criterion311', Criterion311Schema);
 
 app.post('/311upload', upload.single('file'), async (req, res) => { 
   const { userName } = req.body;
-  const { path: filePath } = req.file;
+  const filePath = req.file ? req.file.path : null; // If there's a file, use its path
   const criterionNumber = '311'; // This would be based on your scenario
 
   // Get the next sequence value

@@ -7507,11 +7507,6 @@ Provide the link for additional information
       </table>
     </div>
     )}
-
-
-
-
-
 </div>
 
 
@@ -7779,8 +7774,7 @@ Provide the link for additional information
           {error372 && <div className="error">{error372}</div>}
         </form>
       )}
-</div>
-          )}
+</div> )}
 {tableData372 && (
  <div>
       <table>
@@ -7831,33 +7825,17 @@ Provide the link for additional information
               >
                 Delete
               </button>
-            </td>     </>     )}
-
-
+            </td>
+            </>     
+          )}
             </tr>
           ))}
         </tbody>
       </table>
     </div>
 )}
-
-
-
-
-
-    </div>
-
-
-
-
-
-
 </div>
-
-
-
-
-
+</div>
 </div>
     </div>
   );
