@@ -68,63 +68,64 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
   
 
   
- // State for Criterion 3.1.1
- const [file311, setFile311] = useState(null);
- const [uploading311, setUploading311] = useState(false);
- const [uploaded311, setUploaded311] = useState(false);
- const [error311, setError311] = useState(null);
+  // State for Criterion 3.1.1
+  const [file311, setFile311] = useState(null);
+  const [uploading311, setUploading311] = useState(false);
+  const [uploaded311, setUploaded311] = useState(false);
+  const [error311, setError311] = useState(null);
 
- const handleFile311Change = (e) => {
-   setFile311(e.target.files[0]);
-   setUploaded311(false); // Reset the upload status
-   setError311(null); // Reset any errors
- };
+  const handleFile311Change = (e) => {
+    setFile311(e.target.files[0]);
+    setUploaded311(false); // Reset the upload status
+    setError311(null); // Reset any errors
+  };
 
- const [criterionNumber, setCriterionNumber] = useState(null);
+  const [criterionNumber, setCriterionNumber] = useState(null);
 
- const handleUpload311 = async () => {
-   if (!file311) {
-     setError311("Please select a file.");
-     return;
-   }
-   setUploading311(true);
-   try {
-     const formData = new FormData();
-     formData.append("file", file311);
-     // Get user name from cookie
-     const userName = Cookies.get("userName");
-     formData.append("userName", userName);
-     console.log("311 frontend"+userName);
-     const response = await axios.post(
-      
-       "https://naac-server.onrender.com/311upload",
-       formData,
-       {
-         headers: {
-           "Content-Type": "multipart/form-data",
-         },
-       }
-     );
-     console.log(response.data);
-     alert("File uploaded successfully.");
-// Reset the form and update states after successful upload
-     setUploaded311(true); // Set upload status to true
+  const handleUpload311 = async () => {
+    if (!file311) {
+      setError311("Please select a file.");
+      return;
+    }
+    setUploading311(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file311);
+      // Get user name from cookie
+      const userName = Cookies.get("userName");
+      formData.append("userName", userName);
+      console.log("311 frontend"+userName);
+      const response = await axios.post(
+        "https://naac-server.onrender.com/311upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(response.data);
+      alert("File uploaded successfully.");
+ // Reset the form and update states after successful upload
+      setUploaded311(true); // Set upload status to true
 
-// Reset the file input after 3 seconds
-setTimeout(() => {
- setUploaded311(false); // Reset uploaded status to false after 3 seconds
+ // Reset the file input after 3 seconds
+ setTimeout(() => {
+  setUploaded311(false); // Reset uploaded status to false after 3 seconds
 }, 1000); // 3000 milliseconds = 3 seconds
 
-     setFile311(null); // Reset the file input
 
-   } catch (error) {
-     console.error("Error uploading file:", error);
-     setError311("Error uploading file. Please try again.");
-   } finally {
-     setUploading311(false);
-   }
-   // resetFormAndErrors();
- };
+      setFile311(null); // Reset the file input
+
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      setError311("Error uploading file. Please try again.");
+    } finally {
+      setUploading311(false);
+    }
+    // resetFormAndErrors();
+  };
+
 
 
 
@@ -2734,18 +2735,14 @@ function getFileNameFromPath(filePath1) {
 
                  {/* Criterion 3.1.1 Form */}
                  <div className="formDiv">
-              <h4>3.1.1 The institution Research  
-facilities  
-are frequently updated and there is well defined policy for
+              <h4>3.1.1 The institution Research facilities are frequently updated and there is well defined policy for
                   promotion of research which is uploaded on the institutional website and implemented 
               </h4>
 
               <p>Upload relevant supporting document </p>
  <input
-        type="file"
-        onChange={handleFile311Change}
-        
-      />
+    type="file"
+    onChange={handleFile311Change}/>
                             <button className="submitFormBtn" onClick={handleUpload311} disabled={uploading311 || uploaded311}>
                         {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
                       </button>
