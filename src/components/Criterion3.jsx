@@ -68,7 +68,6 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
   
 
   
-  // State for Criterion 3.1.1
   const [file311, setFile311] = useState(null);
   const [uploading311, setUploading311] = useState(false);
   const [uploaded311, setUploaded311] = useState(false);
@@ -80,8 +79,6 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
     setError311(null); // Reset any errors
   };
 
-  const [criterionNumber, setCriterionNumber] = useState(null);
-
   const handleUpload311 = async () => {
     if (!file311) {
       setError311("Please select a file.");
@@ -91,10 +88,9 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
     try {
       const formData = new FormData();
       formData.append("file", file311);
-      // Get user name from cookie
       const userName = Cookies.get("userName");
       formData.append("userName", userName);
-      console.log("311 frontend"+userName);
+
       const response = await axios.post(
         "https://naac-server.onrender.com/311upload",
         formData,
@@ -106,24 +102,21 @@ const[handleDeleteFlag,sethandleDeleteFlag]=useState(false);
       );
       console.log(response.data);
       alert("File uploaded successfully.");
- // Reset the form and update states after successful upload
+
       setUploaded311(true); // Set upload status to true
 
- // Reset the file input after 3 seconds
- setTimeout(() => {
-  setUploaded311(false); // Reset uploaded status to false after 3 seconds
-}, 1000); // 3000 milliseconds = 3 seconds
-
+      // Reset the file input after 3 seconds
+      setTimeout(() => {
+        setUploaded311(false); // Reset uploaded status to false after 3 seconds
+      }, 3000);
 
       setFile311(null); // Reset the file input
-
     } catch (error) {
       console.error("Error uploading file:", error);
       setError311("Error uploading file. Please try again.");
     } finally {
       setUploading311(false);
     }
-    // resetFormAndErrors();
   };
 
 
@@ -2729,66 +2722,52 @@ function getFileNameFromPath(filePath1) {
           <h2 class="criterionMainTitle">Criterion III - Research, Innovations and Extension</h2>
           <h3 className="subTitle1">Key Indicator - 3.1 Promotion of Research and Facilities</h3>
 
-          {/* Criterion 3.1.1 Form */}
-          <div className="formDiv">
-              <h4>3.1.1 The institution Research facilities are frequently updated and there is well defined policy for
-                  promotion of research which is uploaded on the institutional website and implemented 
-              </h4>
+           {/* Criterion 3.1.1 Form */}
+      <div className="formDiv">
+        <h4>3.1.1 The institution Research facilities are frequently updated and there is well defined policy for
+          promotion of research which is uploaded on the institutional website and implemented 
+        </h4>
 
-              <p>Upload relevant supporting document </p>
- <input
-        type="file"
-        onChange={handleFile311Change}
-        
-      />
-                            <button className="submitFormBtn" onClick={handleUpload311} disabled={uploading311 || uploaded311}>
-                        {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
-                      </button>
-                      {error311 && <div className="error">{error311}</div>}
-          </div>
+        <p>Upload relevant supporting document </p>
+        <input type="file" onChange={handleFile311Change} />
+        <button className="submitFormBtn" onClick={handleUpload311} disabled={uploading311 || uploaded311}>
+          {uploading311 ? "Uploading..." : uploaded311 ? "Uploaded" : "Upload"}
+        </button>
+        {error311 && <div className="error">{error311}</div>}
+      </div>
 
-          {tableData311 && (
-  <div>
-    <table>
-      <thead>
-        <tr>
-          <th>User Name</th>
-          <th>File</th>
-          <th>Actions</th> {/* New column for the action buttons */}
-        </tr>
-      </thead>
-      <tbody>
-        {/* Map over the tableData311 array to create a row for each object */}
-        {tableData311.map((data, index) => (
-          <tr key={index}>
-            <td>{data._id}</td> {/* ID column */}
-            <td>
-
-            <div>{getFileNameFromPath(data.filePath)}</div>
-
-              <button
-                className="Downloadbtn"
-                onClick={() => handleDownloadFile(data.filePath)}
-              >
-                Download File
-              </button>
-            </td>
-            
-            <td> {/* Actions column */}
-              <button
-                className="Deletebtn"
-                onClick={() => handleDelete(data._id)}
-              >
-                Delete
-              </button>
-            
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-)}
+      {tableData311 && (
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>User Name</th>
+                <th>File</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tableData311.map((data, index) => (
+                <tr key={index}>
+                  <td>{data._id}</td>
+                  <td>
+                    <div>{getFileNameFromPath(data.filePath)}</div>
+                    <button className="Downloadbtn" onClick={() => handleDownloadFile(data.filePath)}>
+                      Download File
+                    </button>
+                  </td>
+                  <td>
+                    <button className="Deletebtn" onClick={() => handleDelete(data._id)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+  
 
 
 
